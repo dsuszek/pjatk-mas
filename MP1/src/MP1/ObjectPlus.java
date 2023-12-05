@@ -1,15 +1,15 @@
-package MP3;
-
+package MP1;
 
 import java.io.*;
 import java.util.*;
 
 public class ObjectPlus implements Serializable {
 
-    public static final String FILE_NAME = "data.dat";
+    public static final String FILE_NAME = "rentalData.dat";
     private static Map<Class<? extends ObjectPlus>, List> extent = new HashMap<>();
 
     public ObjectPlus() {
+        addToExtent();
     }
 
     protected void addToExtent() {
@@ -35,7 +35,7 @@ public class ObjectPlus implements Serializable {
                 ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))
         ) {
             oos.writeObject(extent);
-//            oos.writeDouble(Rental.getKmPrice());
+            oos.writeDouble(Rental.getKmPrice());
         }
 
     }
@@ -44,7 +44,7 @@ public class ObjectPlus implements Serializable {
                 ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))
         ) {
             extent = (Map<Class<? extends ObjectPlus>, List>) ois.readObject();
-//            Rental.setKmPrice(ois.readDouble());
+            Rental.setKmPrice(ois.readDouble());
         }
     }
 
