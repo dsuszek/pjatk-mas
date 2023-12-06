@@ -1,4 +1,4 @@
-package MP1;
+package pjatk.mp1;
 
 public class Client {
 
@@ -42,7 +42,7 @@ public class Client {
 
     @Override // przesłonięcie metody
     public String toString() {
-        return "MP1.Client ID: " + id +
+        return "Client ID: " + id +
                 "\nFirst name: " + firstName +
                 "\nLast name: " + lastName;
     }

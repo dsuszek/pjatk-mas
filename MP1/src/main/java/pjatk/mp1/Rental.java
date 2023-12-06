@@ -1,32 +1,49 @@
-package MP1;
+package pjatk.mp1;
+
+import java.time.LocalDate;
 
 public class Rental extends ObjectPlus {
-
     private long id; // atrybut wymagany
-    private int numberOfDays; // atrybut wymagany
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private int lengthOfRental;
     private double distance; // atrybut wymagany
     private Double extraFee; // atrybut opcjonalny - dla samochodów zaliczanych do klasy Premium
     private static double kmPrice = 1.70; // atrybut klasowy - dla wszystkich samochodów opłata za każdy przejechany kilometr jest taka sama
 
-    public Rental(long id, int numberOfDays, double distance) {
+    public Rental(long id, LocalDate startDate, LocalDate endDate, double distance) {
         super();
         try {
             setId(id);
-            setNumberOfDays(numberOfDays);
+            setStartDate(startDate);
+            setEndDate(endDate);
             setDistance(distance);
-
+            addToExtent();
         } catch (Exception e) {
             removeFromExtent();
         }
     }
 
-    public Rental(long id, int numberOfDays, double distance, Double extraFee) {
+    public Rental(long id, LocalDate startDate, int lengthOfRental, double distance) {
         super();
         try {
             setId(id);
-            setNumberOfDays(numberOfDays);
+            setStartDate(startDate);
+            setLengthOfRental(lengthOfRental);
+            setDistance(distance);
+            addToExtent();
+        } catch (Exception e) {
+            removeFromExtent();
+        }
+    }
+
+    public Rental(long id, double distance, Double extraFee) {
+        super();
+        try {
+            setId(id);
             setDistance(distance);
             setExtraFee(extraFee);
+            addToExtent();
         } catch (Exception e) {
             removeFromExtent();
         }
@@ -34,10 +51,11 @@ public class Rental extends ObjectPlus {
 
     @Override // przesłonięcie metody
     public String toString() {
-        return "MP1.Rental ID: " + id +
+        return "Rental ID: " + id +
                 "\nTotal cost: " + getCost() +
                 "\nTotal distance: " + distance +
-                "\nNumber of days: " + numberOfDays;
+                "\nStart date: " + startDate +
+                "\nEnd date: " + endDate;
     }
 
     public long getId() {
@@ -51,25 +69,36 @@ public class Rental extends ObjectPlus {
         this.id = id;
     }
 
-    public long getNumberOfDays() {
-        return numberOfDays;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setNumberOfDays(int numberOfDays) {
-        if (numberOfDays < 0) {
-            System.out.println(numberOfDays < 0);
-            throw new IllegalArgumentException("Number of days should be greater than 0.");
-        }
-        this.numberOfDays = numberOfDays;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public double getCost() { // atrybut złożony - zależy od trzech pozostałych
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public int getLengthOfRental() {
+        return lengthOfRental;
+    }
+
+    public void setLengthOfRental(int lengthOfRental) {
+        this.lengthOfRental = lengthOfRental;
+    }
+
+    public double getCost() { // atrybut pochodny - zależy od trzech pozostałych
         if (extraFee == null) {
             return (this.distance * this.kmPrice);
         }
         return (this.distance * this.kmPrice) + extraFee;
     }
-
 
     public double getDistance() {
         return distance;
@@ -103,4 +132,9 @@ public class Rental extends ObjectPlus {
     public static void setKmPrice(double kmPrice) {
         Rental.kmPrice = kmPrice;
     }
+
+    public static void getAllRentals() {
+        getExtentForClass(Rental.class);
+    }
+
 }

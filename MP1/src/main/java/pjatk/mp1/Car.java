@@ -1,10 +1,10 @@
-package MP1;
+package pjatk.mp1;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Car {
+public class Car extends ObjectPlus {
 
     private long id;
     private Brand brand;  // atrybut złożony
@@ -14,33 +14,44 @@ public class Car {
     private Set<String> damages = new HashSet<>(); // atrybut powtarzalny
 
     public Car(long id, Brand brand, String model, String type) {
-        setId(id);
-        setBrand(brand);
-        setModel(model);
-        setType(type);
+        super();
+        try {
+            setId(id);
+            setBrand(brand);
+            setModel(model);
+            setType(type);
+            addToExtent();
+        } catch (Exception e) {
+            removeFromExtent();
+        }
     }
 
     // przeciążenie konstruktora - ten zawiera również engineSize, który jest atrybutem opcjonalnym
     public Car(long id, Brand brand, String model, String type, Double engineSize) {
-        setId(id);
-        setBrand(brand);
-        setModel(model);
-        setType(type);
-        setEngineSize(engineSize);
+        super();
+        try {
+            setId(id);
+            setBrand(brand);
+            setModel(model);
+            setType(type);
+            setEngineSize(engineSize);
+        } catch (Exception e) {
+            removeFromExtent();
+        }
     }
 
     @Override // przesłonięcie metody
-    public String toString(){
+    public String toString() {
         if (this.engineSize != null) {
-            return "MP1.Car ID: " + id +
-                    "\nMP1.Brand: " + brand.getName() +
+            return "Car ID: " + id +
+                    "\nBrand: " + brand.getName() +
                     "\nModel: " + model +
                     "\nType: " + type +
                     "\nEngine size: " + engineSize;
         }
 
-        return "MP1.Car " + id +
-                "\nMP1.Brand: " + brand.getName() +
+        return "Car " + id +
+                "\nBrand: " + brand.getName() +
                 "\nModel: " + model +
                 "\nType: " + type;
     }
@@ -84,7 +95,7 @@ public class Car {
     }
 
     public void setEngineSize(Double engineSize) {
-        if(engineSize == null) {
+        if (engineSize == null) {
             return;
         }
 
@@ -114,5 +125,4 @@ public class Car {
             throw new IllegalArgumentException(attribute + " cannot be neither empty string nor null.");
         }
     }
-
 }

@@ -1,24 +1,37 @@
-package MP1;
+package pjatk.mp1;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Brand {
+public class Brand implements Serializable {
 
     private long id;
     private String name;
     private String originCountry; // atrybut opcjonalny
-    private int foundationYear; // atrybut opcjonalny
+    private Integer foundationYear; // atrybut opcjonalny
 
-    public Brand(long id, String name, String originCountry, int foundationYear) {
+    public Brand(long id, String name) {
+        setId(id);
+        setName(name);
+    }
+
+    public Brand(long id, String name, String originCountry) {
+        setId(id);
+        setName(name);
+        setOriginCountry(originCountry);
+    }
+
+    public Brand(long id, String name, Integer foundationYear) {
+        setId(id);
+        setName(name);
+        setFoundationYear(foundationYear);
+    }
+
+    public Brand(long id, String name, String originCountry, Integer foundationYear) {
         setId(id);
         setName(name);
         setOriginCountry(originCountry);
         setFoundationYear(foundationYear);
-    }
-
-    public Brand(long id, String name) {
-        this.id = id;
-        this.name = name;
     }
 
     public long getId() {
@@ -48,20 +61,28 @@ public class Brand {
         this.originCountry = originCountry;
     }
 
-    public int getFoundationYear() {
+    public Integer getFoundationYear() {
         return foundationYear;
     }
 
-    public void setFoundationYear(int foundationYear) {
+    public void setFoundationYear(Integer foundationYear) {
 
         if (foundationYear < 1800) {
             throw new IllegalArgumentException("Foundation year must be greater than 1800.");
         }
 
         if (foundationYear > LocalDate.now().getYear()) {
-            throw new IllegalArgumentException("Foundation year cannot be after current year.");
+            throw new IllegalArgumentException("Foundation year cannot be in the future.");
         }
 
         this.foundationYear = foundationYear;
+    }
+
+    @Override // przesłonięcie metody
+    public String toString() {
+        return "Brand ID: " + id +
+                "\nName: " + getName() +
+                "\nOrigin country: " + getOriginCountry() +
+                "\nFoundation year: " + getFoundationYear();
     }
 }

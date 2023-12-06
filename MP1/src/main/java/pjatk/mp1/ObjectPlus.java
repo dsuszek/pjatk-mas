@@ -1,4 +1,4 @@
-package MP1;
+package pjatk.mp1;
 
 import java.io.*;
 import java.util.*;
@@ -7,10 +7,6 @@ public class ObjectPlus implements Serializable {
 
     public static final String FILE_NAME = "rentalData.dat";
     private static Map<Class<? extends ObjectPlus>, List> extent = new HashMap<>();
-
-    public ObjectPlus() {
-        addToExtent();
-    }
 
     protected void addToExtent() {
         List list = extent.get(this.getClass());
@@ -51,4 +47,5 @@ public class ObjectPlus implements Serializable {
     public static <E> List<E> getExtentForClass(Class<E> clas) {
         return Collections.unmodifiableList(extent.get(clas));
     }
+
 }
