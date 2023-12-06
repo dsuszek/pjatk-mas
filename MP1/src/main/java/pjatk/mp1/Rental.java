@@ -113,7 +113,11 @@ public class Rental extends ObjectPlus {
     }
 
     public Double getExtraFee() {
-        return extraFee;
+        if(extraFee != null) {
+            return extraFee;
+        } else {
+            return 0.0;
+        }
     }
 
     public void setExtraFee(Double extraFee) {

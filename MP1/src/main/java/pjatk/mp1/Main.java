@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static pjatk.mp1.Rental.getAllRentals;
+import static pjatk.mp1.Rental.getKmPrice;
 
 public class Main {
     public static void main(String[] args) {
@@ -60,11 +61,12 @@ public class Main {
         System.out.println();
         System.out.println("Derived attribute");
         System.out.println("-------------------");
-        System.out.print("Cost of rental with ID 1: " + rental1.getCost() + " consisting of: " + rental1.getDistance());
+        System.out.print("Cost of rental with ID 1: " + rental1.getCost() + " consisting of: " + rental1.getDistance() + " km * " + getKmPrice() + " per kilometer + " + rental1.getExtraFee() + " extra fees");
         System.out.println();
-        System.out.print("Cost of rental with ID 2: " + rental2.getCost());
+        System.out.print("Cost of rental with ID 2: " + rental2.getCost() + " consisting of: " + rental2.getDistance() + " km * " + getKmPrice() + " per kilometer + " + rental2.getExtraFee() + " extra fees");
 
         // Atrybut złożony - na przykładzie klasy Branch oraz atrybutu Address
+        System.out.println();
         System.out.println();
         System.out.println("Composite attribute");
         System.out.println("-------------------");
