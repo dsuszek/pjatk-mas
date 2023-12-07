@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-import static pjatk.mp1.Rental.getAllRentals;
 import static pjatk.mp1.Rental.getKmPrice;
 
 public class Main {
@@ -14,7 +13,7 @@ public class Main {
         Brand brand2 = new Brand(2, "Honda", "Japan");
         Brand brand3 = new Brand(3, "Opel");
         Car car1 = new Car(1, brand1, "GL", "SUV", 3.0);
-        Rental rental1 = new Rental(1, LocalDate.of(2024, 2, 2), LocalDate.of(2024, 3, 15),530d);
+        Rental rental1 = new Rental(1, LocalDate.of(2024, 2, 2), LocalDate.of(2024, 3, 15), 530d);
         Rental rental2 = new Rental(2, LocalDate.of(2024, 1, 4), LocalDate.of(2023, 1, 20), 1412.5d);
         Client client1 = new Client(1, "Marc", "Jacobs");
         Client client2 = new Client(2, "Jane", "Bright");
@@ -54,7 +53,7 @@ public class Main {
         System.out.println("-------------------");
         System.out.println("Example of a class attribute based on the Rental class and the kmPrice attribute:");
         System.out.println(Rental.getKmPrice());
-        
+
         // Atrybut pochodny - na przykładzie klasy Rental i metody getCost()
         // koszt wynajmu zależy od trzech pozostałych atrybutów klasy Rental, tzn. od:
         // przejechanego dystansu, ceny za kilometr, oraz dodatkowych opłat
@@ -72,13 +71,13 @@ public class Main {
         System.out.println("-------------------");
         Address address1 = new Address(1, "West George Street", (short) 191, (short) 10, "Glasgow", "G1 1DN");
         Branch branch1 = new Branch(1, "North-01", address1);
-        System.out.println(branch1.toString());
+        System.out.println(branch1);
 
         // Metoda klasowa
         System.out.println();
         System.out.println("Class method");
         System.out.println("-------------------");
-        getAllRentals();
+//        getAllRentals();
 
         // Przesłonięcie metody toString() dla klasy Car
         System.out.println();
@@ -93,9 +92,9 @@ public class Main {
         }
 
         System.out.println("\n\n\n");
-        List rentals = ObjectPlus.getExtentForClass(Rental.class);
-        for (int i = 0; i < rentals.size(); i++) {
-            System.out.println(rentals.get(i));
+        List<Rental> rentals = ObjectPlus.getExtentForClass(Rental.class);
+        for (Rental rental : rentals) {
+            System.out.println(rental);
         }
     }
 }

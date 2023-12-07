@@ -2,29 +2,33 @@ package pjatk.mp1;
 
 import java.io.Serializable;
 
+import static pjatk.mp1.Utils.*;
+import static pjatk.mp1.Utils.checkCorrectnessOfNumericalValueGreaterThanZero;
+
 public class Address implements Serializable {
 
-    private long id;
+    private int id;
     private String streetName;
     private short streetNumber;
     private short apartmentNumber;
     private String city;
     private String postalCode;
 
-    public Address(long id, String streetName, short streetNumber, short apartmentNumber, String city, String postalCode) {
-        this.id = id;
-        this.streetName = streetName;
-        this.streetNumber = streetNumber;
-        this.apartmentNumber = apartmentNumber;
-        this.city = city;
-        this.postalCode = postalCode;
+    public Address(int id, String streetName, short streetNumber, short apartmentNumber, String city, String postalCode) {
+        setId(id);
+        setStreetName(streetName);
+        setStreetNumber(streetNumber);
+        setApartmentNumber(apartmentNumber);
+        setCity(city);
+        setPostalCode(postalCode);
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
+        checkCorrectnessOfId(id);
         this.id = id;
     }
 
@@ -33,6 +37,7 @@ public class Address implements Serializable {
     }
 
     public void setStreetName(String streetName) {
+        checkCorrectnessOfStringAttribute(streetName);
         this.streetName = streetName;
     }
 
@@ -41,6 +46,7 @@ public class Address implements Serializable {
     }
 
     public void setStreetNumber(short streetNumber) {
+        checkCorrectnessOfNumericalValueGreaterThanZero(streetNumber, "Street number");
         this.streetNumber = streetNumber;
     }
 
@@ -49,6 +55,7 @@ public class Address implements Serializable {
     }
 
     public void setApartmentNumber(short apartmentNumber) {
+        checkCorrectnessOfNumericalValueGreaterThanZero(apartmentNumber, "Apartment number");
         this.apartmentNumber = apartmentNumber;
     }
 
@@ -57,6 +64,7 @@ public class Address implements Serializable {
     }
 
     public void setCity(String city) {
+        checkCorrectnessOfStringAttribute(city);
         this.city = city;
     }
 
@@ -65,6 +73,7 @@ public class Address implements Serializable {
     }
 
     public void setPostalCode(String postalCode) {
+        checkCorrectnessOfStringAttribute(postalCode);
         this.postalCode = postalCode;
     }
 

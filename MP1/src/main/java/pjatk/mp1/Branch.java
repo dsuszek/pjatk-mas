@@ -1,21 +1,25 @@
 package pjatk.mp1;
 
+import static pjatk.mp1.Utils.checkCorrectnessOfId;
+import static pjatk.mp1.Utils.checkCorrectnessOfStringAttribute;
+
 public class Branch {
-    private long id;
+    private int id;
     private String name;
     private Address address;
 
-    public Branch(long id, String name, Address address) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
+    public Branch(int id, String name, Address address) {
+        setId(id);
+        setName(name);
+        setAddress(address);
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
+        checkCorrectnessOfId(id);
         this.id = id;
     }
 
@@ -24,6 +28,7 @@ public class Branch {
     }
 
     public void setName(String name) {
+        checkCorrectnessOfStringAttribute(name);
         this.name = name;
     }
 
@@ -32,6 +37,9 @@ public class Branch {
     }
 
     public void setAddress(Address address) {
+        if (address == null) {
+            throw new IllegalArgumentException("Address cannot be null.");
+        }
         this.address = address;
     }
 

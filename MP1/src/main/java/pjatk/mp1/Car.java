@@ -4,30 +4,31 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import static pjatk.mp1.Utils.*;
+
 public class Car extends ObjectPlus {
 
-    private long id;
+    private int id;
     private Brand brand;  // atrybut złożony
     private String model;
     private String type;
     private Double engineSize; // atrybut opcjonalny
     private Set<String> damages = new HashSet<>(); // atrybut powtarzalny
 
-    public Car(long id, Brand brand, String model, String type) {
+    public Car(int id, Brand brand, String model, String type) {
         super();
         try {
             setId(id);
             setBrand(brand);
             setModel(model);
             setType(type);
-            addToExtent();
         } catch (Exception e) {
             removeFromExtent();
         }
     }
 
     // przeciążenie konstruktora - ten zawiera również engineSize, który jest atrybutem opcjonalnym
-    public Car(long id, Brand brand, String model, String type, Double engineSize) {
+    public Car(int id, Brand brand, String model, String type, Double engineSize) {
         super();
         try {
             setId(id);
@@ -35,36 +36,17 @@ public class Car extends ObjectPlus {
             setModel(model);
             setType(type);
             setEngineSize(engineSize);
+            addToExtent();
         } catch (Exception e) {
             removeFromExtent();
         }
     }
-
-    @Override // przesłonięcie metody
-    public String toString() {
-        if (this.engineSize != null) {
-            return "Car ID: " + id +
-                    "\nBrand: " + brand.getName() +
-                    "\nModel: " + model +
-                    "\nType: " + type +
-                    "\nEngine size: " + engineSize;
-        }
-
-        return "Car " + id +
-                "\nBrand: " + brand.getName() +
-                "\nModel: " + model +
-                "\nType: " + type;
-    }
-
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
-
-        if (id < 1) {
-            throw new IllegalArgumentException("ID must be positive number.");
-        }
+    public void setId(int id) {
+        checkCorrectnessOfId(id);
         this.id = id;
     }
 
@@ -73,6 +55,9 @@ public class Car extends ObjectPlus {
     }
 
     public void setBrand(Brand brand) {
+        if (brand == null) {
+            throw new IllegalArgumentException("Brand cannot be null");
+        }
         this.brand = brand;
     }
 
@@ -99,10 +84,7 @@ public class Car extends ObjectPlus {
             return;
         }
 
-        if (engineSize <= 0) {
-            throw new IllegalArgumentException("Engine size must be greater than 0.");
-        }
-
+        checkCorrectnessOfNumericalValueGreaterThanZero(engineSize, "Engine size");
         this.engineSize = engineSize;
     }
 
@@ -112,7 +94,6 @@ public class Car extends ObjectPlus {
 
     public void addDamage(String damage) {
         checkCorrectnessOfStringAttribute(damage);
-
         this.damages.add(damage);
     }
 
@@ -120,9 +101,19 @@ public class Car extends ObjectPlus {
         this.damages.remove(damage);
     }
 
-    public void checkCorrectnessOfStringAttribute(String attribute) {
-        if (attribute == null || attribute.isBlank()) {
-            throw new IllegalArgumentException(attribute + " cannot be neither empty string nor null.");
+    @Override // przesłonięcie metody
+    public String toString() {
+        if (this.engineSize != null) {
+            return "Car ID: " + id +
+                    "\nBrand: " + brand.getName() +
+                    "\nModel: " + model +
+                    "\nType: " + type +
+                    "\nEngine size: " + engineSize;
         }
+
+        return "Car " + id +
+                "\nBrand: " + brand.getName() +
+                "\nModel: " + model +
+                "\nType: " + type;
     }
 }

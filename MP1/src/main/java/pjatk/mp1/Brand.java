@@ -3,31 +3,34 @@ package pjatk.mp1;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import static pjatk.mp1.Utils.checkCorrectnessOfId;
+import static pjatk.mp1.Utils.checkCorrectnessOfStringAttribute;
+
 public class Brand implements Serializable {
 
-    private long id;
+    private int id;
     private String name;
     private String originCountry; // atrybut opcjonalny
     private Integer foundationYear; // atrybut opcjonalny
 
-    public Brand(long id, String name) {
+    public Brand(int id, String name) {
         setId(id);
         setName(name);
     }
 
-    public Brand(long id, String name, String originCountry) {
+    public Brand(int id, String name, String originCountry) {
         setId(id);
         setName(name);
         setOriginCountry(originCountry);
     }
 
-    public Brand(long id, String name, Integer foundationYear) {
+    public Brand(int id, String name, Integer foundationYear) {
         setId(id);
         setName(name);
         setFoundationYear(foundationYear);
     }
 
-    public Brand(long id, String name, String originCountry, Integer foundationYear) {
+    public Brand(int id, String name, String originCountry, Integer foundationYear) {
         setId(id);
         setName(name);
         setOriginCountry(originCountry);
@@ -38,10 +41,8 @@ public class Brand implements Serializable {
         return id;
     }
 
-    public void setId(long id) {
-        if (id < 1) {
-            throw new IllegalArgumentException("ID must be positive number.");
-        }
+    public void setId(int id) {
+        checkCorrectnessOfId(id);
         this.id = id;
     }
 
@@ -50,6 +51,7 @@ public class Brand implements Serializable {
     }
 
     public void setName(String name) {
+        checkCorrectnessOfStringAttribute(name);
         this.name = name;
     }
 
@@ -58,6 +60,7 @@ public class Brand implements Serializable {
     }
 
     public void setOriginCountry(String originCountry) {
+        checkCorrectnessOfStringAttribute(originCountry);
         this.originCountry = originCountry;
     }
 
@@ -67,7 +70,7 @@ public class Brand implements Serializable {
 
     public void setFoundationYear(Integer foundationYear) {
 
-        if (foundationYear < 1800) {
+        if (foundationYear <= 1800) {
             throw new IllegalArgumentException("Foundation year must be greater than 1800.");
         }
 

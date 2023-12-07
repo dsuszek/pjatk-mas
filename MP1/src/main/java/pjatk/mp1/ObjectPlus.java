@@ -8,20 +8,25 @@ public class ObjectPlus implements Serializable {
     public static final String FILE_NAME = "rentalData.dat";
     private static Map<Class<? extends ObjectPlus>, List> extent = new HashMap<>();
 
+    public ObjectPlus() {
+        addToExtent();
+    }
+
     protected void addToExtent() {
         List list = extent.get(this.getClass());
 
-        if ( list == null ){
+        if (list == null) {
             list = new ArrayList();
             extent.put(this.getClass(), list);
         }
 
         list.add(this);
     }
+
     public void removeFromExtent() {
         List list = extent.get(this.getClass());
 
-        if ( list != null ){
+        if (list != null) {
             list.remove(this);
         }
     }
@@ -35,6 +40,7 @@ public class ObjectPlus implements Serializable {
         }
 
     }
+
     public static void loadExtent() throws IOException, ClassNotFoundException {
         try (
                 ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))

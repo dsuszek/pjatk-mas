@@ -1,25 +1,26 @@
 package pjatk.mp1;
 
+import static pjatk.mp1.Utils.checkCorrectnessOfId;
+import static pjatk.mp1.Utils.checkCorrectnessOfStringAttribute;
+
 public class Client {
 
-    private long id;
+    private int id;
     private String firstName;
     private String lastName;
 
-    public Client(long id, String firstName, String lastName) {
+    public Client(int id, String firstName, String lastName) {
         setId(id);
         setFirstName(firstName);
         setLastName(lastName);
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
-        if (id < 1) {
-            throw new IllegalArgumentException("ID must be positive number.");
-        }
+    public void setId(int id) {
+        checkCorrectnessOfId(id);
         this.id = id;
     }
 
@@ -28,6 +29,7 @@ public class Client {
     }
 
     public void setFirstName(String firstName) {
+        checkCorrectnessOfStringAttribute(firstName);
         this.firstName = firstName;
     }
 
@@ -36,6 +38,7 @@ public class Client {
     }
 
     public void setLastName(String lastName) {
+        checkCorrectnessOfStringAttribute(lastName);
         this.lastName = lastName;
     }
 
