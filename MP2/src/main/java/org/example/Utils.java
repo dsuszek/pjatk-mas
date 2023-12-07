@@ -1,3 +1,5 @@
+package org.example;
+
 public class Utils {
     public static void checkCorrectnessOfStringAttribute(String attribute) {
         if (attribute == null || attribute.isBlank()) {
