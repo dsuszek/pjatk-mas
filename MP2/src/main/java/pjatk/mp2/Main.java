@@ -44,9 +44,6 @@ public class Main {
         System.out.println("Association with attribute");
         System.out.println();
         // klasa asocjacyjna Rental - pomiędzy klasami Car oraz Client
-        Client client1 = new Client("Michael", "Leaf");
-        Client client2 = new Client("John", "Stout");
-        Rental rental1 = new Rental(10, LocalDate.of(2024, 4, 10), LocalDate.of(2024, 5, 20), 355.0);
         rental1.setCar(car2);
         rental1.setClient(client1);
         System.out.println(rental1);

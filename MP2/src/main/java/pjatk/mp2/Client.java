@@ -16,7 +16,7 @@ public class Client {
 
     private Set<Rental> rentals = new HashSet<>(); // Rental to klasa asocjacyjna - liczności 1..* - jeden klient może wiele razy wynajmować auto
 
-    public Client(String firstName, String lastName) {
+    public Client(int id, String firstName, String lastName) {
         setId();
         setFirstName(firstName);
         setLastName(lastName);
