@@ -1,28 +1,42 @@
-package org.example;
+package pjatk.mp2;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
+import static pjatk.mp2.Utils.checkCorrectnessOfId;
+import static pjatk.mp2.Utils.checkCorrectnessOfStringAttribute;
 
 public class Brand {
 
-    private UUID id;
+    private int id;
     private String name;
     private String originCountry; // atrybut opcjonalny
     private int foundationYear; // atrybut opcjonalny
     private List<Car> cars = new ArrayList<>();
 
-    public Brand(String name, String originCountry, int foundationYear) {
-        setId();
+    public Brand(int id, String name) {
+        setId(id);
+        setName(name);
+    }
+
+    public Brand(int id, String name, String originCountry) {
+        setId(id);
         setName(name);
         setOriginCountry(originCountry);
+    }
+
+    public Brand(int id, String name, Integer foundationYear) {
+        setId(id);
+        setName(name);
         setFoundationYear(foundationYear);
     }
 
-    public Brand(String name) {
-        setId();
-        this.name = name;
+    public Brand(int id, String name, String originCountry, Integer foundationYear) {
+        setId(id);
+        setName(name);
+        setOriginCountry(originCountry);
+        setFoundationYear(foundationYear);
     }
 
     public void addCar(Car car) {
@@ -33,12 +47,13 @@ public class Brand {
         return cars;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId() {
-        this.id = UUID.randomUUID();
+    public void setId(int id) {
+        checkCorrectnessOfId(id);
+        this.id = id;
     }
 
     public String getName() {
@@ -46,6 +61,7 @@ public class Brand {
     }
 
     public void setName(String name) {
+        checkCorrectnessOfStringAttribute(name);
         this.name = name;
     }
 
@@ -54,6 +70,7 @@ public class Brand {
     }
 
     public void setOriginCountry(String originCountry) {
+        checkCorrectnessOfStringAttribute(originCountry);
         this.originCountry = originCountry;
     }
 
@@ -63,12 +80,12 @@ public class Brand {
 
     public void setFoundationYear(int foundationYear) {
 
-        if (foundationYear < 1800) {
+        if (foundationYear <= 1800) {
             throw new IllegalArgumentException("Foundation year must be greater than 1800.");
         }
 
         if (foundationYear > LocalDate.now().getYear()) {
-            throw new IllegalArgumentException("Foundation year cannot be after current year.");
+            throw new IllegalArgumentException("Foundation year cannot be in the future.");
         }
 
         this.foundationYear = foundationYear;

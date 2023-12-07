@@ -1,14 +1,16 @@
-package org.example;
+package pjatk.mp2;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
+
+import static pjatk.mp2.Utils.checkCorrectnessOfId;
+import static pjatk.mp2.Utils.checkCorrectnessOfNumericalValueGreaterThanZero;
 
 public class Car extends ObjectPlus {
 
-    private UUID id;
-    private Brand brand;  // atrybut złożony
+    private int id;
+    private Brand brand;
     private String model;
     private String type;
     private Double engineSize; // atrybut opcjonalny
@@ -30,28 +32,13 @@ public class Car extends ObjectPlus {
         setEngineSize(engineSize);
     }
 
-    @Override // przesłonięcie metody
-    public String toString(){
-        if (this.engineSize != null) {
-            return "Car ID: " + id +
-                    "\nBrand: " + brand.getName() +
-                    "\nModel: " + model +
-                    "\nType: " + type +
-                    "\nEngine size: " + engineSize + "\n";
-        }
-
-        return "Car " + id +
-                "\nBrand: " + brand.getName() +
-                "\nModel: " + model +
-                "\nType: " + type + "\n";
-    }
-
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
     public void setId() {
-        this.id = UUID.randomUUID();
+        checkCorrectnessOfId(id);
+        this.id = id;
     }
 
     public Brand getBrand() {
@@ -59,6 +46,9 @@ public class Car extends ObjectPlus {
     }
 
     public void setBrand(Brand brand) {
+        if (brand == null) {
+            throw new IllegalArgumentException("Brand cannot be null.");
+        }
         this.brand = brand;
         brand.addCar(this);
     }
@@ -82,14 +72,11 @@ public class Car extends ObjectPlus {
     }
 
     public void setEngineSize(Double engineSize) {
-        if(engineSize == null) {
+        if (engineSize == null) {
             return;
         }
 
-        if (engineSize <= 0) {
-            throw new IllegalArgumentException("Engine size must be greater than 0.");
-        }
-
+        checkCorrectnessOfNumericalValueGreaterThanZero(engineSize, "Engine size");
         this.engineSize = engineSize;
     }
 
@@ -99,7 +86,6 @@ public class Car extends ObjectPlus {
 
     public void addDamage(String damage) {
         Utils.checkCorrectnessOfStringAttribute(damage);
-
         this.damages.add(damage);
     }
 
@@ -118,8 +104,9 @@ public class Car extends ObjectPlus {
     public Set<Rental> getRentals() {
         return Collections.unmodifiableSet(rentals);
     }
+
     public void addRental(Rental rental) throws Exception {
-        if(rental == null) {
+        if (rental == null) {
             throw new IllegalArgumentException();
         }
 
@@ -128,10 +115,11 @@ public class Car extends ObjectPlus {
         }
 
         this.rentals.add(rental);
-        if(rental.getCar() == null) {
+        if (rental.getCar() == null) {
             rental.setCar(this);
         }
     }
+
     public void removeRental(Rental rental) throws Exception {
         if (rental == null) {
             throw new IllegalArgumentException("Empty rental cannot be removed from the history.");
@@ -150,5 +138,21 @@ public class Car extends ObjectPlus {
         }
 
         this.setBranch(null);
+    }
+
+    @Override // przesłonięcie metody
+    public String toString() {
+        if (this.engineSize != null) {
+            return "Car ID: " + id +
+                    "\nBrand: " + brand.getName() +
+                    "\nModel: " + model +
+                    "\nType: " + type +
+                    "\nEngine size: " + engineSize + "\n";
+        }
+
+        return "Car ID: " + id +
+                "\nBrand: " + brand.getName() +
+                "\nModel: " + model +
+                "\nType: " + type + "\n";
     }
 }

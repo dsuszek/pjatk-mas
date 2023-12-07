@@ -1,15 +1,22 @@
-package org.example;
+package pjatk.mp2;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        // Tworzę obiekty, które będą później wykorzystywane do przedstawiania sposobu działania programu
+        Brand brand1 = new Brand(1, "Mercedes", "Germany", 1880);
+        Brand brand2 = new Brand(2, "Honda", "Japan");
+        Brand brand3 = new Brand(3, "Opel", 1862);
+        Brand brand4 = new Brand(4, "Suzuki");
 
-        // MP 2
-        Brand brand1 = new Brand("Mercedes", "Germany", 1880);
+        Rental rental1 = new Rental(1, LocalDate.of(2024, 2, 2), LocalDate.of(2024, 3, 15), 530d);
+        Rental rental2 = new Rental(2, LocalDate.of(2024, 1, 4), LocalDate.of(2023, 1, 20), 1412.5d);
+        Client client1 = new Client(1, "Marc", "Jacobs");
+        Client client2 = new Client(2, "Jane", "Bright");
         Region region1 = new Region("Northern");
         Address address1 = new Address("Square Street", "10", "2", "Sopot", "90-222");
-
         Branch branch1 = Branch.createBranch(region1,"Auto - North", address1);
 
         Car car1 = new Car("GL", "SUV", 3.0);
@@ -39,7 +46,7 @@ public class Main {
         // klasa asocjacyjna Rental - pomiędzy klasami Car oraz Client
         Client client1 = new Client("Michael", "Leaf");
         Client client2 = new Client("John", "Stout");
-        Rental rental1 = new Rental(10, 340);
+        Rental rental1 = new Rental(10, LocalDate.of(2024, 4, 10), LocalDate.of(2024, 5, 20), 355.0);
         rental1.setCar(car2);
         rental1.setClient(client1);
         System.out.println(rental1);

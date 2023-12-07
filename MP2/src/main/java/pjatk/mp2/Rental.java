@@ -1,108 +1,104 @@
-package org.example;
+package pjatk.mp2;
 
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
+import static pjatk.mp2.Utils.*;
 
 public class Rental extends ObjectPlus {
 
-    private UUID id; // atrybut wymagany
-    private int numberOfDays; // atrybut wymagany
+    private int id;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private double distance; // atrybut wymagany
     private Double extraFee; // atrybut opcjonalny - dla samochodów zaliczanych do klasy Premium
     private static double kmPrice = 1.70; // atrybut klasowy - dla wszystkich samochodów opłata za każdy przejechany kilometr jest taka sama
     private Car car;
     private Client client;
 
-    public Rental(int numberOfDays, double distance) {
+    public Rental(int id, LocalDate startDate, LocalDate endDate, double distance) {
         super();
         try {
-            setId();
-            setNumberOfDays(numberOfDays);
+            setId(id);
+            setStartDate(startDate);
+            setEndDate(endDate);
             setDistance(distance);
         } catch (Exception e) {
             removeFromExtent();
         }
     }
 
-    public Rental(int numberOfDays, double distance, Double extraFee) {
-        super();
-        try {
-            setId();
-            setNumberOfDays(numberOfDays);
-            setDistance(distance);
-            setExtraFee(extraFee);
-        } catch (Exception e) {
-            removeFromExtent();
-        }
-    }
-
-    @Override // przesłonięcie metody
-    public String toString() {
-        return "Rental ID: " + id +
-                "\nTotal cost: " + getCost() +
-                "\nTotal distance: " + distance +
-                "\nNumber of days: " + numberOfDays +
-                "\nCar: \n" + car.toString().indent(2) +
-                "\nClient: \n" + client.toString().indent(2);
-    }
-
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId() {
-        this.id = UUID.randomUUID();
+    public void setId(int id) {
+        checkCorrectnessOfId(id);
+        this.id = id;
     }
 
-    public long getNumberOfDays() {
-        return numberOfDays;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setNumberOfDays(int numberOfDays) {
-        if (numberOfDays < 0) {
-            System.out.println(numberOfDays < 0);
-            throw new IllegalArgumentException("Number of days should be greater than 0.");
+    public void setStartDate(LocalDate startDate) {
+        if (startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date cannot be after end date.");
         }
-        this.numberOfDays = numberOfDays;
+        this.startDate = startDate;
     }
 
-    public double getCost() { // atrybut złożony - zależy od trzech pozostałych
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        if (endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("End date cannot be before start date.");
+        }
+        this.endDate = endDate;
+    }
+
+    public long getLengthOfRental() {
+        return startDate.until(endDate, ChronoUnit.DAYS);
+    }
+
+    public double getCost() { // atrybut pochodny - zależy od trzech pozostałych
         if (extraFee == null) {
             return (this.distance * this.kmPrice);
         }
         return (this.distance * this.kmPrice) + extraFee;
     }
 
-
     public double getDistance() {
         return distance;
     }
 
     public void setDistance(double distance) {
-        if (distance < 0) {
-            throw new IllegalArgumentException("Distance must be a positive number.");
-        }
-
+        checkCorrectnessOfNumericalValueGreaterThanOrEqualToZero(distance, "Distance");
         this.distance = distance;
     }
 
     public Double getExtraFee() {
-        return extraFee;
+        if (extraFee != null) {
+            return extraFee;
+        } else {
+            return 0.0;
+        }
     }
 
     public void setExtraFee(Double extraFee) {
-        if (extraFee < 0) { // wartość null jest dozwolona, ponieważ jest to atrybut opcjonalny
-            throw new IllegalArgumentException("Extra fee must be a positive number.");
-        }
-
+        // wartość null jest dozwolona, ponieważ jest to atrybut opcjonalny
+        checkCorrectnessOfNumericalValueGreaterThanOrEqualToZero(extraFee, "Extra fee");
         this.extraFee = extraFee;
     }
-
 
     public static double getKmPrice() {
         return kmPrice;
     }
 
     public static void setKmPrice(double kmPrice) {
+        checkCorrectnessOfNumericalValueGreaterThanZero(kmPrice, "Price for one kilometer");
         Rental.kmPrice = kmPrice;
     }
 
@@ -166,5 +162,14 @@ public class Rental extends ObjectPlus {
             this.client = client;
             client.addRental(this);
         }
+    }
+
+    @Override // przesłonięcie metody
+    public String toString() {
+        return "Rental ID: " + id +
+                "\nTotal cost: " + getCost() +
+                "\nTotal distance: " + distance +
+                "\nStart date: " + startDate +
+                "\nEnd date: " + endDate;
     }
 }

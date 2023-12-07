@@ -1,13 +1,16 @@
-package org.example;
+package pjatk.mp2;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import static pjatk.mp2.Utils.checkCorrectnessOfId;
+import static pjatk.mp2.Utils.checkCorrectnessOfStringAttribute;
+
 public class Client {
 
-    private UUID id;
+    private int id;
     private String firstName;
     private String lastName;
 
@@ -19,12 +22,13 @@ public class Client {
         setLastName(lastName);
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
     public void setId() {
-        this.id = UUID.randomUUID();
+        checkCorrectnessOfId(id);
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -32,6 +36,7 @@ public class Client {
     }
 
     public void setFirstName(String firstName) {
+        checkCorrectnessOfStringAttribute(firstName);
         this.firstName = firstName;
     }
 
@@ -40,9 +45,9 @@ public class Client {
     }
 
     public void setLastName(String lastName) {
+        checkCorrectnessOfStringAttribute(lastName);
         this.lastName = lastName;
     }
-
 
     @Override // przesłonięcie metody
     public String toString() {

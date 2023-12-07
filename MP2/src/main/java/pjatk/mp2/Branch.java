@@ -1,16 +1,19 @@
-package org.example;
+package pjatk.mp2;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
+import static pjatk.mp2.Utils.checkCorrectnessOfId;
+import static pjatk.mp2.Utils.checkCorrectnessOfStringAttribute;
+
 public class Branch extends ObjectPlus {
-    private UUID id;
+    private int id;
     private String name;
     private Address address;
     private Region region;
-    private Map<UUID, Car> carsQualified = new HashMap<>();
+    private Map<Integer, Car> carsQualified = new HashMap<>();
 
     private Branch(String name, Region region, Address address) {
         super();
@@ -48,7 +51,7 @@ public class Branch extends ObjectPlus {
         }
     }
 
-    public Car findCarQualified(long id) throws Exception {
+    public Car findCarQualified(int id) throws Exception {
         // check if we have the info
         if (!carsQualified.containsKey(id)) {
             throw new Exception("Unable to find car with ID: " + id);
@@ -67,25 +70,26 @@ public class Branch extends ObjectPlus {
         String info = "";
 
         if (carsQualified.isEmpty()) {
-            info = "Branch " + name +  " with ID: " + id + " doesn't have any cars assigned.\n";
+            info = "Branch " + name + " with ID: " + id + " doesn't have any cars assigned.\n";
 
         } else {
             info = "Branch " + name + " with ID: " + id + " has the following cars: \n";
-            Iterator<Map.Entry<UUID, Car>> iterator = carsQualified.entrySet().iterator();
+            Iterator<Map.Entry<Integer, Car>> iterator = carsQualified.entrySet().iterator();
             while (iterator.hasNext()) {
-                Map.Entry<UUID, Car> entry = iterator.next();
+                Map.Entry<Integer, Car> entry = iterator.next();
                 info += " * " + entry.getValue().getBrand().getName() + " " + entry.getValue().getModel() + " with ID: " + entry.getKey() + "\n";
             }
         }
         return info;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
     public void setId() {
-        this.id = UUID.randomUUID();
+        checkCorrectnessOfId(id);
+        this.id = id;
     }
 
     public String getName() {
@@ -93,6 +97,7 @@ public class Branch extends ObjectPlus {
     }
 
     public void setName(String name) {
+        checkCorrectnessOfStringAttribute(name);
         this.name = name;
     }
 
@@ -101,6 +106,9 @@ public class Branch extends ObjectPlus {
     }
 
     public void setAddress(Address address) {
+        if (address == null) {
+            throw new IllegalArgumentException("Address cannot be null.");
+        }
         this.address = address;
     }
 

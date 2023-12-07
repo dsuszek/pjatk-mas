@@ -1,4 +1,4 @@
-package org.example;
+package pjatk.mp2;
 
 import java.util.UUID;
 
