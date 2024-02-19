@@ -3,42 +3,25 @@ package pjatk.mp2;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.UUID;
 
 import static pjatk.mp2.Utils.checkCorrectnessOfId;
 import static pjatk.mp2.Utils.checkCorrectnessOfStringAttribute;
 
-public class Branch extends ObjectPlus {
+public class Unit extends ObjectPlusPlus {
     private int id;
     private String name;
     private Address address;
     private Region region;
     private Map<Integer, Car> carsQualified = new HashMap<>();
 
-    private Branch(String name, Region region, Address address) {
+    public Unit(int id, String name) {
         super();
         try {
-            setId();
+            setId(id);
             setName(name);
-            setRegion(region);
-            setAddress(address);
         } catch (Exception e) {
             removeFromExtent();
         }
-    }
-
-    public static Branch createBranch(Region region, String name, Address address) throws Exception {
-
-        if (region == null) {
-            throw new Exception("Branch can't be assigned to this region, because it does not exist.");
-        }
-
-        // create a new branch
-        Branch branch = new Branch(name, region, address);
-
-        // add branch to the region
-        region.addBranch(branch);
-        return branch;
     }
 
     public void addCarQualified(Car car) {
@@ -87,7 +70,7 @@ public class Branch extends ObjectPlus {
         return id;
     }
 
-    public void setId() {
+    public void setId(int id) {
         checkCorrectnessOfId(id);
         this.id = id;
     }

@@ -1,7 +1,6 @@
 package pjatk.mp2;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -11,108 +10,66 @@ public class Main {
         Brand brand3 = new Brand(3, "Opel", 1862);
         Brand brand4 = new Brand(4, "Suzuki");
 
-        Rental rental1 = new Rental(1, LocalDate.of(2024, 2, 2), LocalDate.of(2024, 3, 15), 530d);
-        Rental rental2 = new Rental(2, LocalDate.of(2024, 1, 4), LocalDate.of(2023, 1, 20), 1412.5d);
+        Car car1 = new Car(1, brand1, "GL", "SUV", 3.0);
+        Car car2 = new Car(2, brand1, "CLA", "Sedan", 2.4);
+        Car car3 = new Car(3, brand2, "S500", "Sedan", 1.3);
+        Car car4 = new Car(4, brand1, "CL600", "Sedan", 2.0);
+        Car car5 = new Car(5, brand3, "Mokka", "SUV", 1.6);
+        Car car6 = new Car(6, brand4, "Vitara", "SUV", 2.0);
+
         Client client1 = new Client(1, "Marc", "Jacobs");
         Client client2 = new Client(2, "Jane", "Bright");
-        Region region1 = new Region("Northern");
-        Address address1 = new Address("Square Street", "10", "2", "Sopot", "90-222");
-        Branch branch1 = Branch.createBranch(region1,"Auto - North", address1);
+        Client client3 = new Client(3, "John", "Lemon");
 
-        Car car1 = new Car("GL", "SUV", 3.0);
-        Car car2 = new Car("CLA", "Sedan", 2.4);
-        Car car3 = new Car("S500", "Sedan", 1.3);
-        Car car4 = new Car("CL600", "Sedan", 2.0);
+        Rental rental1 = new Rental(1, LocalDate.of(2024, 2, 2), LocalDate.of(2024, 2, 15), 530.0d, car1, client1);
+        Rental rental2 = new Rental(2, LocalDate.of(2024, 1, 4), LocalDate.of(2024, 1, 20), 1412.5d, car2, client1);
+        Rental rental3 = new Rental(3, LocalDate.of(2024, 5, 24), LocalDate.of(2024, 6, 12), 98.0d, car1, client3);
+        Rental rental4 = new Rental(4, LocalDate.of(2024, 2, 5), LocalDate.of(2024, 3, 1), 1412.5d, car4, client2);
+        Rental rental5 = new Rental(5, LocalDate.of(2024, 7, 12), LocalDate.of(2024, 7, 13), 34.0d, car1, client1);
 
-        // -------------------------------------------------------------------------
+        Region region1 = new Region("Southern");
+        Region region2 = new Region("Northern");
+        Unit unit1 = new Unit(1, "Auto-East");
+        Unit unit2 = new Unit(2, "Auto-South");
+        Unit unit3 = new Unit(3, "Auto-North");
+        Unit unit4 = new Unit(4, "Auto-North");
+
         System.out.println();
-        System.out.println("------------------");
         System.out.println("Association");
-        System.out.println();
-        // jeden samochód może mieć jedną markę
-        // jedna marka może mieć wiele samochodów
-        car1.setBrand(brand1);
-        car2.setBrand(brand1);
-        car3.setBrand(brand1);
-        car4.setBrand(brand1);
-        System.out.println(brand1);
+        System.out.println("-------------------");
+        rental1.addLink("car", "rental", car2);
+        rental1.showLinks("car", System.out);
 
-
-        // -------------------------------------------------------------------------
         System.out.println();
-        System.out.println("------------------");
         System.out.println("Association with attribute");
+        System.out.println("-------------------");
+
+
         System.out.println();
-        // klasa asocjacyjna Rental - pomiędzy klasami Car oraz Client
-        rental1.setCar(car2);
-        rental1.setClient(client1);
-        System.out.println(rental1);
-
-        System.out.println("Change the car for rental: ");
-        rental1.setCar(car1);
-        System.out.println(rental1);
-
-
-        // -------------------------------------------------------------------------
-        System.out.println();
-        System.out.println("------------------");
         System.out.println("Qualified association");
+        System.out.println("-------------------");
+
+
+
         System.out.println();
-        // car --> branch
-        branch1.addCarQualified(car1);
-        branch1.addCarQualified(car2);
-        System.out.println(branch1);
+        System.out.println("Composition");
+        System.out.println("-------------------");
+        region1.addPart("region", "unit", unit1);
+        region1.showLinks("unit", System.out);
 
+        Address address1 = new Address(1, "West George Street", (short) 191, (short) 10, "Glasgow", "G1 1DN");
 
-        // -------------------------------------------------------------------------
-        System.out.println();
-        System.out.println("------------------");
-        System.out.println("Composition"); // region zawiera wiele oddziałów
-        System.out.println();
-        // bez oddziałów region nie może istnieć
-        // Region 1 ---------- Branch [1..*]
-        region1.addBranch(branch1);
-        System.out.println(region1);
-
-        // usuwanie całości
-        Address address2 = new Address("Peak Street", "43", "1", "Poznań", "00-222");
-        Region region2 = new Region("Western");
-        Branch branch2 = Branch.createBranch(region2, "Auto - Western", address2);
-        branch2.addCarQualified(car3);
-        branch2.addCarQualified(car4);
-
-        System.out.println(region2);
-        System.out.println("List of all regions: ");
-        List<Region> regions = Region.getExtentForClass(Region.class);
-
-        for (Region region : regions) {
-            System.out.println(region);
-        }
-
-        System.out.println("List of all branches: ");
-        List<Branch> branches = Branch.getExtentForClass(Branch.class);
-
-        for(Branch branch : branches) {
-            System.out.println(branch);
-        }
-
-        region2.deleteRegion();
-        System.out.println("The decision about removing region2 has been taken.\n");
-
-        System.out.println("List of all regions after modification: ");
-        for (Region region : regions) {
-            System.out.println(region);
-        }
-
-        System.out.println("List of all branches after modification: ");
-        for(Branch branch : branches) {
-            System.out.println(branch);
-        }
-
-        System.out.println("List of all cars: ");
-        List<Car> cars = Car.getExtentForClass(Car.class);
-        for(Car car : cars) {
-            System.out.println(car);
-        }
+        unit1.addLink("car", "branch", car1);
+        unit1.addLink("car", "branch", car2);
+        unit2.addLink("car", "branch", car3);
+        unit3.addLink("car", "branch", car4);
+        unit4.addLink("car", "branch", car5);
+        unit4.addLink("car", "branch", car6);
+        region1.addPart("part", "whole", unit1);
+        region1.addPart("part", "whole", unit2);
+        region1.addPart("part", "whole", unit3);
+        region1.addPart("part", "whole", unit4);
+        region1.showLinks("part", System.out);
+//        region2.addPart("part", "whole", branch1);
     }
 }

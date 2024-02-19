@@ -5,24 +5,26 @@ import java.time.temporal.ChronoUnit;
 
 import static pjatk.mp2.Utils.*;
 
-public class Rental extends ObjectPlus {
+public class Rental extends ObjectPlusPlus {
 
     private int id;
     private LocalDate startDate;
     private LocalDate endDate;
     private double distance; // atrybut wymagany
-    private Double extraFee; // atrybut opcjonalny - dla samochodów zaliczanych do klasy Premium
-    private static double kmPrice = 1.70; // atrybut klasowy - dla wszystkich samochodów opłata za każdy przejechany kilometr jest taka sama
+    private Double extraFee; // atrybut opcjonalny — dla samochodów zaliczanych do klasy Premium
+    private static double kmPrice = 1.70; // atrybut klasowy — dla wszystkich samochodów opłata za każdy przejechany kilometr jest taka sama
     private Car car;
     private Client client;
 
-    public Rental(int id, LocalDate startDate, LocalDate endDate, double distance) {
+    public Rental(int id, LocalDate startDate, LocalDate endDate, double distance, Car car, Client client) {
         super();
         try {
             setId(id);
             setStartDate(startDate);
             setEndDate(endDate);
             setDistance(distance);
+            setCar(car);
+            setClient(client);
         } catch (Exception e) {
             removeFromExtent();
         }
@@ -42,9 +44,6 @@ public class Rental extends ObjectPlus {
     }
 
     public void setStartDate(LocalDate startDate) {
-        if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("Start date cannot be after end date.");
-        }
         this.startDate = startDate;
     }
 
@@ -63,11 +62,11 @@ public class Rental extends ObjectPlus {
         return startDate.until(endDate, ChronoUnit.DAYS);
     }
 
-    public double getCost() { // atrybut pochodny - zależy od trzech pozostałych
+    public double getCost() { // atrybut pochodny — zależy od trzech pozostałych
         if (extraFee == null) {
-            return (this.distance * this.kmPrice);
+            return (this.distance * kmPrice);
         }
-        return (this.distance * this.kmPrice) + extraFee;
+        return (this.distance * kmPrice) + extraFee;
     }
 
     public double getDistance() {
@@ -170,6 +169,8 @@ public class Rental extends ObjectPlus {
                 "\nTotal cost: " + getCost() +
                 "\nTotal distance: " + distance +
                 "\nStart date: " + startDate +
-                "\nEnd date: " + endDate;
+                "\nEnd date: " + endDate +
+                "\n" + car.toString() +
+                "\nClient: " + client.getFirstName() + " " + client.getLastName();
     }
 }

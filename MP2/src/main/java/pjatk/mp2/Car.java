@@ -7,36 +7,49 @@ import java.util.Set;
 import static pjatk.mp2.Utils.checkCorrectnessOfId;
 import static pjatk.mp2.Utils.checkCorrectnessOfNumericalValueGreaterThanZero;
 
-public class Car extends ObjectPlus {
+public class Car extends ObjectPlusPlus {
 
     private int id;
-    private Brand brand;
     private String model;
     private String type;
+    private Brand brand;
     private Double engineSize; // atrybut opcjonalny
     private Set<String> damages = new HashSet<>(); // atrybut powtarzalny
     private Set<Rental> rentals = new HashSet<>(); // Rental to klasa asocjacyjna - liczności 1..* - jeden samochód może być wynajmowany wiele razy
-    private Branch branch; // asocjacja
+    private Unit unit; // asocjacja
 
-    public Car(String model, String type) {
-        setId();
-        setModel(model);
-        setType(type);
+    public Car(int id, Brand brand, String model, String type) {
+        super();
+        try {
+            setId(id);
+            setBrand(brand);
+            setModel(model);
+            setType(type);
+            addToExtent();
+        } catch (Exception e) {
+            removeFromExtent();
+        }
     }
 
     // przeciążenie konstruktora - ten zawiera również engineSize, który jest atrybutem opcjonalnym
-    public Car(String model, String type, Double engineSize) {
-        setId();
-        setModel(model);
-        setType(type);
-        setEngineSize(engineSize);
+    public Car(int id, Brand brand, String model, String type, Double engineSize) {
+        super();
+        try {
+            setId(id);
+            setBrand(brand);
+            setModel(model);
+            setType(type);
+            setEngineSize(engineSize);
+            addToExtent();
+        } catch (Exception e) {
+            removeFromExtent();
+        }
     }
-
     public int getId() {
         return id;
     }
 
-    public void setId() {
+    public void setId(int id) {
         checkCorrectnessOfId(id);
         this.id = id;
     }
@@ -93,12 +106,12 @@ public class Car extends ObjectPlus {
         this.damages.remove(damage);
     }
 
-    public Branch getBranch() {
-        return branch;
+    public Unit getBranch() {
+        return unit;
     }
 
-    public void setBranch(Branch branch) {
-        this.branch = branch; // @TODO warunki!
+    public void setBranch(Unit unit) {
+        this.unit = unit; // @TODO warunki!
     }
 
     public Set<Rental> getRentals() {
@@ -133,7 +146,7 @@ public class Car extends ObjectPlus {
     }
 
     public void removeBranch() throws Exception {
-        if (branch == null) {
+        if (unit == null) {
             throw new IllegalArgumentException("Empty branch cannot be deleted.");
         }
 
@@ -147,12 +160,12 @@ public class Car extends ObjectPlus {
                     "\nBrand: " + brand.getName() +
                     "\nModel: " + model +
                     "\nType: " + type +
-                    "\nEngine size: " + engineSize + "\n";
+                    "\nEngine size: " + engineSize;
         }
 
         return "Car ID: " + id +
                 "\nBrand: " + brand.getName() +
                 "\nModel: " + model +
-                "\nType: " + type + "\n";
+                "\nType: " + type;
     }
 }

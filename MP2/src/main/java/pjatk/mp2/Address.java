@@ -1,18 +1,17 @@
 package pjatk.mp2;
 
-import java.util.UUID;
+import static pjatk.mp2.Utils.*;
 
 public class Address {
-    private UUID id;
+    private int id;
     private String streetName;
-    private String streetNumber;
-    private String apartmentNumber;
+    private short streetNumber;
+    private short apartmentNumber;
     private String city;
     private String postalCode;
 
-
-    public Address(String streetName, String streetNumber, String apartmentNumber, String city, String postalCode) {
-        setId();
+    public Address(int id, String streetName, short streetNumber, short apartmentNumber, String city, String postalCode) {
+        setId(id);
         setStreetName(streetName);
         setStreetNumber(streetNumber);
         setApartmentNumber(apartmentNumber);
@@ -20,13 +19,13 @@ public class Address {
         setPostalCode(postalCode);
     }
 
-
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId() {
-        this.id = UUID.randomUUID();
+    public void setId(int id) {
+        checkCorrectnessOfId(id);
+        this.id = id;
     }
 
     public String getStreetName() {
@@ -34,28 +33,25 @@ public class Address {
     }
 
     public void setStreetName(String streetName) {
+        checkCorrectnessOfStringAttribute(streetName);
         this.streetName = streetName;
     }
 
-    public String getStreetNumber() {
+    public short getStreetNumber() {
         return streetNumber;
     }
 
-    public void setStreetNumber(String streetNumber) {
+    public void setStreetNumber(short streetNumber) {
+        checkCorrectnessOfNumericalValueGreaterThanZero(streetNumber, "Street number");
         this.streetNumber = streetNumber;
     }
 
-    public String getApartmentNumber() {
+    public short getApartmentNumber() {
         return apartmentNumber;
     }
 
-    public void setApartmentNumber(String apartmentNumber) {
-        String regex = "^\\d+$";
-
-        if(!apartmentNumber.matches(regex)) {
-            throw new IllegalArgumentException("Apartment number should be made up only of digits.");
-        }
-
+    public void setApartmentNumber(short apartmentNumber) {
+        checkCorrectnessOfNumericalValueGreaterThanZero(apartmentNumber, "Apartment number");
         this.apartmentNumber = apartmentNumber;
     }
 
@@ -64,19 +60,25 @@ public class Address {
     }
 
     public void setCity(String city) {
+        checkCorrectnessOfStringAttribute(city);
         this.city = city;
     }
+
     public String getPostalCode() {
         return postalCode;
     }
 
     public void setPostalCode(String postalCode) {
-        String regex = "^\\d{2}(-)\\d{3}$";
-
-        if(!postalCode.matches(regex)) {
-            throw new IllegalArgumentException("Postal code must be in format XX-XXX.");
-        }
-
+        checkCorrectnessOfStringAttribute(postalCode);
         this.postalCode = postalCode;
+    }
+
+    @Override // przesłonięcie metody
+    public String toString() {
+        return "\n\tStreet name: " + streetName +
+                "\n\tStreet number: " + streetNumber +
+                "\n\tApartment number: " + apartmentNumber +
+                "\n\tCity: " + city +
+                "\n\tPostal code: " + postalCode;
     }
 }
