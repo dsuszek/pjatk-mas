@@ -3,7 +3,7 @@ package pjatk.mp1;
 import static pjatk.mp1.Utils.checkCorrectnessOfId;
 import static pjatk.mp1.Utils.checkCorrectnessOfStringAttribute;
 
-public class Client {
+public class Client extends Person {
 
     private int id;
     private String firstName;
@@ -41,7 +41,6 @@ public class Client {
         checkCorrectnessOfStringAttribute(lastName);
         this.lastName = lastName;
     }
-
 
     @Override // przesłonięcie metody
     public String toString() {

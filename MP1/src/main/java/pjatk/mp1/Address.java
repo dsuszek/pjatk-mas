@@ -7,6 +7,7 @@ import static pjatk.mp1.Utils.checkCorrectnessOfNumericalValueGreaterThanZero;
 
 public class Address implements Serializable {
 
+    // Za pomocą klasy Address zaimplementowano atrybut złożony.
     private int id;
     private String streetName;
     private short streetNumber;
