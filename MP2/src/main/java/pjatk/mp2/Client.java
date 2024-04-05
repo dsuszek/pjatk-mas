@@ -1,28 +1,33 @@
+package pjatk.mp2;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
-public class Client {
+import static pjatk.mp2.Utils.checkCorrectnessOfId;
+import static pjatk.mp2.Utils.checkCorrectnessOfStringAttribute;
 
-    private UUID id;
+public class Client extends ObjectPlusPlus {
+
+    private int id;
     private String firstName;
     private String lastName;
 
-    private Set<Rental> rentals = new HashSet<>(); // Rental to klasa asocjacyjna - liczności 1..* - jeden klient może wiele razy wynajmować auto
+    private Set<Rental> rentals = new HashSet<>(); // Rental to klasa asocjacyjna — liczności 1...* - jeden klient może wiele razy wynajmować auto
 
-    public Client(String firstName, String lastName) {
-        setId();
+    public Client(int id, String firstName, String lastName) {
+        setId(id);
         setFirstName(firstName);
         setLastName(lastName);
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId() {
-        this.id = UUID.randomUUID();
+    public void setId(int id) {
+        checkCorrectnessOfId(id);
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -30,6 +35,7 @@ public class Client {
     }
 
     public void setFirstName(String firstName) {
+        checkCorrectnessOfStringAttribute(firstName);
         this.firstName = firstName;
     }
 
@@ -38,9 +44,9 @@ public class Client {
     }
 
     public void setLastName(String lastName) {
+        checkCorrectnessOfStringAttribute(lastName);
         this.lastName = lastName;
     }
-
 
     @Override // przesłonięcie metody
     public String toString() {

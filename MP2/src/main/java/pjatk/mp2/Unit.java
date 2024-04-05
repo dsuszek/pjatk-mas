@@ -1,39 +1,27 @@
+package pjatk.mp2;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.UUID;
 
-public class Branch extends ObjectPlus {
-    private UUID id;
+import static pjatk.mp2.Utils.checkCorrectnessOfId;
+import static pjatk.mp2.Utils.checkCorrectnessOfStringAttribute;
+
+public class Unit extends ObjectPlusPlus {
+    private int id;
     private String name;
     private Address address;
     private Region region;
-    private Map<UUID, Car> carsQualified = new HashMap<>();
+    private Map<Integer, Car> carsQualified = new HashMap<>();
 
-    private Branch(String name, Region region, Address address) {
+    public Unit(int id, String name) {
         super();
         try {
-            setId();
+            setId(id);
             setName(name);
-            setRegion(region);
-            setAddress(address);
         } catch (Exception e) {
             removeFromExtent();
         }
-    }
-
-    public static Branch createBranch(Region region, String name, Address address) throws Exception {
-
-        if (region == null) {
-            throw new Exception("Branch can't be assigned to this region, because it does not exist.");
-        }
-
-        // create a new branch
-        Branch branch = new Branch(name, region, address);
-
-        // add branch to the region
-        region.addBranch(branch);
-        return branch;
     }
 
     public void addCarQualified(Car car) {
@@ -46,7 +34,7 @@ public class Branch extends ObjectPlus {
         }
     }
 
-    public Car findCarQualified(long id) throws Exception {
+    public Car findCarQualified(int id) throws Exception {
         // check if we have the info
         if (!carsQualified.containsKey(id)) {
             throw new Exception("Unable to find car with ID: " + id);
@@ -65,25 +53,26 @@ public class Branch extends ObjectPlus {
         String info = "";
 
         if (carsQualified.isEmpty()) {
-            info = "Branch " + name +  " with ID: " + id + " doesn't have any cars assigned.\n";
+            info = "Branch " + name + " with ID: " + id + " doesn't have any cars assigned.\n";
 
         } else {
             info = "Branch " + name + " with ID: " + id + " has the following cars: \n";
-            Iterator<Map.Entry<UUID, Car>> iterator = carsQualified.entrySet().iterator();
+            Iterator<Map.Entry<Integer, Car>> iterator = carsQualified.entrySet().iterator();
             while (iterator.hasNext()) {
-                Map.Entry<UUID, Car> entry = iterator.next();
+                Map.Entry<Integer, Car> entry = iterator.next();
                 info += " * " + entry.getValue().getBrand().getName() + " " + entry.getValue().getModel() + " with ID: " + entry.getKey() + "\n";
             }
         }
         return info;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId() {
-        this.id = UUID.randomUUID();
+    public void setId(int id) {
+        checkCorrectnessOfId(id);
+        this.id = id;
     }
 
     public String getName() {
@@ -91,6 +80,7 @@ public class Branch extends ObjectPlus {
     }
 
     public void setName(String name) {
+        checkCorrectnessOfStringAttribute(name);
         this.name = name;
     }
 
@@ -99,6 +89,9 @@ public class Branch extends ObjectPlus {
     }
 
     public void setAddress(Address address) {
+        if (address == null) {
+            throw new IllegalArgumentException("Address cannot be null.");
+        }
         this.address = address;
     }
 
