@@ -34,8 +34,21 @@ public class Main {
         Brand brand3 = new Brand(3, "Opel");
         Car car1 = new Car(1, brand1, "GL", "SUV", 3.0);
 
+        // Przeciążenie metody setDistance() z klasy Rental.
+        // Pierwsza sygnatura metody zawiera tylko jeden parametr double distance, natomiast druga zawiera dwa parametry double distance oraz String unit.
+        // Kiedy użytkownik wykorzystuje bardziej rozbudowaną wersję metody setDistance, może wybierać pomiędzy dwiema jednostkami odległości: kilometrami oraz milami.
+        // W sytuacji, gdy użytkownik poda przejechaną odległość w milach, zostanie ona automatycznie przeliczona na kilometry, które są domyślną jednostką w programie.
+        System.out.println();
+        System.out.println("Method overloading");
+        System.out.println("-------------------");
         Rental rental1 = new Rental(1, LocalDate.of(2024, Month.MARCH, 2), LocalDate.of(2024, Month.MARCH, 10), 530, 50d);
         Rental rental2 = new Rental(2, LocalDate.of(2024, Month.JANUARY, 4), LocalDate.of(2024, Month.JANUARY, 20), 1412.5, "miles", 20d);
+        System.out.println("First rental with distance in kilometers:");
+        System.out.println(rental1);
+        System.out.println();
+        System.out.println("Second rental with distance in miles:");
+        System.out.println(rental2);
+        System.out.println();
 
         // Atrybut złożony - jest zaimplementowany za pomocą dedykowanej klasy Address.
         System.out.println("Complex attribute");
@@ -106,7 +119,7 @@ public class Main {
         System.out.println();
         System.out.println("Class method");
         System.out.println("-------------------");
-        ObjectPlus.showExtentForClass(Rental.class);
+        ObjectPlus.showExtentForClass(Car.class);
 
         // Przesłonięcie metody toString() dla klasy Car - wszystkie klasy w Javie dziedziczą w sposób niejawny z klasy Object
         System.out.println();
