@@ -43,4 +43,14 @@ public class Utils {
             throw new IllegalArgumentException(paramName + " must be greater than or equal to 0.");
         }
     }
+
+    public static void checkCorrectnessOfOptionalNumericalValueGreaterThanOrEqualToZero(Double value, String paramName) {
+        if (value != null && value < 0) {
+            throw new IllegalArgumentException(paramName + " must be greater than or equal to 0.");
+        }
+    }
+
+    public static void logError(String message) {
+        System.err.println(message);
+    }
 }

@@ -3,7 +3,7 @@ package pjatk.mp1;
 import static pjatk.mp1.Utils.checkCorrectnessOfId;
 import static pjatk.mp1.Utils.checkCorrectnessOfStringAttribute;
 
-public class Client extends Person {
+public class Client {
 
     private int id;
     private String firstName;

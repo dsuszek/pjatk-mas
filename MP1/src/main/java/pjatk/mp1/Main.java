@@ -2,14 +2,12 @@ package pjatk.mp1;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
+import java.time.Month;
 
-import static pjatk.mp1.ObjectPlus.getExtentForClass;
-import static pjatk.mp1.Rental.getAllRentals;
 import static pjatk.mp1.Rental.getKmPrice;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         // Wszystkie nazwy:
         //  - zmiennych,
@@ -35,12 +33,11 @@ public class Main {
         Brand brand2 = new Brand(2, "Honda", "Japan");
         Brand brand3 = new Brand(3, "Opel");
         Car car1 = new Car(1, brand1, "GL", "SUV", 3.0);
-        Rental rental1 = new Rental(1, LocalDate.of(2024, 2, 2), LocalDate.of(2024, 3, 15), 530d);
-        Rental rental2 = new Rental(2, LocalDate.of(2024, 1, 4), LocalDate.of(2023, 1, 20), 1412.5d);
-        Client client1 = new Client(1, "Marc", "Jacobs");
-        Client client2 = new Client(2, "Jane", "Bright");
 
-        // Atrybut złożony - jest zaimplementowany za pomocą dedykowanej klasy Address
+        Rental rental1 = new Rental(1, LocalDate.of(2024, Month.MARCH, 2), LocalDate.of(2024, Month.MARCH, 10), 530, 50d);
+        Rental rental2 = new Rental(2, LocalDate.of(2024, Month.JANUARY, 4), LocalDate.of(2024, Month.JANUARY, 20), 1412.5, "miles", 20d);
+
+        // Atrybut złożony - jest zaimplementowany za pomocą dedykowanej klasy Address.
         System.out.println("Complex attribute");
         System.out.println("-------------------");
         Address address1 = new Address(1, "West George Street", (short) 191, (short) 10, "Glasgow", "G1 1DN");
@@ -98,42 +95,29 @@ public class Main {
         System.out.println();
         System.out.println("Derived attribute");
         System.out.println("-------------------");
-        System.out.print("Cost of rental with ID 1: " + rental1.getCost() + " consisting of: " + rental1.getDistance() + " km * " + getKmPrice() + " per kilometer + " + rental1.getExtraFee() + " extra fees");
+        System.out.print("Cost of rental with ID 1: " + rental1.getCost() + " consisting of: " + rental1.getDistance() + " kilometers * " + getKmPrice() + " per kilometer + " + rental1.getExtraFee() + " extra fee");
         System.out.println();
-        System.out.print("Cost of rental with ID 2: " + rental2.getCost() + " consisting of: " + rental2.getDistance() + " km * " + getKmPrice() + " per kilometer + " + rental2.getExtraFee() + " extra fees");
+        System.out.print("Cost of rental with ID 2: " + rental2.getCost() + " consisting of: " + rental2.getDistance() + " kilometers * " + getKmPrice() + " per kilometer + " + rental2.getExtraFee() + " extra fee");
 
-
-        // Metoda klasowa dla klasy Rental
+        // Metoda klasowa dla klasy ObjectPlus
         // Implementacja: wykorzystano ekstensję w ramach tej samej klasy. Użyto słowa kluczowego static.
-        // Po wywołaniu metody klasowej na rzecz klasy Rental zwracana jest cała ekstensja obiektów w formie unmodifiableList
+        // Po wywołaniu metody klasowej na rzecz klasy ObjectPlus przy podaniu parametru będącego ineteresującą użytkownika klasą, zwracana jest cała ekstensja obiektów.
         System.out.println();
         System.out.println();
         System.out.println("Class method");
         System.out.println("-------------------");
-        System.out.println(getExtentForClass(Rental.class));
+        ObjectPlus.showExtentForClass(Rental.class);
 
-        // Przesłonięcie metody toString() dla klasy Car
+        // Przesłonięcie metody toString() dla klasy Car - wszystkie klasy w Javie dziedziczą w sposób niejawny z klasy Object
         System.out.println();
         System.out.println("Method overriding");
         System.out.println("-------------------");
         System.out.println(car1);
 
-        // Przeciążenie metody
-        System.out.println();
-        System.out.println("Method overloading");
-        System.out.println("-------------------");
-        // TODO dodac przeciążenie
-
         try {
-            ObjectPlus.saveExtent();
+            ObjectPlus.writeExtents();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        System.out.println("\n\n\n");
-        List<Rental> rentals = getExtentForClass(Rental.class);
-        for (Rental rental : rentals) {
-            System.out.println(rental);
         }
     }
 }
