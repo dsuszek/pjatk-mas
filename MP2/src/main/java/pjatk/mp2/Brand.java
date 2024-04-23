@@ -2,58 +2,49 @@ package pjatk.mp2;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
-import static pjatk.mp2.Utils.checkCorrectnessOfId;
 import static pjatk.mp2.Utils.checkCorrectnessOfStringAttribute;
 
 public class Brand {
 
-    private int id;
+    private UUID id;
     private String name;
     private String originCountry; // atrybut opcjonalny
-    private int foundationYear; // atrybut opcjonalny
+    private Integer foundationYear; // atrybut opcjonalny
     private List<Car> cars = new ArrayList<>();
 
-    public Brand(int id, String name) {
-        setId(id);
+    public Brand(String name) {
+        setId();
         setName(name);
     }
 
-    public Brand(int id, String name, String originCountry) {
-        setId(id);
+    public Brand(String name, String originCountry) {
+        setId();
         setName(name);
         setOriginCountry(originCountry);
     }
 
-    public Brand(int id, String name, Integer foundationYear) {
-        setId(id);
+    public Brand(String name, Integer foundationYear) {
         setName(name);
         setFoundationYear(foundationYear);
     }
 
-    public Brand(int id, String name, String originCountry, Integer foundationYear) {
-        setId(id);
+    public Brand(String name, String originCountry, Integer foundationYear) {
+        setId();
         setName(name);
         setOriginCountry(originCountry);
         setFoundationYear(foundationYear);
     }
 
-    public void addCar(Car car) {
-        cars.add(car);
-    }
-
-    public List<Car> getCars() {
-        return cars;
-    }
-
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
-        checkCorrectnessOfId(id);
-        this.id = id;
+    public void setId() {
+        this.id = UUID.randomUUID();
     }
 
     public String getName() {
@@ -61,7 +52,7 @@ public class Brand {
     }
 
     public void setName(String name) {
-        checkCorrectnessOfStringAttribute(name);
+        checkCorrectnessOfStringAttribute("Name", name);
         this.name = name;
     }
 
@@ -70,15 +61,15 @@ public class Brand {
     }
 
     public void setOriginCountry(String originCountry) {
-        checkCorrectnessOfStringAttribute(originCountry);
+        checkCorrectnessOfStringAttribute("Origin country", originCountry);
         this.originCountry = originCountry;
     }
 
-    public int getFoundationYear() {
+    public Integer getFoundationYear() {
         return foundationYear;
     }
 
-    public void setFoundationYear(int foundationYear) {
+    public void setFoundationYear(Integer foundationYear) {
 
         if (foundationYear <= 1800) {
             throw new IllegalArgumentException("Foundation year must be greater than 1800.");
@@ -91,16 +82,45 @@ public class Brand {
         this.foundationYear = foundationYear;
     }
 
-    @Override
-    public String toString() {
-        String info = "";
-
-        for (Car car : cars) {
-            info += " * " + car.getBrand().getName() + " " + car.getModel() + "\n";
+    public void addCar(Car car) {
+        if (car == null) {
+            throw new IllegalArgumentException("Car cannot be null.");
         }
 
-        if (!(info == null))
-            info = info.indent(2);
+        if (this.cars.contains(car)) {
+            return;
+        }
+
+        this.cars.add(car);
+        if (car.getBrand() == null) {
+            car.setBrand(this);
+        }
+    }
+
+    public void removeCar(Car car) {
+        if (car == null) {
+            throw new IllegalArgumentException("Car cannot be null.");
+        }
+
+        if (!cars.contains(car)) {
+            return;
+        }
+
+        cars.remove(car);
+        car.setBrand(null);
+    }
+
+    public List<Car> getCars() {
+        return Collections.unmodifiableList(cars);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder info = new StringBuilder("");
+
+        for (Car car : cars) {
+            info.append(" * ").append(car.getBrand().getName()).append(" ").append(car.getModel()).append("\n");
+        }
 
         return  "All cars from brand " + getName() + " available in our company are the following: \n" + info;
     }

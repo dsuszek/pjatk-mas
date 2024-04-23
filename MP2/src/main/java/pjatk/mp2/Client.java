@@ -3,31 +3,30 @@ package pjatk.mp2;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
-import static pjatk.mp2.Utils.checkCorrectnessOfId;
 import static pjatk.mp2.Utils.checkCorrectnessOfStringAttribute;
 
-public class Client extends ObjectPlusPlus {
+public class Client {
 
-    private int id;
+    private UUID id;
     private String firstName;
     private String lastName;
 
     private Set<Rental> rentals = new HashSet<>(); // Rental to klasa asocjacyjna — liczności 1...* - jeden klient może wiele razy wynajmować auto
 
-    public Client(int id, String firstName, String lastName) {
-        setId(id);
+    public Client(String firstName, String lastName) {
+        setId();
         setFirstName(firstName);
         setLastName(lastName);
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
-        checkCorrectnessOfId(id);
-        this.id = id;
+    public void setId() {
+        this.id = UUID.randomUUID();
     }
 
     public String getFirstName() {
@@ -35,7 +34,7 @@ public class Client extends ObjectPlusPlus {
     }
 
     public void setFirstName(String firstName) {
-        checkCorrectnessOfStringAttribute(firstName);
+        checkCorrectnessOfStringAttribute("First name", firstName);
         this.firstName = firstName;
     }
 
@@ -44,11 +43,11 @@ public class Client extends ObjectPlusPlus {
     }
 
     public void setLastName(String lastName) {
-        checkCorrectnessOfStringAttribute(lastName);
+        checkCorrectnessOfStringAttribute("Last name", lastName);
         this.lastName = lastName;
     }
 
-    @Override // przesłonięcie metody
+    @Override // Przesłonięcie metody.
     public String toString() {
         return "Client ID: " + id +
                 "\nFirst name: " + firstName +

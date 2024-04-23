@@ -1,57 +1,52 @@
 package pjatk.mp2;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
-import static pjatk.mp2.Utils.checkCorrectnessOfId;
-import static pjatk.mp2.Utils.checkCorrectnessOfNumericalValueGreaterThanZero;
+import static pjatk.mp2.Utils.*;
 
-public class Car extends ObjectPlusPlus {
+public class Car extends ObjectPlus {
 
-    private int id;
+    private UUID id;
+    private Brand brand;  // atrybut złożony
     private String model;
     private String type;
-    private Brand brand;
     private Double engineSize; // atrybut opcjonalny
+    private CompanyBranch companyBranch;
     private Set<String> damages = new HashSet<>(); // atrybut powtarzalny
-    private Set<Rental> rentals = new HashSet<>(); // Rental to klasa asocjacyjna - liczności 1..* - jeden samochód może być wynajmowany wiele razy
-    private Unit unit; // asocjacja
+    private Set<Rental> rentals = new HashSet<>();
 
-    public Car(int id, Brand brand, String model, String type) {
+    public Car(Brand brand, String model, String type) {
         super();
         try {
-            setId(id);
+            setId();
             setBrand(brand);
             setModel(model);
             setType(type);
-            addToExtent();
         } catch (Exception e) {
             removeFromExtent();
         }
     }
 
     // przeciążenie konstruktora - ten zawiera również engineSize, który jest atrybutem opcjonalnym
-    public Car(int id, Brand brand, String model, String type, Double engineSize) {
+    public Car(Brand brand, String model, String type, Double engineSize) {
         super();
         try {
-            setId(id);
+            setId();
             setBrand(brand);
             setModel(model);
             setType(type);
             setEngineSize(engineSize);
-            addToExtent();
         } catch (Exception e) {
             removeFromExtent();
         }
     }
-    public int getId() {
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
-        checkCorrectnessOfId(id);
-        this.id = id;
+    public void setId() {
+        this.id = UUID.randomUUID();
     }
 
     public Brand getBrand() {
@@ -59,11 +54,28 @@ public class Car extends ObjectPlusPlus {
     }
 
     public void setBrand(Brand brand) {
-        if (brand == null) {
-            throw new IllegalArgumentException("Brand cannot be null.");
+        if (this.brand == null && brand != null) {
+            // nowa marka - nie przypisano wcześniej żadnej marki
+            this.brand = brand;
+
+            if (brand.getCars().contains(this)) {
+                return;
+            }
+            brand.addCar(this);
+        } else if (this.brand != null && brand == null) {
+            // usunięcie marki
+            Brand tmp = this.brand;
+            this.brand = null;
+            tmp.removeCar(this);
+        } else if (this.brand != null && brand != null) {
+            // zmiana marki
+            Brand tmp = this.brand;
+            this.brand = null;
+            tmp.removeCar(this);
+
+            this.brand = brand;
+            brand.addCar(this);
         }
-        this.brand = brand;
-        brand.addCar(this);
     }
 
     public String getModel() {
@@ -71,7 +83,7 @@ public class Car extends ObjectPlusPlus {
     }
 
     public void setModel(String model) {
-        Utils.checkCorrectnessOfStringAttribute(model);
+        checkCorrectnessOfStringAttribute("Model", model);
         this.model = model;
     }
 
@@ -80,7 +92,7 @@ public class Car extends ObjectPlusPlus {
     }
 
     public void setType(String type) {
-        Utils.checkCorrectnessOfStringAttribute(type);
+        checkCorrectnessOfStringAttribute("Type", type);
         this.type = type;
     }
 
@@ -98,7 +110,7 @@ public class Car extends ObjectPlusPlus {
     }
 
     public void addDamage(String damage) {
-        Utils.checkCorrectnessOfStringAttribute(damage);
+        checkCorrectnessOfStringAttribute("Damage", damage);
         this.damages.add(damage);
     }
 
@@ -106,12 +118,33 @@ public class Car extends ObjectPlusPlus {
         this.damages.remove(damage);
     }
 
-    public Unit getBranch() {
-        return unit;
+    public CompanyBranch getCompanyBranch() {
+        return companyBranch;
     }
 
-    public void setBranch(Unit unit) {
-        this.unit = unit; // @TODO warunki!
+    public void setCompanyBranch(CompanyBranch companyBranch) {
+        if (this.companyBranch == null && companyBranch != null) {
+            // pojazd przypisany do oddziału firmy po raz pierwszy
+            this.companyBranch = companyBranch;
+
+            if (companyBranch.getCars().contains(this)) {
+                return;
+            }
+            companyBranch.addCarQualified(this);
+        } else if (this.companyBranch != null && companyBranch == null) {
+            // usunięcie oddziału firmy
+            CompanyBranch tmp = this.companyBranch;
+            this.companyBranch = null;
+            tmp.removeCarQualified(this);
+        } else if (this.companyBranch != null && companyBranch != null) {
+            // zmiana oddziału firmy
+            CompanyBranch tmp = this.companyBranch;
+            this.companyBranch = null;
+            tmp.removeCarQualified(this);
+
+            this.companyBranch = companyBranch;
+            companyBranch.addCarQualified(this);
+        }
     }
 
     public Set<Rental> getRentals() {
@@ -145,15 +178,7 @@ public class Car extends ObjectPlusPlus {
         rental.setCar(null);
     }
 
-    public void removeBranch() throws Exception {
-        if (unit == null) {
-            throw new IllegalArgumentException("Empty branch cannot be deleted.");
-        }
-
-        this.setBranch(null);
-    }
-
-    @Override // przesłonięcie metody
+    @Override // Przesłonięcie metody.
     public String toString() {
         if (this.engineSize != null) {
             return "Car ID: " + id +
@@ -163,7 +188,7 @@ public class Car extends ObjectPlusPlus {
                     "\nEngine size: " + engineSize;
         }
 
-        return "Car ID: " + id +
+        return "Car " + id +
                 "\nBrand: " + brand.getName() +
                 "\nModel: " + model +
                 "\nType: " + type;

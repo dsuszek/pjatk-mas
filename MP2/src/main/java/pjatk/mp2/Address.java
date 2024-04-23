@@ -1,17 +1,19 @@
 package pjatk.mp2;
 
+import java.util.UUID;
+
 import static pjatk.mp2.Utils.*;
 
 public class Address {
-    private int id;
+    private UUID id;
     private String streetName;
     private short streetNumber;
     private short apartmentNumber;
     private String city;
     private String postalCode;
 
-    public Address(int id, String streetName, short streetNumber, short apartmentNumber, String city, String postalCode) {
-        setId(id);
+    public Address(String streetName, short streetNumber, short apartmentNumber, String city, String postalCode) {
+        setId();
         setStreetName(streetName);
         setStreetNumber(streetNumber);
         setApartmentNumber(apartmentNumber);
@@ -19,13 +21,12 @@ public class Address {
         setPostalCode(postalCode);
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
-        checkCorrectnessOfId(id);
-        this.id = id;
+    public void setId() {
+        this.id = UUID.randomUUID();
     }
 
     public String getStreetName() {
@@ -33,7 +34,7 @@ public class Address {
     }
 
     public void setStreetName(String streetName) {
-        checkCorrectnessOfStringAttribute(streetName);
+        checkCorrectnessOfStringAttribute("Street name", streetName);
         this.streetName = streetName;
     }
 
@@ -60,7 +61,7 @@ public class Address {
     }
 
     public void setCity(String city) {
-        checkCorrectnessOfStringAttribute(city);
+        checkCorrectnessOfStringAttribute("City", city);
         this.city = city;
     }
 
@@ -69,11 +70,11 @@ public class Address {
     }
 
     public void setPostalCode(String postalCode) {
-        checkCorrectnessOfStringAttribute(postalCode);
+        checkCorrectnessOfStringAttribute("Postal code", postalCode);
         this.postalCode = postalCode;
     }
 
-    @Override // przesłonięcie metody
+    @Override // Przesłonięcie metody.
     public String toString() {
         return "\n\tStreet name: " + streetName +
                 "\n\tStreet number: " + streetNumber +
