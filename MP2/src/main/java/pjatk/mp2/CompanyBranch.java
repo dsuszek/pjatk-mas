@@ -4,7 +4,7 @@ import java.util.*;
 
 import static pjatk.mp2.Utils.checkCorrectnessOfStringAttribute;
 
-public class CompanyBranch {
+public class CompanyBranch extends ObjectPlus {
     private UUID id;
     private String name;
     private Address address;
@@ -12,10 +12,15 @@ public class CompanyBranch {
     private Map<UUID, Car> carsQualified = new HashMap<>();
 
     private CompanyBranch(String name, Address address, Region region) {
-        setId();
-        setName(name);
-        setAddress(address);
-        setRegion(region);
+        super();
+        try {
+            setId();
+            setName(name);
+            setAddress(address);
+            setRegion(region);
+        } catch (Exception e) {
+            removeFromExtent();
+        }
     }
 
     public static CompanyBranch createCompanyBranch(String name, Address address, Region region) throws Exception {
@@ -27,7 +32,7 @@ public class CompanyBranch {
         CompanyBranch companyBranch = new CompanyBranch(name, address, region);
 
         // Dodawanie oddziału firmy do regionu
-        region.addBranch(companyBranch);
+        region.addCompanyBranch(companyBranch);
 
         return companyBranch;
     }

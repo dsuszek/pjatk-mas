@@ -186,17 +186,15 @@ public class Rental extends ObjectPlus {
                 return;
             }
             car.addRental(this);
-        } else if (this.car != null && car != null) {
-            // changing the car
-            Car tmp = this.car;
-            this.car = null;
-            tmp.removeRental(this);
-
-            this.car = car;
-            car.addRental(this);
         } else if (this.car != null && car == null) {
 
             // removing the car
+            Car tmp = this.car;
+            this.car = null;
+            tmp.removeRental(this);
+        } else if (this.car != null && car != null) {
+
+            // changing the car
             Car tmp = this.car;
             this.car = null;
             tmp.removeRental(this);

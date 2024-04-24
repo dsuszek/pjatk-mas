@@ -14,6 +14,7 @@ public class Car extends ObjectPlus {
     private CompanyBranch companyBranch;
     private Set<String> damages = new HashSet<>(); // atrybut powtarzalny
     private Set<Rental> rentals = new HashSet<>();
+    private Set<InsurancePolicy> insurancePolicies = new HashSet<>();
 
     public Car(Brand brand, String model, String type) {
         super();
@@ -153,7 +154,7 @@ public class Car extends ObjectPlus {
 
     public void addRental(Rental rental) throws Exception {
         if (rental == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Empty rental cannot be add to the history.");
         }
 
         if (this.rentals.contains(rental)) {
@@ -176,6 +177,37 @@ public class Car extends ObjectPlus {
         }
         this.rentals.remove(rental);
         rental.setCar(null);
+    }
+
+    public Set<InsurancePolicy> getInsurancePolicies() {
+        return Collections.unmodifiableSet(insurancePolicies);
+    }
+
+    public void addInsurancePolicy(InsurancePolicy insurancePolicy) throws Exception {
+        if (insurancePolicy == null) {
+            throw new IllegalArgumentException("Empty insurance policy cannot be added to the history.");
+        }
+
+        if (this.insurancePolicies.contains(insurancePolicy)) {
+            return;
+        }
+
+        this.insurancePolicies.add(insurancePolicy);
+        if (insurancePolicy.getCar() == null) {
+            insurancePolicy.setCar(this);
+        }
+    }
+
+    public void removeInsurancePolicy(InsurancePolicy insurancePolicy) throws Exception {
+        if (insurancePolicy == null) {
+            throw new IllegalArgumentException("Empty insurance policy cannot be removed from the history.");
+        }
+
+        if (!this.insurancePolicies.contains(insurancePolicy)) {
+            return;
+        }
+        this.insurancePolicies.remove(insurancePolicy);
+        insurancePolicy.setCar(null);
     }
 
     @Override // Przesłonięcie metody.

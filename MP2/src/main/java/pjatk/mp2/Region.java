@@ -23,27 +23,6 @@ public class Region extends ObjectPlus {
         }
     }
 
-    public void deleteRegion() throws Exception {
-        //@TODO poprawić metodę odpowiadającą za usuwanie całości
-        removeDependencies();
-        removeFromExtent();
-    }
-
-    public void addBranch(CompanyBranch companyBranch) {
-        if (!companyBranches.contains(companyBranch)) {
-            // Sprawdzenie, czy oddział firmy nie został już przypisany do żadnego z pozostałych regionów
-            if (allCompanyBranches.contains(companyBranch)) {
-                throw new Error("Ten oddział firmy został już przypisany do innego regionu.");
-            }
-            // Przypisanie oddziału firmy do wybranego oddziału
-            companyBranches.add(companyBranch);
-
-            // Dodanie oddziału firmy do zbioru oddziałów, które już mają przypisany oddział
-            // Ta część kodu zapobiega współdzieleniu części
-            allCompanyBranches.add(companyBranch);
-        }
-    }
-
     public UUID getId() {
         return id;
     }
@@ -61,21 +40,48 @@ public class Region extends ObjectPlus {
         this.name = name;
     }
 
-    public void removeDependencies() throws Exception {
-        List<Car> cars = Car.getExtentForClass(Car.class);
+    public void addCompanyBranch(CompanyBranch companyBranch) {
+        if (!companyBranches.contains(companyBranch)) {
+            // Sprawdzenie, czy oddział firmy nie został już przypisany do żadnego z pozostałych regionów
+            if (allCompanyBranches.contains(companyBranch)) {
+                throw new Error("Ten oddział firmy został już przypisany do innego regionu.");
+            }
+            // Przypisanie oddziału firmy do wybranego oddziału
+            companyBranches.add(companyBranch);
 
-//        for (CompanyBranch companyBranch : companyBranches) {
-//            // usun obiekty clasy Car powiązane z tym obiektem klasy Branch, a następnie usuń branch z listy oddziałów
-//            companyBranch.removeCars();
-//            companyBranch.removeFromExtent();
-//
-//            for (Car car : cars) {
-//                if(car.getBranch().equals(companyBranch))
-//                    car.removeBranch();
-//            }
-//        }
+            // Dodanie oddziału firmy do zbioru oddziałów, które już mają przypisany oddział
+            // Ta część kodu zapobiega współdzieleniu części
+            allCompanyBranches.add(companyBranch);
+        }
+    }
+
+    public void removeCompanyBranch(CompanyBranch companyBranch) throws Exception {
+        // Lista wszystkich samochodów
+        List<Car> cars = (List<Car>) getExtent(Car.class);
+
+        // Sprawdzenie, czy użytkownik nie próbuje usunąć nieistniejącego oddziału firmy
+        if (companyBranch == null) {
+            throw new IllegalArgumentException("Company branch cannot be null.");
+        }
+
+        if (!this.companyBranches.contains(companyBranch)) {
+            return;
+        }
+
+        cars.forEach(c -> c.setCompanyBranch(null));
+        allCompanyBranches.remove(companyBranch);
+        companyBranch.removeFromExtent();
+    }
+
+    public void removeRegion() throws Exception {
+        List<Car> cars = (List<Car>) getExtent(Car.class);
+
+        for (CompanyBranch companyBranch : this.companyBranches) {
+            removeCompanyBranch(companyBranch);
+        }
 
         this.companyBranches.clear();
+        this.removeFromExtent();
     }
 
     @Override

@@ -6,49 +6,72 @@ import java.util.*;
 public class ObjectPlus implements Serializable {
 
     public static final String FILE_NAME = "rentalData.dat";
-    private static Map<Class<? extends ObjectPlus>, List> extent = new HashMap<>();
+    private static Map<Class, List<ObjectPlus>> allExtents = new Hashtable<>();
 
     public ObjectPlus() {
         addToExtent();
     }
 
     protected void addToExtent() {
-        List list = extent.get(this.getClass());
+        List<ObjectPlus> extent = null;
+        Class c = this.getClass();
 
-        if ( list == null ){
-            list = new ArrayList();
-            extent.put(this.getClass(), list);
+        if (allExtents.containsKey(c)) {
+            extent = allExtents.get(c);
+        } else {
+            extent = new ArrayList<>();
+            allExtents.put(c, extent);
         }
 
-        list.add(this);
+        extent.add(this);
     }
-    public void removeFromExtent() {
-        List list = extent.get(this.getClass());
 
-        if ( list != null ){
+    public void removeFromExtent() {
+        List list = allExtents.get(this.getClass());
+
+        if (list != null) {
             list.remove(this);
         }
     }
 
-    public static void saveExtent() throws IOException {
+    public static void writeExtents() throws IOException {
         try (
-                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))
+                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME));
         ) {
-            oos.writeObject(extent);
+            oos.writeObject(allExtents);
             oos.writeDouble(Rental.getKmPrice());
         }
-
     }
-    public static void loadExtent() throws IOException, ClassNotFoundException {
-        try (
-                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))
-        ) {
-            extent = (Map<Class<? extends ObjectPlus>, List>) ois.readObject();
-            Rental.setKmPrice(ois.readDouble());
+
+    public static void readExtents(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        allExtents = (Hashtable) ois.readObject();
+    }
+
+    public static <T> Iterable<T> getExtent(Class<T> c) throws ClassNotFoundException {
+        if (allExtents.containsKey(c)) {
+            return (Iterable<T>) allExtents.get(c);
         }
+
+        throw new ClassNotFoundException(
+                String.format("%s. Stored extents: %s",
+                        c.toString(),
+                        allExtents.keySet()));
     }
 
-    public static <E> List<E> getExtentForClass(Class<E> clas) {
-        return Collections.unmodifiableList(extent.get(clas));
+    public static void showExtentForClass(Class c) throws Exception {
+        List<ObjectPlus> extent = null;
+
+        if (allExtents.containsKey(c)) {
+            extent = allExtents.get(c);
+        } else {
+            throw new Exception("Unknown class: " + c + "\n");
+        }
+
+        System.out.println("Extent of the class: " + c.getSimpleName());
+
+        for (Object obj : extent) {
+            System.out.println(obj);
+            System.out.println();
+        }
     }
 }
