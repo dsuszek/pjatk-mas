@@ -2,6 +2,7 @@ package pjatk.mp2;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import static pjatk.mp2.Utils.printInfoAboutObjects;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -59,7 +60,7 @@ public class Main {
         System.out.println("Association");
         System.out.println("-------------------");
         System.out.println("Rentals assigned to car2:");
-        Utils.printInfoAboutObjects(car2.getRentals());
+        printInfoAboutObjects(car2.getRentals());
 
         System.out.println();
         System.out.println("Car assigned to rental2 (rental with ID " + rental2.getId() + "):");
@@ -81,11 +82,11 @@ public class Main {
 
         // Wszystkie polisy przypisane do samochodu car2.
         System.out.println("-- All insurance policies assigned to car2: --");
-        Utils.printInfoAboutObjects(car2.getCarInsurances());
+        printInfoAboutObjects(car2.getCarInsurances());
 
         // Wszystkie polisy przypisane do ubezpieczyciela insurer1.
         System.out.println("-- All insurance policies assigned to insurer1: --");
-        Utils.printInfoAboutObjects(insurer1.getCarInsurances());
+        printInfoAboutObjects(insurer1.getCarInsurances());
 
         System.out.println("-- Number of car insurance policies registered in the system: " + ObjectPlus.getExtent(CarInsurance.class).size() + " --");
         System.out.println();
@@ -95,11 +96,11 @@ public class Main {
 
         // Wszystkie polisy przypisane do samochodu car2 (po usunięciu polisy carInsurance1).
         System.out.println("-- All insurance policies assigned to car2 after deleting carInsurance1: --");
-        Utils.printInfoAboutObjects(car2.getCarInsurances());
+        printInfoAboutObjects(car2.getCarInsurances());
 
         // Wszystkie polisy przypisane do ubezpieczyciela insurer1 (po usunięciu polisy carInsurance1).
         System.out.println("-- All the insurance policies assigned to insurer1 after deleting carInsurance1: --");
-        Utils.printInfoAboutObjects(insurer1.getCarInsurances());
+        printInfoAboutObjects(insurer1.getCarInsurances());
 
         System.out.println("-- Number of car insurance policies registered in the system: " + ObjectPlus.getExtent(CarInsurance.class).size() + " --");
 
@@ -145,7 +146,7 @@ public class Main {
         System.out.println("\nNumber of cars assigned to company branch Moto Tech: " + companyBranch1.getCars().size());
         System.out.println();
         System.out.println("All the cars assigned to company branch Moto Tech:");
-        Utils.printInfoAboutObjects(companyBranch1.getCars());
+        printInfoAboutObjects(companyBranch1.getCars());
 
         // Kompozycja pomiędzy klasami CompanyBranch oraz Region.
         // Szczegóły implementacji: wykorzystano podejście związane z modyfikacją rozwiązania z natywnymi referencjami.
@@ -182,7 +183,7 @@ public class Main {
         System.out.println();
         System.out.println("-- All the company branches assigned to region2: --");
 
-        Utils.printInfoAboutObjects(region2.getCompanyBranches());
+        printInfoAboutObjects(region2.getCompanyBranches());
 
         System.out.println("-- Details of objects car5 and car7: --");
         System.out.println(car5);
@@ -195,7 +196,7 @@ public class Main {
         region2.removeCompanyBranch(companyBranch3);
 
         System.out.println("-- All the company branches assigned to region2 after modification: --");
-        Utils.printInfoAboutObjects(region2.getCompanyBranches());
+        printInfoAboutObjects(region2.getCompanyBranches());
 
         System.out.println("-- Details of objects car5 and car6 (not assigned to any of the company branches): --");
         System.out.println();
@@ -205,12 +206,12 @@ public class Main {
 
         // Usunięcie obiektu będącego "całością" - region2
         System.out.println("-- Number of all company branches before deleting region2 (" + region2.getName() + "): " + ObjectPlus.getExtent(CompanyBranch.class).size() + " --");
-        Utils.printInfoAboutObjects(ObjectPlus.getExtent(CompanyBranch.class));
+        printInfoAboutObjects(ObjectPlus.getExtent(CompanyBranch.class));
 
         region2.removeRegion();
         System.out.println("-- Region2 has been deleted. --");
         System.out.println("-- Number of all company branches after deleting region2 (" + region2.getName() + "): " + ObjectPlus.getExtent(CompanyBranch.class).size() + " --");
-        Utils.printInfoAboutObjects(ObjectPlus.getExtent(CompanyBranch.class));
+        printInfoAboutObjects(ObjectPlus.getExtent(CompanyBranch.class));
 
         try {
             ObjectPlus.writeExtents();
