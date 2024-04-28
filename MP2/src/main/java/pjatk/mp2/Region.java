@@ -20,7 +20,24 @@ public class Region extends ObjectPlus {
         }
     }
 
-    public void removeRegion() {
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId() {
+        this.id = UUID.randomUUID();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        checkCorrectnessOfStringAttribute("Name", name);
+        this.name = name;
+    }
+
+    public void removeRegion() throws ClassNotFoundException {
         for (CompanyBranch companyBranch : this.companyBranches) {
             removeCompanyBranch(companyBranch);
             companyBranch.removeFromExtent();
@@ -45,8 +62,8 @@ public class Region extends ObjectPlus {
         }
     }
 
-    public void removeCompanyBranch(CompanyBranch companyBranch) {
-        List<Car> cars = ObjectPlus.getExtentForClass(Car.class);
+    public void removeCompanyBranch(CompanyBranch companyBranch) throws ClassNotFoundException {
+        List<Car> cars = ObjectPlus.getExtent(Car.class);
 
         if (companyBranch == null) {
             throw new IllegalArgumentException("Company branch to be deleted cannot be null.");
@@ -65,23 +82,6 @@ public class Region extends ObjectPlus {
         return companyBranches;
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId() {
-        this.id = UUID.randomUUID();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        checkCorrectnessOfStringAttribute("Name", name);
-        this.name = name;
-    }
-
     @Override
     public String toString() {
         StringBuilder info = new StringBuilder("Region with ID: " + id + " includes the following branches: \n");
@@ -91,10 +91,5 @@ public class Region extends ObjectPlus {
         }
 
         return info.toString();
-    }
-
-
-    public Set<CompanyBranch> getAllCompanyBranches() {
-        return allCompanyBranches;
     }
 }

@@ -152,9 +152,9 @@ public class Car extends ObjectPlus {
         return Collections.unmodifiableSet(rentals);
     }
 
-    public void addRental(Rental rental) {
+    public void addRental(Rental rental) throws IllegalArgumentException {
         if (rental == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Empty rental cannot be added to the history.");
         }
 
         if (this.rentals.contains(rental)) {
@@ -167,7 +167,7 @@ public class Car extends ObjectPlus {
         }
     }
 
-    public void removeRental(Rental rental) {
+    public void removeRental(Rental rental) throws IllegalArgumentException {
         if (rental == null) {
             throw new IllegalArgumentException("Empty rental cannot be removed from the history.");
         }
@@ -185,7 +185,7 @@ public class Car extends ObjectPlus {
 
     public void addCarInsurance(CarInsurance carInsurance) {
         if (carInsurance == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Empty car insurance cannot be added to the history.");
         }
 
         if (this.carInsurances.contains(carInsurance)) {

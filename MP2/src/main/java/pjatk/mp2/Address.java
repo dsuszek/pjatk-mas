@@ -1,10 +1,11 @@
 package pjatk.mp2;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import static pjatk.mp2.Utils.*;
 
-public class Address {
+public class Address implements Serializable {
     private UUID id;
     private String streetName;
     private short streetNumber;

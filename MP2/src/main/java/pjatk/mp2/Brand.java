@@ -1,5 +1,6 @@
 package pjatk.mp2;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +9,7 @@ import java.util.UUID;
 
 import static pjatk.mp2.Utils.checkCorrectnessOfStringAttribute;
 
-public class Brand {
+public class Brand implements Serializable {
 
     private UUID id;
     private String name;

@@ -1,5 +1,8 @@
 package pjatk.mp2;
 
+import java.util.List;
+import java.util.Set;
+
 public class Utils {
 
     public static void checkCorrectnessOfStringAttribute(String attribute, String paramName) {
@@ -46,5 +49,19 @@ public class Utils {
 
     public static void logError(String message) {
         System.err.println(message);
+    }
+
+    public static <T> void printInfoAboutObjects(List<T> objects) {
+        for (T object : objects) {
+            System.out.println(object);
+            System.out.println();
+        }
+    }
+
+    public static <T> void printInfoAboutObjects(Set<T> objects) {
+        for (T object : objects) {
+            System.out.println(object);
+            System.out.println();
+        }
     }
 }

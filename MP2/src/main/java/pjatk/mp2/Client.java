@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import static pjatk.mp2.Utils.checkCorrectnessOfStringAttribute;
 
-public class Client {
+public class Client extends ObjectPlus {
 
     private UUID id;
     private String firstName;
@@ -16,9 +16,14 @@ public class Client {
     private Set<Rental> rentals = new HashSet<>(); // Rental to klasa asocjacyjna — liczności 1...* - jeden klient może wiele razy wynajmować auto
 
     public Client(String firstName, String lastName) {
-        setId();
-        setFirstName(firstName);
-        setLastName(lastName);
+        super();
+        try {
+            setId();
+            setFirstName(firstName);
+            setLastName(lastName);
+        } catch (Exception e) {
+            removeFromExtent();
+        }
     }
 
     public UUID getId() {
@@ -58,8 +63,9 @@ public class Client {
     public Set<Rental> getRentals() {
         return Collections.unmodifiableSet(rentals);
     }
+
     public void addRental(Rental rental) throws Exception {
-        if(rental == null) {
+        if (rental == null) {
             throw new IllegalArgumentException();
         }
 
@@ -68,7 +74,7 @@ public class Client {
         }
 
         this.rentals.add(rental);
-        if(rental.getClient() == null) {
+        if (rental.getClient() == null) {
             rental.setClient(this);
         }
     }

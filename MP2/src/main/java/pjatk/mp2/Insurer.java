@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import static pjatk.mp2.Utils.*;
 
-public class Insurer {
+public class Insurer extends ObjectPlus {
     private UUID id;
     private String companyName;
     private String phoneNumber;
@@ -15,10 +15,15 @@ public class Insurer {
     private Set<CarInsurance> carInsurances = new HashSet<>();
 
     public Insurer(String companyName, String phoneNumber, String emailAddress) {
-        setId();
-        setCompanyName(companyName);
-        setPhoneNumber(phoneNumber);
-        setEmailAddress(emailAddress);
+        super();
+        try {
+            setId();
+            setCompanyName(companyName);
+            setPhoneNumber(phoneNumber);
+            setEmailAddress(emailAddress);
+        } catch (Exception e) {
+            removeFromExtent();
+        }
     }
 
     public UUID getId() {
