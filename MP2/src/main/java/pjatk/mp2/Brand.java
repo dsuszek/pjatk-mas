@@ -116,12 +116,6 @@ public class Brand {
 
     @Override
     public String toString() {
-        StringBuilder info = new StringBuilder("");
-
-        for (Car car : cars) {
-            info.append(" * ").append(car.getBrand().getName()).append(" ").append(car.getModel()).append("\n");
-        }
-
-        return  "All cars from brand " + getName() + " available in our company are the following: \n" + info;
+        return name;
     }
 }

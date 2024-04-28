@@ -14,6 +14,7 @@ public class Car extends ObjectPlus {
     private CompanyBranch companyBranch;
     private Set<String> damages = new HashSet<>(); // atrybut powtarzalny
     private Set<Rental> rentals = new HashSet<>();
+    private Set<CarInsurance> carInsurances = new HashSet<>();
 
     public Car(Brand brand, String model, String type) {
         super();
@@ -151,7 +152,7 @@ public class Car extends ObjectPlus {
         return Collections.unmodifiableSet(rentals);
     }
 
-    public void addRental(Rental rental) throws Exception {
+    public void addRental(Rental rental) {
         if (rental == null) {
             throw new IllegalArgumentException();
         }
@@ -166,7 +167,7 @@ public class Car extends ObjectPlus {
         }
     }
 
-    public void removeRental(Rental rental) throws Exception {
+    public void removeRental(Rental rental) {
         if (rental == null) {
             throw new IllegalArgumentException("Empty rental cannot be removed from the history.");
         }
@@ -178,19 +179,64 @@ public class Car extends ObjectPlus {
         rental.setCar(null);
     }
 
+    public Set<CarInsurance> getCarInsurances() {
+        return Collections.unmodifiableSet(carInsurances);
+    }
+
+    public void addCarInsurance(CarInsurance carInsurance) {
+        if (carInsurance == null) {
+            throw new IllegalArgumentException();
+        }
+
+        if (this.carInsurances.contains(carInsurance)) {
+            return;
+        }
+
+        this.carInsurances.add(carInsurance);
+        if (carInsurance.getCar() == null) {
+            carInsurance.setCar(this);
+        }
+    }
+
+    public void removeCarInsurance(CarInsurance carInsurance) {
+        if (carInsurance == null) {
+            throw new IllegalArgumentException("Empty car insurance cannot be removed from the history.");
+        }
+
+        if (!this.carInsurances.contains(carInsurance)) {
+            return;
+        }
+        this.carInsurances.remove(carInsurance);
+        carInsurance.setCar(null);
+    }
+
     @Override // Przesłonięcie metody.
     public String toString() {
+        if (this.engineSize != null && this.companyBranch == null) {
+            return "Car ID: " + id +
+                    "\nBrand: " + brand.getName() +
+                    "\nModel: " + model +
+                    "\nType: " + type +
+                    "\nEngine size: " + engineSize +
+                    "\nCompany branch: " + companyBranch +
+                    "\nDamages: " + damages;
+        }
+
         if (this.engineSize != null) {
             return "Car ID: " + id +
                     "\nBrand: " + brand.getName() +
                     "\nModel: " + model +
                     "\nType: " + type +
-                    "\nEngine size: " + engineSize;
+                    "\nEngine size: " + engineSize +
+                    "\n" +companyBranch +
+                    "\nDamages: " + damages;
         }
 
         return "Car " + id +
                 "\nBrand: " + brand.getName() +
                 "\nModel: " + model +
-                "\nType: " + type;
+                "\nType: " + type +
+                "\n" + companyBranch +
+                "\nDamages: " + damages;
     }
 }

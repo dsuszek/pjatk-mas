@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import static pjatk.mp2.Utils.*;
 
-public class CarInsurance {
+public class CarInsurance extends ObjectPlus {
     private UUID id;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -15,13 +15,18 @@ public class CarInsurance {
     private Insurer insurer;
 
     public CarInsurance(LocalDate startDate, LocalDate endDate, double cost, String scope, Car car, Insurer insurer) {
-        setId();
-        setStartDate(startDate);
-        setEndDate(endDate);
-        setCost(cost);
-        setScope(scope);
-        setCar(car);
-        setInsurer(insurer);
+        super();
+        try {
+            setId();
+            setStartDate(startDate);
+            setEndDate(endDate);
+            setCost(cost);
+            setScope(scope);
+            setCar(car);
+            setInsurer(insurer);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public UUID getId() {
@@ -82,7 +87,31 @@ public class CarInsurance {
     }
 
     public void setCar(Car car) {
-        this.car = car;
+
+        if (this.car == null && car != null) {
+            // new car - no car previously assigned
+            this.car = car;
+
+            if (car.getCarInsurances().contains(this)) {
+                return;
+            }
+            car.addCarInsurance(this);
+
+        } else if (this.car != null && car == null) {
+            // removing the car
+            Car tmp = this.car;
+            this.car = null;
+            tmp.removeCarInsurance(this);
+
+        } else if (this.car != null && car != null) {
+            // changing the car
+            Car tmp = this.car;
+            this.car = null;
+            tmp.removeCarInsurance(this);
+
+            this.car = null;
+            car.addCarInsurance(this);
+        }
     }
 
     public Insurer getInsurer() {
@@ -90,6 +119,51 @@ public class CarInsurance {
     }
 
     public void setInsurer(Insurer insurer) {
-        this.insurer = insurer;
+
+        if (this.insurer == null && insurer != null) {
+            // new insurer - no insurer previously assigned
+            this.insurer = insurer;
+
+            if (insurer.getCarInsurances().contains(this)) {
+                return;
+            }
+            insurer.addCarInsurance(this);
+
+        } else if (this.insurer != null && insurer == null) {
+            // removing the insurer
+            Insurer tmp = this.insurer;
+            this.insurer = null;
+            tmp.removeCarInsurance(this);
+
+        } else if (this.insurer != null && insurer != null) {
+            // changing the insurer
+            Insurer tmp = this.insurer;
+            this.insurer = null;
+            tmp.removeCarInsurance(this);
+
+            this.insurer = null;
+            insurer.addCarInsurance(this);
+        }
+    }
+
+    public void removeCarInsurance() {
+        this.insurer.removeCarInsurance(this);
+        this.car.removeCarInsurance(this);
+        this.removeFromExtent();
+    }
+
+    @Override // Przesłonięcie metody.
+    public String toString() {
+        return "Car insurance ID: " + id +
+                "\nStart date: " + startDate +
+                "\nEnd date: " + endDate +
+                "\nCost: " + cost +
+                "\nScope: " + scope +
+                "\nCar included: " +
+                "\n\tCar ID: " + car.getId() +
+                "\n\tBrand: " + car.getBrand() +
+                "\n\tModel: " + car.getModel() +
+                "\n\tCar's company branch: " + car.getCompanyBranch() +
+                "\nInsurance company: " + insurer.getCompanyName();
     }
 }

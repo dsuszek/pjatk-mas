@@ -176,7 +176,7 @@ public class Rental extends ObjectPlus {
         return car;
     }
 
-    public void setCar(Car car) throws Exception {
+    public void setCar(Car car) {
 
         if (this.car == null && car != null) {
             // new car - no car previously assigned
@@ -186,17 +186,15 @@ public class Rental extends ObjectPlus {
                 return;
             }
             car.addRental(this);
-        } else if (this.car != null && car != null) {
-            // changing the car
+
+        } else if (this.car != null && car == null) {
+            // removing the car
             Car tmp = this.car;
             this.car = null;
             tmp.removeRental(this);
 
-            this.car = car;
-            car.addRental(this);
-        } else if (this.car != null && car == null) {
-
-            // removing the car
+        } else if (this.car != null && car != null) {
+            // changing the car
             Car tmp = this.car;
             this.car = null;
             tmp.removeRental(this);
@@ -216,13 +214,12 @@ public class Rental extends ObjectPlus {
             client.addRental(this);
 
         } else if (this.client != null && client == null) {
-
             // removing the client
             Client tmp = this.client;
             this.client = null;
             tmp.removeRental(this);
-        } else if (this.client != null && client != null) {
 
+        } else if (this.client != null && client != null) {
             // changing the client
             Client tmp = this.client;
             this.client = null;

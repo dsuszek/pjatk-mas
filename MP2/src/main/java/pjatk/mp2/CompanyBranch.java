@@ -4,7 +4,7 @@ import java.util.*;
 
 import static pjatk.mp2.Utils.checkCorrectnessOfStringAttribute;
 
-public class CompanyBranch {
+public class CompanyBranch extends ObjectPlus {
     private UUID id;
     private String name;
     private Address address;
@@ -12,10 +12,15 @@ public class CompanyBranch {
     private Map<UUID, Car> carsQualified = new HashMap<>();
 
     private CompanyBranch(String name, Address address, Region region) {
-        setId();
-        setName(name);
-        setAddress(address);
-        setRegion(region);
+        super();
+        try {
+            setId();
+            setName(name);
+            setAddress(address);
+            setRegion(region);
+        } catch (Exception e) {
+            removeFromExtent();
+        }
     }
 
     public static CompanyBranch createCompanyBranch(String name, Address address, Region region) throws Exception {
@@ -27,7 +32,7 @@ public class CompanyBranch {
         CompanyBranch companyBranch = new CompanyBranch(name, address, region);
 
         // Dodawanie oddziału firmy do regionu
-        region.addBranch(companyBranch);
+        region.addCompanyBranch(companyBranch);
 
         return companyBranch;
     }
@@ -69,8 +74,8 @@ public class CompanyBranch {
     }
 
     public void addCarQualified(Car car) {
-        // check if we have already included this car in the company branch
-        if (!carsQualified.containsKey(car.getId())) { // if this car is unknown
+        // Sprawdzenie, czy ten samochód został już przypisany do któregoś z oddziałów firmy
+        if (!carsQualified.containsKey(car.getId())) { // Jeśli ten samochód nie może zostać znaleziony na podstawie identyfikatora
             carsQualified.put(car.getId(), car);
 
             // add the reverse connection
@@ -81,7 +86,7 @@ public class CompanyBranch {
     }
 
     public Car findCarQualified(UUID id) {
-        // sprawdź, czy dane o tym samochodzie są już dostępne
+        // Sprawdzenie, czy dane o tym samochodzie są już dostępne
         if (!carsQualified.containsKey(id)) {
             throw new IllegalArgumentException("Unable to find car with ID: " + id);
         }
@@ -109,22 +114,8 @@ public class CompanyBranch {
 
     @Override
     public String toString() {
-//        String info = "";
-//
-//        if (carsQualified.isEmpty()) {
-//            info = "Branch " + name + " with ID: " + id + " doesn't have any cars assigned.\n";
-//
-//        } else {
-//            info = "Branch " + name + " with ID: " + id + " has the following cars: \n";
-//            Iterator<Map.Entry<UUID, Car>> iterator = carsQualified.entrySet().iterator();
-//            while (iterator.hasNext()) {
-//                Map.Entry<UUID, Car> entry = iterator.next();
-//                info += " * " + entry.getValue().getBrand().getName() + " " + entry.getValue().getModel() + " with ID: " + entry.getKey() + "\n";
-//            }
-//        }
-//        return info;
-//    }
-        return "\nCompany branch: " + name +
-                "\nAddress: " + address;
+        return "Company branch: " + name +
+                "\nRegion: " + region.getName() +
+                "\nAddress: " + address + "\n";
     }
 }
