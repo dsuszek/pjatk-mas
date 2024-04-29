@@ -1,10 +1,9 @@
-package abstract_class;
+package pjatk.mp3;
 
 public class Truck extends Vehicle {
-
     private double maximumAuthorisedMass;
 
-    public Truck(String brand, String model, String vehicleRegistrationNumber, double maximumAuthorisedMass) {
+    public Truck(Brand brand, String model, String vehicleRegistrationNumber, double maximumAuthorisedMass) {
         super(brand, model, vehicleRegistrationNumber);
 
         setMaximumAuthorisedMass(maximumAuthorisedMass);
@@ -21,18 +20,18 @@ public class Truck extends Vehicle {
     }
 
     @Override
-    public double calculateRentalPricePerDay() {
+    public double calculateRentalPricePerKilometer() {
         // im większa masa dopuszczalna całkowita (w tonach), tym droższy wynajem samochodu
-        return 200 + 20 * maximumAuthorisedMass;
+        return Math.round(0.6 * maximumAuthorisedMass);
     }
 
     @Override
     public String toString() {
-        return "Truck ID: " + getId() + "\n" +
-                "- brand: " + getBrand() + "\n" +
-                "- model: " + getModel() + "\n" +
-                "- registration number: " + getVehicleRegistrationNumber() + "\n" +
-                "- maximum authorised mass: " + getMaximumAuthorisedMass() + "\n" +
-                "- price of rental per day: " + calculateRentalPricePerDay();
+        return "Truck ID: " + getId() +
+                "\nBrand: " + getBrand() +
+                "\nModel: " + getModel() +
+                "\nRegistration number: " + getVehicleRegistrationNumber() +
+                "\nMaximum authorised mass: " + getMaximumAuthorisedMass() +
+                "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
     }
 }

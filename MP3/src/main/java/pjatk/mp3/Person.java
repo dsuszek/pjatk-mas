@@ -1,32 +1,31 @@
-package dynamic;
-
-import MP3.ObjectPlus;
+package pjatk.mp3;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.UUID;
 
-public class Person extends ObjectPlus {
+import static pjatk.mp3.Utils.checkCorrectnessOfStringAttribute;
 
-    // wszystkie atrybuty klasy Person muszą być widoczne dla klas dziedziczących po niej - używamy ograniczenia protected
+public abstract class Person extends ObjectPlus {
+
+    // Wszystkie atrybuty klasy Person muszą być widoczne dla klas dziedziczących po niej - używamy ograniczenia protected.
     protected UUID id;
     protected String firstName;
     protected String lastName;
     protected LocalDate birthDate;
 
     public Person(String firstName, String lastName, LocalDate birthDate) {
-        super();
-
-        // set new fields
-        setId();
-        setFirstName(firstName);
-        setLastName(lastName);
-        setBirthDate(birthDate);
-
-        // add to extent
-        addToExtent();
+       super();
+       try {
+           setId();
+           setFirstName(firstName);
+           setLastName(lastName);
+           setBirthDate(birthDate);
+       } catch (Exception e) {
+           e.printStackTrace();
+           removeFromExtent();
+       }
     }
-
 
     public UUID getId() {
         return id;
@@ -41,6 +40,7 @@ public class Person extends ObjectPlus {
     }
 
     public void setFirstName(String firstName) {
+        checkCorrectnessOfStringAttribute("First name", firstName);
         this.firstName = firstName;
     }
 
@@ -49,14 +49,25 @@ public class Person extends ObjectPlus {
     }
 
     public void setLastName(String lastName) {
+        checkCorrectnessOfStringAttribute("Last name", lastName);
         this.lastName = lastName;
     }
+
+
+
+
+
+
 
     public LocalDate getBirthDate() {
         return birthDate;
     }
 
     public void setBirthDate(LocalDate birthDate) {
+        if (birthDate == null) {
+            throw new IllegalArgumentException("End date cannot be null.");
+        }
+
         this.birthDate = birthDate;
     }
 
@@ -66,10 +77,10 @@ public class Person extends ObjectPlus {
 
     @Override
     public String toString() {
-        return "Person ID: " + getId() + "\n" +
-                "- first name: " + getFirstName() + "\n" +
-                "- last name: " + getLastName() + "\n" +
-                "- birth date: " + getBirthDate() + "\n" +
-                "- age: " + getAge();
+        return "Person ID: " + id +
+                "\nFirst name: " + firstName +
+                "\nLast name: " + lastName +
+                "\nBirth date: " + birthDate +
+                "\nAge: " + getAge();
     }
 }
