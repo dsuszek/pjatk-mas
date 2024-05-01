@@ -88,8 +88,15 @@ public class Main {
         System.out.println();
         System.out.println("Overlapping inheritance");
         System.out.println("-------------------------------");
-        Car car2 = new Car(brand3, "Astra", "GJ 8920", 0.0d, EnumSet.of(CarTypes.ELECTRIC_CAR));
+        Car car2 = new Car(brand3, "Astra", "GJ 8920", 0.0d, EnumSet.of(CarTypes.SPORT_CAR, CarTypes.ELECTRIC_CAR));
+        car2.setSuspensionHeight(10.0);
+        System.out.println("Suspension height of " + car2.getBrand() + " " + car2.getModel() + " with ID " + car2.getId() + ": " + car2.getSuspensionHeight());
         System.out.println(car2);
+        try {
+            System.out.println(car2.getLuxuryDesignElements());
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println();
 
 
@@ -108,7 +115,7 @@ public class Main {
         // 1. dane dotyczące ich umiejętności technicznych związanych np. z pracą w warsztacie,
         // 2. data ważności ostatniego szkolenia BHP.
         System.out.println();
-        System.out.println("Multi-inheritance:");
+        System.out.println("Multi-inheritance");
         System.out.println("-------------------------------");
         ManagerOfCarServiceStation managerOfCarServiceStation = new ManagerOfCarServiceStation("Mark", "Walker", LocalDate.of(1980, 2, 12), Set.of("team management"), LocalDate.of(2025, 12,31), Set.of("painting the cars"), LocalDate.of(2024, 12, 31));
         System.out.println(managerOfCarServiceStation);
@@ -120,15 +127,17 @@ public class Main {
 
 
         // Dziedziczenie wieloaspektowe
+        // Szczegóły implementacji:
+
         // @TODO dokonczyc dziedziczenie wieloaspektowe
         System.out.println();
-        System.out.println("Multi-aspect inheritance:");
+        System.out.println("Multi-aspect inheritance");
         System.out.println("-------------------------------");
-//        RentalDoorToDoor shortRentalDoorToDoor = new RentalDoorToDoor(LocalDate.of(2023, 5, 10), LocalDate.of(2023, 5, 12), RentalLength.ShortTermRental);
-//        System.out.println(shortRentalDoorToDoor);
-//        System.out.println();
         Client client1 = new Client("John", "Smith", LocalDate.of(1988, 4, 2), LocalDate.of(2010, 10, 20), LocalDate.of(2025, 10, 20));
-        Rental rental1 = new Rental(LocalDate.of(2024, 3, 10), LocalDate.of(2024, 03, 20), 400d, car1, client1, 150d);
+        RentalDoorToDoor shortRentalDoorToDoor = new RentalDoorToDoor(LocalDate.of(2023, 5, 10), LocalDate.of(2023, 5, 12), 145d, car2, client1, RentalLengthTypes.SHORT_TERM_RENTAL, 50d, new Address("Canal Street", (short) 4, (short) 2, "Manchester", "4043 FD"));
+        System.out.println(shortRentalDoorToDoor);
+        System.out.println();
+
 
 
 
@@ -138,7 +147,7 @@ public class Main {
         // @TODO dokonczyc dziedziczenie dynamiczne
         // Szczegóły implementacji: dziedziczenie dynamiczne pomiędzy klasami Person, YoungDriver, oraz RegularDriver
         System.out.println();
-        System.out.println("Dynamic inheritance:");
+        System.out.println("Dynamic inheritance");
         System.out.println("-------------------------------");
 //        Person person1 = new Person("Joe", "Black", LocalDate.of(1995, 4, 30));
 //

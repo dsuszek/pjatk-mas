@@ -1,5 +1,7 @@
 package pjatk.mp3;
 
+import jdk.jshell.spi.ExecutionControl;
+
 import java.util.*;
 
 import static pjatk.mp3.Utils.*;
@@ -7,7 +9,9 @@ import static pjatk.mp3.Utils.*;
 public class Car extends Vehicle {
     private double engineSize;
     private EnumSet<CarTypes> carTypes = EnumSet.of(CarTypes.CAR);
-
+    private Double suspensionHeight; // tylko dla typu samochodów SPORT_CAR
+    private Set<String> luxuryDesignElements; // tylko dla typu samochodów PREMIUM_CAR
+    private Double batteryCapacity; // tylko dla klasy samochodów ELECTRIC_CAR
     public Car(Brand brand, String model, String vehicleRegistrationNumber, double engineSize) {
         super(brand, model, vehicleRegistrationNumber);
         try {
@@ -29,7 +33,7 @@ public class Car extends Vehicle {
             setModel(model);
             setVehicleRegistrationNumber(vehicleRegistrationNumber);
             setEngineSize(engineSize);
-            setCarTypes();
+            setCarTypes(carTypes);
         } catch (Exception e) {
             removeFromExtent();
         }
@@ -39,12 +43,8 @@ public class Car extends Vehicle {
         return engineSize;
     }
 
-    public void setEngineSize(Double engineSize) {
-        if (engineSize == null) {
-            return;
-        }
-
-        checkCorrectnessOfNumericalValueGreaterThanZero(engineSize, "Engine size");
+    public void setEngineSize(double engineSize) {
+        checkCorrectnessOfNumericalValueGreaterThanOrEqualToZero(engineSize, "Engine size");
         this.engineSize = engineSize;
     }
 
@@ -52,8 +52,8 @@ public class Car extends Vehicle {
         return carTypes;
     }
 
-    public void setCarTypes() {
-        this.carTypes.add(CarTypes.FAMILY_CAR);
+    public void setCarTypes(EnumSet<CarTypes> carTypes) {
+        this.carTypes = carTypes;
     }
 
     // @TODO dokonczyc metodę
@@ -66,6 +66,38 @@ public class Car extends Vehicle {
         } else {
             return Math.round(0.75 * engineSize * 100.0)/100.0;
         }
+    }
+
+    public Double getSuspensionHeight() {
+        if (!carTypes.contains(CarTypes.SPORT_CAR)) {
+            throw new RuntimeException("Suspension height cannot be checked for this type of car.");
+        }
+        return suspensionHeight;
+    }
+
+    public void setSuspensionHeight(Double suspensionHeight) {
+        if (!(carTypes.contains(CarTypes.SPORT_CAR)) && !(suspensionHeight == null)) {
+            throw new IllegalArgumentException("Suspension height cannot be changed for this type of car.");
+        } else if (suspensionHeight <= 5.0) {
+            throw new IllegalArgumentException("Suspension height must be at least 5 cm.");
+        }
+        this.suspensionHeight = suspensionHeight;
+    }
+
+    public Set<String> getLuxuryDesignElements() {
+        if(!carTypes.contains(CarTypes.PREMIUM_CAR)) {
+            throw new RuntimeException("This is not a premium car.");
+        }
+
+        return Collections.unmodifiableSet(luxuryDesignElements);
+    }
+
+    public void setLuxuryDesignElement(Set<String> luxuryDesignElements) {
+        if (!(carTypes.contains(CarTypes.PREMIUM_CAR)) && (!luxuryDesignElements.isEmpty())) {
+            throw new IllegalArgumentException("Luxury design elements cannot be added to this type of car.");
+        }
+
+        this.luxuryDesignElements = luxuryDesignElements;
     }
 
     @Override // Przesłonięcie metody.

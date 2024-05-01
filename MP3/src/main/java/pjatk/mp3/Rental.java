@@ -17,10 +17,10 @@ public class Rental extends ObjectPlus {
     private Client client;
 
     // atrybuty ze zlikwidowane aspektu (długosc wynajmu) umieszczono w nadklasie Rental
-    private Enum<RentalLength> rentalLengthType;
+    private Enum<RentalLengthTypes> rentalLengthType;
     private Double additionalDiscount; // atrybut opcjonalny - dodatkowa zniżka dla wynajmów długoterminowych
 
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Client client) {
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Client client, Enum<RentalLengthTypes> rentalLengthType) {
         super();
         try {
             setId();
@@ -29,13 +29,13 @@ public class Rental extends ObjectPlus {
             setDistance(distance);
             setVehicle(vehicle);
             setClient(client);
-            setRentalLengthType();
+            setRentalLengthType(rentalLengthType);
         } catch (Exception e) {
             removeFromExtent();
         }
     }
 
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Client client) {
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Client client, Enum<RentalLengthTypes> rentalLengthType) {
         super();
         try {
             setId();
@@ -44,13 +44,13 @@ public class Rental extends ObjectPlus {
             setDistance(distance, unit);
             setVehicle(vehicle);
             setClient(client);
-            setRentalLengthType();
+            setRentalLengthType(rentalLengthType);
         } catch (Exception e) {
             removeFromExtent();
         }
     }
 
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Client client, Double additionalDiscount) {
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Client client, Double additionalDiscount, Enum<RentalLengthTypes> rentalLengthType) {
         super();
         try {
             setId();
@@ -59,13 +59,13 @@ public class Rental extends ObjectPlus {
             setDistance(distance);
             setVehicle(vehicle);
             setClient(client);
-            setRentalLengthType();
+            setRentalLengthType(rentalLengthType);
             setAdditionalDiscount(additionalDiscount);
         } catch (Exception e) {
             removeFromExtent();
         }
     }
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Client client, Double additionalDiscount) {
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Client client, Double additionalDiscount, Enum<RentalLengthTypes> rentalLengthType) {
         super();
         try {
             setId();
@@ -74,7 +74,7 @@ public class Rental extends ObjectPlus {
             setDistance(distance, unit);
             setVehicle(vehicle);
             setClient(client);
-            setRentalLengthType();
+            setRentalLengthType(rentalLengthType);
             setAdditionalDiscount(additionalDiscount);
         } catch (Exception e) {
             removeFromExtent();
@@ -220,16 +220,12 @@ public class Rental extends ObjectPlus {
         }
     }
 
-    public Enum<RentalLength> getRentalLengthType() {
+    public Enum<RentalLengthTypes> getRentalLengthType() {
         return rentalLengthType;
     }
 
-    public void setRentalLengthType() {
-        if (getLengthOfRental() < 3) {
-            this.rentalLengthType = RentalLength.ShortTermRental;
-        } else {
-            this.rentalLengthType = RentalLength.LongTermRental;
-        }
+    public void setRentalLengthType(Enum<RentalLengthTypes> rentalLengthType) {
+        this.rentalLengthType = rentalLengthType;
     }
 
     public Double getAdditionalDiscount() {
@@ -238,16 +234,16 @@ public class Rental extends ObjectPlus {
 
     public void setAdditionalDiscount(Double additionalDiscount) {
         checkCorrectnessOfOptionalNumericalValueGreaterThanOrEqualToZero(additionalDiscount, "Additional discount");
-        // dla wynajmów krótkoterminowych (poniżej 3 dni) nie ma możliwości uwzględnienia dodatkowego rabatu
-        if (this.rentalLengthType == RentalLength.ShortTermRental) {
-            return;
+        // dla wynajmów krótkoterminowych nie ma możliwości uwzględnienia dodatkowego rabatu
+        if (this.rentalLengthType == RentalLengthTypes.SHORT_TERM_RENTAL) {
+            throw new IllegalArgumentException("Additional discount cannot be granted to short-term rental.");
         }
         this.additionalDiscount = additionalDiscount;
     }
 
     @Override // Przesłonięcie metody.
     public String toString() {
-        return "\n\nRental ID: " + id +
+        return "Rental ID: " + id +
                 "\nTotal cost: " + getCost() +
                 "\nTotal distance: " + distance +
                 "\nStart date: " + startDate +
