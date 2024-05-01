@@ -56,7 +56,7 @@ public class ManagerOfCarServiceStation extends OfficeWorker implements IManualW
                 "\nFirst name: " + firstName +
                 "\nLast name: " + lastName +
                 "\nAge: " + getAge() +
-                "\nSoft skills: " + getSoftSkills() +
+                "\nSkills relevant for office work: " + officeWorkSkills +
                 "\nHas valid sight test: " + isSightTestValid() +
                 "\nTechnical skills: " + technicalSkills +
                 "\nHas valid work health and safety training: " + isWorkHealthAndSafetyTrainingValid();

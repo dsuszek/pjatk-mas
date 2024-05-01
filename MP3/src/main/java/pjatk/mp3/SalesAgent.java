@@ -29,11 +29,13 @@ public class SalesAgent extends OfficeWorker {
 
     @Override
     public String toString() {
-        return "Sales agent ID: " + getId() +
-                "\nFirst name: " + getFirstName() +
-                "\nLast name: " + getLastName() +
+        return "Sales agent ID: " + id +
+                "\nFirst name: " + firstName +
+                "\nLast name: " + lastName +
                 "\nAge: " + getAge() +
-                "\nSoft skills: " + getSoftSkills() +
-                "\nHas valid sight test: " + isSightTestValid();
+                "\nSkills relevant for office work: " + getOfficeWorkSkills().toString() +
+                "\nHas valid sight test: " + isSightTestValid() +
+                "\nCommission: " + commission;
     }
 }
+

@@ -22,7 +22,7 @@ public class Truck extends Vehicle {
     @Override
     public double calculateRentalPricePerKilometer() {
         // im większa masa dopuszczalna całkowita (w tonach), tym droższy wynajem samochodu
-        return Math.round(0.6 * maximumAuthorisedMass);
+        return Math.round(0.2 * maximumAuthorisedMass * 100.0)/100.0;
     }
 
     @Override

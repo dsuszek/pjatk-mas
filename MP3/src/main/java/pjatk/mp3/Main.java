@@ -32,19 +32,28 @@ public class Main {
 
 
         // Dziedziczenie rozłączne
-        // @TODO dokonczyc dziedziczenie rozłączne
-        // Szczegóły implementacji: klasa
+        // Szczegóły implementacji: klasy MarketingSpecialist oraz SalesAgent dziedziczą po klasie OfficeWorker.
+        // Każda z nich ma charakterystyczne atrybuty - dla klasy SalesAgent jest to prowizja, którą pracownik dostaje od każdego wynajmu.
+        // Dla klasy MarketingSpecialist jest to słowny opis portfolio oraz poprzednich kampanii marketingowych.
         System.out.println("Disjoint inheritance");
         System.out.println("-------------------");
-
-
+        MarketingSpecialist marketingSpecialist = new MarketingSpecialist("James", "Hart", LocalDate.of(2000, 1, 10), Set.of("knowledge certificate - Adobe Photoshop", "knowledge certificate - Adobe Illustrator"), LocalDate.of(2026,12,31));
+        SalesAgent salesAgent1 = new SalesAgent("Bob", "Dolan", LocalDate.of(1998, 4, 6), Set.of("advanced English", "advanced Spanish"), LocalDate.of(2024,6, 30), 0.01d);
+        System.out.println("Details about marketing specialist James Hart:");
+        System.out.println(marketingSpecialist);
+        System.out.println();
+        System.out.println("Details about sales agent Bob Dolan:");
+        System.out.println(salesAgent1);
+        System.out.println();
 
 
         // Klasa abstrakcyjna
         // Szczegóły implementacji: Klasy Car i Truck dziedziczą po klasie abstrakcyjnej Vehicle.
         // Klasa Vehicle nie może mieć bezpośrednich wystąpień, jest ona jedynie wykorzystywana do implementacji hierarchii dziedziczenia.
+        System.out.println("Abstract class");
+        System.out.println("-------------------");
         Vehicle car1 = new Car(brand2, "Civic", "GW4200A", 1.6);
-        Truck truck1 = new Truck(brand4, "MV125", "GD4FG0A", 12.0);
+        Truck truck1 = new Truck(brand4, "MV125", "GD4FG0A", 11.0);
         System.out.println(car1);
 
 
@@ -59,8 +68,9 @@ public class Main {
         System.out.println("Polymorphic method calling");
         System.out.println("-------------------");
         System.out.println("Obie klasy Car oraz Truck posiadają implementację metody abstrakcyjnej calculateRentalPricePerDay().");
-        System.out.println(car1.calculateRentalPricePerKilometer());
-        System.out.println(truck1.calculateRentalPricePerKilometer());
+        System.out.println("Poniżej przedstawiono wyniki wywołania metody calculateRentalPricePerKilometer bezpośrednio na obiektach klasy Car oraz Truck.");
+        System.out.println("Rental price per kilometer for car1: " + car1.calculateRentalPricePerKilometer());
+        System.out.println("Rental price per kilometer for truck1: " + truck1.calculateRentalPricePerKilometer());
 
 
 
@@ -69,6 +79,7 @@ public class Main {
         // Dziedziczenie overlapping
         // @TODO dokonczyc dziedziczenie overlapping
         // Szczegóły implementacji: zastąpiono całą hierarchię dziedzicenia jedną klasą (Car).
+        // Innymi słowy, zgrupowano wszystkie klasy z hierarchii overlapping w ramach jednej klasy Car.
         // Ten rodzaj dziedziczenia dodano dla rozróżnienia różnych rodzajów samochodów.
         // W ofercie wypożyczalni są dostępne: samochody sportowe, samochody elektryczne, samochody rodzinne oraz samochody luksusowe.
         // Dany samochód może jednocześnie należeć do jednej, dwóch lub nawet większej liczby kategorii.
@@ -77,17 +88,8 @@ public class Main {
         System.out.println();
         System.out.println("Overlapping inheritance");
         System.out.println("-------------------------------");
-//        Car car1 = new Car("BMW", "M4 GT4", 550, 7.5, null, EnumSet.of(CarType.SportCar));
-//        System.out.println(car1);
-//        car1.boostEngine(15);
-//        car1.lowerSuspension(2);
-//        System.out.println();
-//        System.out.println("Parameters after tuning: ");
-//        System.out.println();
-//        System.out.println(car1);
-
-//        car1.addLuxuryDesignElement("LED lightning"); // niemożliwe dla samochodu klasy SportCar
-//        car1.getLuxuryDesignElements();
+        Car car2 = new Car(brand3, "Astra", "GJ 8920", 0.0d, EnumSet.of(CarTypes.ELECTRIC_CAR));
+        System.out.println(car2);
         System.out.println();
 
 
@@ -100,18 +102,19 @@ public class Main {
         // Główny podział uwzględnia pracowników biurowych, oraz pracowników fizycznych.
         // Dodano klasę Office Worker, która dziedziczy po klasie Employee.
         // Dla pracowników biurowych szczególnie istotnymi informacjami są:
-        // 1. dane dotyczące ich umiejętności miękkich,
+        // 1. dane dotyczące ich umiejętności miękkich oraz związanych z pracą biurową,
         // 2. data ważności ostatniego badania wzroku.
         // Dla pracowników fizycznych należy przechowywać inne informacje:
-        // 1. dane dotyczące ich umiejętności technicznych,
+        // 1. dane dotyczące ich umiejętności technicznych związanych np. z pracą w warsztacie,
         // 2. data ważności ostatniego szkolenia BHP.
-        // @TODO dokonczyc wielodziedziczenie
         System.out.println();
         System.out.println("Multi-inheritance:");
         System.out.println("-------------------------------");
         ManagerOfCarServiceStation managerOfCarServiceStation = new ManagerOfCarServiceStation("Mark", "Walker", LocalDate.of(1980, 2, 12), Set.of("team management"), LocalDate.of(2025, 12,31), Set.of("painting the cars"), LocalDate.of(2024, 12, 31));
         System.out.println(managerOfCarServiceStation);
-
+        System.out.println();
+        SalesAgent salesAgent2 = new SalesAgent("John", "McGinn", LocalDate.of(1992, 1, 4), Set.of("accounting", "negotiations", "creating the relationships with clients"), LocalDate.of(2026, 3, 1), 0.04);
+        System.out.println(salesAgent2);
 
 
 

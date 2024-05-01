@@ -7,21 +7,21 @@ import static pjatk.mp3.Utils.checkCorrectnessOfSetOfStringsAttribute;
 import static pjatk.mp3.Utils.checkIfDateIsNotInPast;
 
 public class OfficeWorker extends Employee {
-    private Set<String> softSkills;
-    private LocalDate dateUntilWhenSightTestIsValid;
-    public OfficeWorker(String firstName, String lastName, LocalDate birthDate, Set<String> softSkills, LocalDate dateUntilWhenSightTestIsValid) {
+    protected Set<String> officeWorkSkills;
+    protected LocalDate dateUntilWhenSightTestIsValid;
+    public OfficeWorker(String firstName, String lastName, LocalDate birthDate, Set<String> officeWorkSkills, LocalDate dateUntilWhenSightTestIsValid) {
         super(firstName, lastName, birthDate);
-        setSoftSkills(softSkills);
+        setOfficeWorkSkills(officeWorkSkills);
         setDateUntilWhenSightTestIsValid(dateUntilWhenSightTestIsValid);
     }
 
-    public Set<String> getSoftSkills() {
-        return softSkills;
+    public Set<String> getOfficeWorkSkills() {
+        return officeWorkSkills;
     }
 
-    public void setSoftSkills(Set<String> softSkills) {
-        checkCorrectnessOfSetOfStringsAttribute(softSkills, "Soft skills");
-        this.softSkills = softSkills;
+    public void setOfficeWorkSkills(Set<String> officeWorkSkills) {
+        checkCorrectnessOfSetOfStringsAttribute(officeWorkSkills, "officeWorkSkills");
+        this.officeWorkSkills = officeWorkSkills;
     }
 
     public LocalDate getDateUntilWhenSightTestIsValid() {
@@ -43,7 +43,7 @@ public class OfficeWorker extends Employee {
                 "\nFirst name: " + firstName +
                 "\nLast name: " + lastName +
                 "\nAge: " + getAge() +
-                "\nSoft skills: " + getSoftSkills().toString() +
+                "\nSkills relevant for office work: " + getOfficeWorkSkills().toString() +
                 "\nHas valid sight test: " + isSightTestValid();
     }
 }

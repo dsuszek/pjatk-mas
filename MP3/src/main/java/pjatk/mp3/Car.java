@@ -6,9 +6,7 @@ import static pjatk.mp3.Utils.*;
 
 public class Car extends Vehicle {
     private double engineSize;
-
-    // @TODO dodac konstruktor z carType
-    private EnumSet<CarType> carTypes = EnumSet.of(CarType.CAR);
+    private EnumSet<CarTypes> carTypes = EnumSet.of(CarTypes.CAR);
 
     public Car(Brand brand, String model, String vehicleRegistrationNumber, double engineSize) {
         super(brand, model, vehicleRegistrationNumber);
@@ -18,6 +16,20 @@ public class Car extends Vehicle {
             setModel(model);
             setVehicleRegistrationNumber(vehicleRegistrationNumber);
             setEngineSize(engineSize);
+        } catch (Exception e) {
+            removeFromExtent();
+        }
+    }
+
+    public Car(Brand brand, String model, String vehicleRegistrationNumber, double engineSize, EnumSet<CarTypes> carTypes) {
+        super(brand, model, vehicleRegistrationNumber);
+        try {
+            setId();
+            setBrand(brand);
+            setModel(model);
+            setVehicleRegistrationNumber(vehicleRegistrationNumber);
+            setEngineSize(engineSize);
+            setCarTypes();
         } catch (Exception e) {
             removeFromExtent();
         }
@@ -36,12 +48,24 @@ public class Car extends Vehicle {
         this.engineSize = engineSize;
     }
 
+    public EnumSet<CarTypes> getCarTypes() {
+        return carTypes;
+    }
+
+    public void setCarTypes() {
+        this.carTypes.add(CarTypes.FAMILY_CAR);
+    }
 
     // @TODO dokonczyc metodę
     // im większa pojemność silnika, tym wyższa opłata za każdy przejechany kilometr
     @Override
     public double calculateRentalPricePerKilometer() {
-        return Math.round(0.75 * engineSize);
+        // dla samochodów elektrycznych opłata za każdy przejechany kilometr jest stała i wynosi 1.0
+        if (carTypes.contains(CarTypes.ELECTRIC_CAR)) {
+            return 1.0d;
+        } else {
+            return Math.round(0.75 * engineSize * 100.0)/100.0;
+        }
     }
 
     @Override // Przesłonięcie metody.
@@ -51,6 +75,7 @@ public class Car extends Vehicle {
                     "\nBrand: " + brand.getName() +
                     "\nModel: " + model +
                     "\nEngine size: " + engineSize +
+                    "\nCar types: " + carTypes +
                     "\nCompany branch: "  +
                     "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
@@ -60,7 +85,8 @@ public class Car extends Vehicle {
                 "\nBrand: " + brand.getName() +
                 "\nModel: " + model +
                 "\nEngine size: " + engineSize +
-                "\n" + companyBranch +
+                "\nCar types: " + carTypes +
+                "\nCompany branch: " + companyBranch +
                 "\nDamages: " + damages +
                 "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
     }
