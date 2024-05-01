@@ -96,13 +96,21 @@ public class Main {
 
 
         // Wielodziedziczenie
+        // Szczegóły implementacji: w aplikacji wyróżniono różne rodzaje pracowników.
+        // Główny podział uwzględnia pracowników biurowych, oraz pracowników fizycznych.
+        // Dodano klasę Office Worker, która dziedziczy po klasie Employee.
+        // Dla pracowników biurowych szczególnie istotnymi informacjami są:
+        // 1. dane dotyczące ich umiejętności miękkich,
+        // 2. data ważności ostatniego badania wzroku.
+        // Dla pracowników fizycznych należy przechowywać inne informacje:
+        // 1. dane dotyczące ich umiejętności technicznych,
+        // 2. data ważności ostatniego szkolenia BHP.
         // @TODO dokonczyc wielodziedziczenie
         System.out.println();
         System.out.println("Multi-inheritance:");
         System.out.println("-------------------------------");
-//        GarageManager garageManager = new GarageManager("John", "Tall", Arrays.asList("teamwork"), true, Arrays.asList("camshaft replacement", "servicing"));
-//        System.out.println(garageManager);
-//        System.out.println();
+        ManagerOfCarServiceStation managerOfCarServiceStation = new ManagerOfCarServiceStation("Mark", "Walker", LocalDate.of(1980, 2, 12), Set.of("team management"), LocalDate.of(2025, 12,31), Set.of("painting the cars"), LocalDate.of(2024, 12, 31));
+        System.out.println(managerOfCarServiceStation);
 
 
 
@@ -111,11 +119,13 @@ public class Main {
         // Dziedziczenie wieloaspektowe
         // @TODO dokonczyc dziedziczenie wieloaspektowe
         System.out.println();
-        System.out.println("Dziedziczenie wieloaspektowe:");
+        System.out.println("Multi-aspect inheritance:");
         System.out.println("-------------------------------");
 //        RentalDoorToDoor shortRentalDoorToDoor = new RentalDoorToDoor(LocalDate.of(2023, 5, 10), LocalDate.of(2023, 5, 12), RentalLength.ShortTermRental);
 //        System.out.println(shortRentalDoorToDoor);
 //        System.out.println();
+        Client client1 = new Client("John", "Smith", LocalDate.of(1988, 4, 2), LocalDate.of(2010, 10, 20), LocalDate.of(2025, 10, 20));
+        Rental rental1 = new Rental(LocalDate.of(2024, 3, 10), LocalDate.of(2024, 03, 20), 400d, car1, client1, 150d);
 
 
 
@@ -125,7 +135,7 @@ public class Main {
         // @TODO dokonczyc dziedziczenie dynamiczne
         // Szczegóły implementacji: dziedziczenie dynamiczne pomiędzy klasami Person, YoungDriver, oraz RegularDriver
         System.out.println();
-        System.out.println("Dziedziczenie dynamiczne:");
+        System.out.println("Dynamic inheritance:");
         System.out.println("-------------------------------");
 //        Person person1 = new Person("Joe", "Black", LocalDate.of(1995, 4, 30));
 //

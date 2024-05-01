@@ -12,65 +12,70 @@ public class Rental extends ObjectPlus {
     private LocalDate startDate;
     private LocalDate endDate;
     private double distance; // atrybut wymagany
-    private Double extraFee; // atrybut opcjonalny - dla samochodów zaliczanych do klasy Premium
     private static double kmPrice = 1.70; // atrybut klasowy - dla wszystkich samochodów opłata za każdy przejechany kilometr jest taka sama
-    private Car car;
+    private Vehicle vehicle;
     private Client client;
 
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, Car car, Client client) {
+    // atrybuty ze zlikwidowane aspektu (długosc wynajmu) umieszczono w nadklasie Rental
+    private Enum<RentalLength> rentalLengthType;
+    private Double additionalDiscount; // atrybut opcjonalny - dodatkowa zniżka dla wynajmów długoterminowych
+
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Client client) {
         super();
         try {
             setId();
             setStartDate(startDate);
             setEndDate(endDate);
             setDistance(distance);
-            setCar(car);
+            setVehicle(vehicle);
             setClient(client);
+            setRentalLengthType();
         } catch (Exception e) {
             removeFromExtent();
         }
     }
 
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Car car, Client client) {
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Client client) {
         super();
         try {
             setId();
             setStartDate(startDate);
             setEndDate(endDate);
             setDistance(distance, unit);
-            setCar(car);
+            setVehicle(vehicle);
             setClient(client);
+            setRentalLengthType();
         } catch (Exception e) {
             removeFromExtent();
         }
     }
 
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, Double extraFee, Car car, Client client) {
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Client client, Double additionalDiscount) {
         super();
         try {
             setId();
             setStartDate(startDate);
             setEndDate(endDate);
             setDistance(distance);
-            setExtraFee(extraFee);
-            setCar(car);
+            setVehicle(vehicle);
             setClient(client);
+            setRentalLengthType();
+            setAdditionalDiscount(additionalDiscount);
         } catch (Exception e) {
             removeFromExtent();
         }
     }
-
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Double extraFee, Car car, Client client) {
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Client client, Double additionalDiscount) {
         super();
         try {
             setId();
             setStartDate(startDate);
             setEndDate(endDate);
-            setDistance(distance);
-            setExtraFee(extraFee);
             setDistance(distance, unit);
-            setCar(car);
+            setVehicle(vehicle);
             setClient(client);
+            setRentalLengthType();
+            setAdditionalDiscount(additionalDiscount);
         } catch (Exception e) {
             removeFromExtent();
         }
@@ -116,12 +121,12 @@ public class Rental extends ObjectPlus {
     }
 
     public double getCost() { // atrybut pochodny - zależy od trzech pozostałych
-        if (extraFee == null) {
+        if (additionalDiscount == null) {
             return (this.distance * kmPrice);
         }
 
         DecimalFormat decimalFormat = new DecimalFormat("##.00");
-        return Double.parseDouble( decimalFormat.format((this.distance * kmPrice) + extraFee));
+        return Double.parseDouble( decimalFormat.format((this.distance * kmPrice) - additionalDiscount));
     }
 
     public double getDistance() {
@@ -148,21 +153,6 @@ public class Rental extends ObjectPlus {
         }
     }
 
-    public double getExtraFee() {
-        if (extraFee != null) {
-            return extraFee;
-        } else {
-            return 0.0;
-        }
-    }
-
-    public void setExtraFee(Double extraFee) {
-        // Wartość null jest dozwolona, ponieważ jest to atrybut opcjonalny.
-        checkCorrectnessOfOptionalNumericalValueGreaterThanOrEqualToZero(extraFee, "Extra fee");
-        this.extraFee = extraFee;
-    }
-
-
     public static double getKmPrice() {
         return kmPrice;
     }
@@ -172,35 +162,35 @@ public class Rental extends ObjectPlus {
         Rental.kmPrice = kmPrice;
     }
 
-    public Car getCar() {
-        return car;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
-    public void setCar(Car car) {
+    public void setVehicle(Vehicle vehicle) {
 
-        if (this.car == null && car != null) {
-            // new car - no car previously assigned
-            this.car = car;
+        if (this.vehicle == null && vehicle != null) {
+            // new vehicle - no vehicle previously assigned
+            this.vehicle = vehicle;
 
-            if (car.getRentals().contains(this)) {
+            if (vehicle.getRentals().contains(this)) {
                 return;
             }
-            car.addRental(this);
+            vehicle.addRental(this);
 
-        } else if (this.car != null && car == null) {
-            // removing the car
-            Car tmp = this.car;
-            this.car = null;
+        } else if (this.vehicle != null && vehicle == null) {
+            // removing the vehicle
+            Vehicle tmp = this.vehicle;
+            this.vehicle = null;
             tmp.removeRental(this);
 
-        } else if (this.car != null && car != null) {
-            // changing the car
-            Car tmp = this.car;
-            this.car = null;
+        } else if (this.vehicle != null && vehicle != null) {
+            // changing the vehicle
+            Vehicle tmp = this.vehicle;
+            this.vehicle = null;
             tmp.removeRental(this);
 
-            this.car = car;
-            car.addRental(this);
+            this.vehicle = vehicle;
+            vehicle.addRental(this);
         }
     }
     public Client getClient() {
@@ -230,6 +220,31 @@ public class Rental extends ObjectPlus {
         }
     }
 
+    public Enum<RentalLength> getRentalLengthType() {
+        return rentalLengthType;
+    }
+
+    public void setRentalLengthType() {
+        if (getLengthOfRental() < 3) {
+            this.rentalLengthType = RentalLength.ShortTermRental;
+        } else {
+            this.rentalLengthType = RentalLength.LongTermRental;
+        }
+    }
+
+    public Double getAdditionalDiscount() {
+        return additionalDiscount;
+    }
+
+    public void setAdditionalDiscount(Double additionalDiscount) {
+        checkCorrectnessOfOptionalNumericalValueGreaterThanOrEqualToZero(additionalDiscount, "Additional discount");
+        // dla wynajmów krótkoterminowych (poniżej 3 dni) nie ma możliwości uwzględnienia dodatkowego rabatu
+        if (this.rentalLengthType == RentalLength.ShortTermRental) {
+            return;
+        }
+        this.additionalDiscount = additionalDiscount;
+    }
+
     @Override // Przesłonięcie metody.
     public String toString() {
         return "\n\nRental ID: " + id +
@@ -237,6 +252,7 @@ public class Rental extends ObjectPlus {
                 "\nTotal distance: " + distance +
                 "\nStart date: " + startDate +
                 "\nEnd date: " + endDate +
+                "\nRental length type: " + rentalLengthType +
                 "\nClient: " + client.getFirstName() + " " + client.getLastName();
     }
 }

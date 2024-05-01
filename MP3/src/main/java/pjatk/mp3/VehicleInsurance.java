@@ -5,16 +5,16 @@ import java.util.UUID;
 
 import static pjatk.mp3.Utils.*;
 
-public class CarInsurance extends ObjectPlus {
+public class VehicleInsurance extends ObjectPlus {
     private UUID id;
     private LocalDate startDate;
     private LocalDate endDate;
     private double cost;
     private String scope;
-    private Car car;
+    private Vehicle vehicle;
     private Insurer insurer;
 
-    public CarInsurance(LocalDate startDate, LocalDate endDate, double cost, String scope, Car car, Insurer insurer) {
+    public VehicleInsurance(LocalDate startDate, LocalDate endDate, double cost, String scope, Vehicle vehicle, Insurer insurer) {
         super();
         try {
             setId();
@@ -22,7 +22,7 @@ public class CarInsurance extends ObjectPlus {
             setEndDate(endDate);
             setCost(cost);
             setScope(scope);
-            setCar(car);
+            setVehicle(vehicle);
             setInsurer(insurer);
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,35 +82,35 @@ public class CarInsurance extends ObjectPlus {
         this.scope = scope;
     }
 
-    public Car getCar() {
-        return car;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
-    public void setCar(Car car) {
+    public void setVehicle(Vehicle vehicle) {
 
-        if (this.car == null && car != null) {
-            // new car - no car previously assigned
-            this.car = car;
+        if (this.vehicle == null && vehicle != null) {
+            // new vehicle - no vehicle previously assigned
+            this.vehicle = vehicle;
 
-            if (car.getCarInsurances().contains(this)) {
+            if (vehicle.getVehicleInsurances().contains(this)) {
                 return;
             }
-            car.addCarInsurance(this);
+            vehicle.addVehicleInsurance(this);
 
-        } else if (this.car != null && car == null) {
-            // removing the car
-            Car tmp = this.car;
-            this.car = null;
-            tmp.removeCarInsurance(this);
+        } else if (this.vehicle != null && vehicle == null) {
+            // removing the vehicle
+            Vehicle tmp = this.vehicle;
+            this.vehicle = null;
+            tmp.removeVehicleInsurance(this);
 
-        } else if (this.car != null && car != null) {
-            // changing the car
-            Car tmp = this.car;
-            this.car = null;
-            tmp.removeCarInsurance(this);
+        } else if (this.vehicle != null && vehicle != null) {
+            // changing the vehicle
+            Vehicle tmp = this.vehicle;
+            this.vehicle = null;
+            tmp.removeVehicleInsurance(this);
 
-            this.car = null;
-            car.addCarInsurance(this);
+            this.vehicle = null;
+            vehicle.addVehicleInsurance(this);
         }
     }
 
@@ -124,46 +124,46 @@ public class CarInsurance extends ObjectPlus {
             // new insurer - no insurer previously assigned
             this.insurer = insurer;
 
-            if (insurer.getCarInsurances().contains(this)) {
+            if (insurer.getVehicleInsurances().contains(this)) {
                 return;
             }
-            insurer.addCarInsurance(this);
+            insurer.addVehicleInsurance(this);
 
         } else if (this.insurer != null && insurer == null) {
             // removing the insurer
             Insurer tmp = this.insurer;
             this.insurer = null;
-            tmp.removeCarInsurance(this);
+            tmp.removeVehicleInsurance(this);
 
         } else if (this.insurer != null && insurer != null) {
             // changing the insurer
             Insurer tmp = this.insurer;
             this.insurer = null;
-            tmp.removeCarInsurance(this);
+            tmp.removeVehicleInsurance(this);
 
             this.insurer = null;
-            insurer.addCarInsurance(this);
+            insurer.addVehicleInsurance(this);
         }
     }
 
     public void removeCarInsurance() {
-        this.insurer.removeCarInsurance(this);
-        this.car.removeCarInsurance(this);
+        this.insurer.removeVehicleInsurance(this);
+        this.vehicle.removeVehicleInsurance(this);
         this.removeFromExtent();
     }
 
     @Override // Przesłonięcie metody.
     public String toString() {
-        return "Car insurance ID: " + id +
+        return "Vehicle insurance ID: " + id +
                 "\nStart date: " + startDate +
                 "\nEnd date: " + endDate +
                 "\nCost: " + cost +
                 "\nScope: " + scope +
                 "\nCar included: " +
-                "\n\tCar ID: " + car.getId() +
-                "\n\tBrand: " + car.getBrand() +
-                "\n\tModel: " + car.getModel() +
-                "\n\tCar's company branch: " + car.getCompanyBranch() +
+                "\n\tCar ID: " + vehicle.getId() +
+                "\n\tBrand: " + vehicle.getBrand() +
+                "\n\tModel: " + vehicle.getModel() +
+                "\n\tCar's company branch: " + vehicle.getCompanyBranch() +
                 "\nInsurance company: " + insurer.getCompanyName();
     }
 }

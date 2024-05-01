@@ -15,7 +15,7 @@ public class Brand implements Serializable {
     private String name;
     private String originCountry; // atrybut opcjonalny
     private Integer foundationYear; // atrybut opcjonalny
-    private List<Car> cars = new ArrayList<>();
+    private List<Vehicle> vehicles = new ArrayList<>();
 
     public Brand(String name) {
         setId();
@@ -83,36 +83,36 @@ public class Brand implements Serializable {
         this.foundationYear = foundationYear;
     }
 
-    public void addCar(Car car) {
-        if (car == null) {
-            throw new IllegalArgumentException("Car cannot be null.");
+    public void addVehicle(Vehicle vehicle) {
+        if (vehicle == null) {
+            throw new IllegalArgumentException("Vehicle cannot be null.");
         }
 
-        if (this.cars.contains(car)) {
+        if (this.vehicles.contains(vehicle)) {
             return;
         }
 
-        this.cars.add(car);
-        if (car.getBrand() == null) {
-            car.setBrand(this);
+        this.vehicles.add(vehicle);
+        if (vehicle.getBrand() == null) {
+            vehicle.setBrand(this);
         }
     }
 
-    public void removeCar(Car car) {
-        if (car == null) {
-            throw new IllegalArgumentException("Car cannot be null.");
+    public void removeVehicle(Vehicle vehicle) {
+        if (vehicle == null) {
+            throw new IllegalArgumentException("Vehicle cannot be null.");
         }
 
-        if (!cars.contains(car)) {
+        if (!vehicles.contains(vehicle)) {
             return;
         }
 
-        cars.remove(car);
-        car.setBrand(null);
+        vehicles.remove(vehicle);
+        vehicle.setBrand(null);
     }
 
-    public List<Car> getCars() {
-        return Collections.unmodifiableList(cars);
+    public List<Vehicle> getVehicles() {
+        return Collections.unmodifiableList(vehicles);
     }
 
     @Override

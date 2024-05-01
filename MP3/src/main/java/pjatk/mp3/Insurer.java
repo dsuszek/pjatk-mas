@@ -12,7 +12,7 @@ public class Insurer extends ObjectPlus {
     private String companyName;
     private String phoneNumber;
     private String emailAddress;
-    private Set<CarInsurance> carInsurances = new HashSet<>();
+    private Set<VehicleInsurance> vehicleInsurances = new HashSet<>();
 
     public Insurer(String companyName, String phoneNumber, String emailAddress) {
         super();
@@ -61,35 +61,35 @@ public class Insurer extends ObjectPlus {
         this.emailAddress = emailAddress;
     }
 
-    public Set<CarInsurance> getCarInsurances() {
-        return Collections.unmodifiableSet(carInsurances);
+    public Set<VehicleInsurance> getVehicleInsurances() {
+        return Collections.unmodifiableSet(vehicleInsurances);
     }
 
-    public void addCarInsurance(CarInsurance carInsurance) {
-        if (carInsurance == null) {
+    public void addVehicleInsurance(VehicleInsurance vehicleInsurance) {
+        if (vehicleInsurance == null) {
             throw new IllegalArgumentException();
         }
 
-        if (this.carInsurances.contains(carInsurance)) {
+        if (this.vehicleInsurances.contains(vehicleInsurance)) {
             return;
         }
 
-        this.carInsurances.add(carInsurance);
-        if (carInsurance.getInsurer() == null) {
-            carInsurance.setInsurer(this);
+        this.vehicleInsurances.add(vehicleInsurance);
+        if (vehicleInsurance.getInsurer() == null) {
+            vehicleInsurance.setInsurer(this);
         }
     }
 
-    public void removeCarInsurance(CarInsurance carInsurance) {
-        if (carInsurance == null) {
+    public void removeVehicleInsurance(VehicleInsurance vehicleInsurance) {
+        if (vehicleInsurance == null) {
             throw new IllegalArgumentException("Empty car insurance cannot be removed from the history.");
         }
 
-        if (!this.carInsurances.contains(carInsurance)) {
+        if (!this.vehicleInsurances.contains(vehicleInsurance)) {
             return;
         }
-        this.carInsurances.remove(carInsurance);
-        carInsurance.setInsurer(null);
+        this.vehicleInsurances.remove(vehicleInsurance);
+        vehicleInsurance.setInsurer(null);
     }
 
     @Override // Przesłonięcie metody.

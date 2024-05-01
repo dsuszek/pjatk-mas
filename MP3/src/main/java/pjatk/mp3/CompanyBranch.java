@@ -9,7 +9,7 @@ public class CompanyBranch extends ObjectPlus {
     private String name;
     private Address address;
     private Region region;
-    private Map<UUID, Car> carsQualified = new HashMap<>();
+    private Map<UUID, Vehicle> vehiclesQualified = new HashMap<>();
 
     private CompanyBranch(String name, Address address, Region region) {
         super();
@@ -73,42 +73,42 @@ public class CompanyBranch extends ObjectPlus {
         this.region = region;
     }
 
-    public void addCarQualified(Car car) {
-        // Sprawdzenie, czy ten samochód został już przypisany do któregoś z oddziałów firmy
-        if (!carsQualified.containsKey(car.getId())) { // Jeśli ten samochód nie może zostać znaleziony na podstawie identyfikatora
-            carsQualified.put(car.getId(), car);
+    public void addVehicleQualified(Vehicle vehicle) {
+        // sprawdzenie, czy ten pojazd został już przypisany do któregoś z oddziałów firmy
+        if (!vehiclesQualified.containsKey(vehicle.getId())) { // jeśli ten pojazd nie może zostać znaleziony na podstawie identyfikatora
+            vehiclesQualified.put(vehicle.getId(), vehicle);
 
-            // add the reverse connection
-            if (car.getCompanyBranch() == null) {
-                car.setCompanyBranch(this);
+            // połączenie zwrotne
+            if (vehicle.getCompanyBranch() == null) {
+                vehicle.setCompanyBranch(this);
             }
         }
     }
 
-    public Car findCarQualified(UUID id) {
-        // Sprawdzenie, czy dane o tym samochodzie są już dostępne
-        if (!carsQualified.containsKey(id)) {
+    public Vehicle findVehicleQualified(UUID id) {
+        // sprawdzenie, czy dane o tym pojeździe są już dostępne
+        if (!vehiclesQualified.containsKey(id)) {
             throw new IllegalArgumentException("Unable to find car with ID: " + id);
         }
 
-        return carsQualified.get(id);
+        return vehiclesQualified.get(id);
     }
 
-    public void removeCarQualified(Car car) {
-        if (car == null) {
-            throw new IllegalArgumentException("Car cannot be null.");
+    public void removeVehicleQualified(Vehicle vehicle) {
+        if (vehicle == null) {
+            throw new IllegalArgumentException("Vehicle cannot be null.");
         }
 
-        if (!carsQualified.containsKey(car.getId())) {
+        if (!vehiclesQualified.containsKey(vehicle.getId())) {
             return;
         }
 
-        carsQualified.remove(car.getId());
-        car.setCompanyBranch(null);
+        vehiclesQualified.remove(vehicle.getId());
+        vehicle.setCompanyBranch(null);
     }
 
-    public Set<Car> getCars() {
-        return Set.copyOf(this.carsQualified.values());
+    public Set<Vehicle> getVehicles() {
+        return Set.copyOf(this.vehiclesQualified.values());
     }
 
 
