@@ -7,13 +7,13 @@ import java.util.Set;
 
 import static pjatk.mp3.Utils.checkCorrectnessOfStringAttribute;
 
-public class Client extends Person {
-    private LocalDate drivingLicenceIssueDate;
-    private LocalDate drivingLicenceExpirationDate;
+public class Customer extends Person {
+    private LocalDate currentDrivingLicenceIssueDate;
+    private LocalDate currentDrivingLicenceExpirationDate;
 
     private Set<Rental> rentals = new HashSet<>(); // Rental to klasa asocjacyjna — liczności 1...* - jeden klient może wiele razy wynajmować auto
 
-    public Client(String firstName, String lastName, LocalDate birthDate, LocalDate drivingLicenceIssueDate, LocalDate drivingLicenceExpirationDate) {
+    public Customer(String firstName, String lastName, LocalDate birthDate, LocalDate currentDrivingLicenceIssueDate, LocalDate currentDrivingLicenceExpirationDate) {
         super(firstName, lastName, birthDate);
         try {
 
@@ -40,14 +40,6 @@ public class Client extends Person {
         checkCorrectnessOfStringAttribute("Last name", lastName);
         this.lastName = lastName;
     }
-
-    @Override // Przesłonięcie metody.
-    public String toString() {
-        return "Client ID: " + id +
-                "\nFirst name: " + firstName +
-                "\nLast name: " + lastName;
-    }
-
 
     public Set<Rental> getRentals() {
         return Collections.unmodifiableSet(rentals);
@@ -78,5 +70,28 @@ public class Client extends Person {
         }
         this.rentals.remove(rental);
         rental.setClient(null);
+    }
+
+    public LocalDate getCurrentDrivingLicenceIssueDate() {
+        return currentDrivingLicenceIssueDate;
+    }
+
+    public void setCurrentDrivingLicenceIssueDate(LocalDate currentDrivingLicenceIssueDate) {
+        this.currentDrivingLicenceIssueDate = currentDrivingLicenceIssueDate;
+    }
+
+    public LocalDate getCurrentDrivingLicenceExpirationDate() {
+        return currentDrivingLicenceExpirationDate;
+    }
+
+    public void setCurrentDrivingLicenceExpirationDate(LocalDate currentDrivingLicenceExpirationDate) {
+        this.currentDrivingLicenceExpirationDate = currentDrivingLicenceExpirationDate;
+    }
+
+    @Override // Przesłonięcie metody.
+    public String toString() {
+        return "Client ID: " + id +
+                "\nFirst name: " + firstName +
+                "\nLast name: " + lastName;
     }
 }

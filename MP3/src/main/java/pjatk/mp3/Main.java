@@ -133,8 +133,8 @@ public class Main {
         System.out.println();
         System.out.println("Multi-aspect inheritance");
         System.out.println("-------------------------------");
-        Client client1 = new Client("John", "Smith", LocalDate.of(1988, 4, 2), LocalDate.of(2010, 10, 20), LocalDate.of(2025, 10, 20));
-        RentalDoorToDoor shortRentalDoorToDoor = new RentalDoorToDoor(LocalDate.of(2023, 5, 10), LocalDate.of(2023, 5, 12), 145d, car2, client1, RentalLengthTypes.SHORT_TERM_RENTAL, 50d, new Address("Canal Street", (short) 4, (short) 2, "Manchester", "4043 FD"));
+        Customer customer1 = new Customer("John", "Smith", LocalDate.of(1988, 4, 2), LocalDate.of(2010, 10, 20), LocalDate.of(2025, 10, 20));
+        RentalDoorToDoor shortRentalDoorToDoor = new RentalDoorToDoor(LocalDate.of(2023, 5, 10), LocalDate.of(2023, 5, 12), 145d, car2, customer1, RentalLengthTypes.SHORT_TERM_RENTAL, 50d, new Address("Canal Street", (short) 4, (short) 2, "Manchester", "4043 FD"));
         System.out.println(shortRentalDoorToDoor);
         System.out.println();
 
@@ -149,8 +149,9 @@ public class Main {
         System.out.println();
         System.out.println("Dynamic inheritance");
         System.out.println("-------------------------------");
-//        Person person1 = new Person("Joe", "Black", LocalDate.of(1995, 4, 30));
-//
+        Person regularCustomer1 = new Customer("Michael", "Newman",LocalDate.of(1959,4,2), LocalDate.of(2010, 10, 2), LocalDate.of(2030, 10, 2));
+        regularCustomer1 = new RegularCustomer(regularCustomer1, 0.1d);
+        System.out.println(regularCustomer1);
 //        List<Person> personList = ObjectPlus.getExtentForClass(Person.class);
 //        System.out.println();
 //        System.out.println("List of all object of class Person:");

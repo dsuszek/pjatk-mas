@@ -14,13 +14,13 @@ public class Rental extends ObjectPlus {
     private double distance; // atrybut wymagany
     private static double kmPrice = 1.70; // atrybut klasowy - dla wszystkich samochodów opłata za każdy przejechany kilometr jest taka sama
     private Vehicle vehicle;
-    private Client client;
+    private Customer customer;
 
     // atrybuty ze zlikwidowane aspektu (długosc wynajmu) umieszczono w nadklasie Rental
     private Enum<RentalLengthTypes> rentalLengthType;
     private Double additionalDiscount; // atrybut opcjonalny - dodatkowa zniżka dla wynajmów długoterminowych
 
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Client client, Enum<RentalLengthTypes> rentalLengthType) {
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType) {
         super();
         try {
             setId();
@@ -28,14 +28,14 @@ public class Rental extends ObjectPlus {
             setEndDate(endDate);
             setDistance(distance);
             setVehicle(vehicle);
-            setClient(client);
+            setClient(customer);
             setRentalLengthType(rentalLengthType);
         } catch (Exception e) {
             removeFromExtent();
         }
     }
 
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Client client, Enum<RentalLengthTypes> rentalLengthType) {
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType) {
         super();
         try {
             setId();
@@ -43,14 +43,14 @@ public class Rental extends ObjectPlus {
             setEndDate(endDate);
             setDistance(distance, unit);
             setVehicle(vehicle);
-            setClient(client);
+            setClient(customer);
             setRentalLengthType(rentalLengthType);
         } catch (Exception e) {
             removeFromExtent();
         }
     }
 
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Client client, Double additionalDiscount, Enum<RentalLengthTypes> rentalLengthType) {
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Customer customer, Double additionalDiscount, Enum<RentalLengthTypes> rentalLengthType) {
         super();
         try {
             setId();
@@ -58,14 +58,14 @@ public class Rental extends ObjectPlus {
             setEndDate(endDate);
             setDistance(distance);
             setVehicle(vehicle);
-            setClient(client);
+            setClient(customer);
             setRentalLengthType(rentalLengthType);
             setAdditionalDiscount(additionalDiscount);
         } catch (Exception e) {
             removeFromExtent();
         }
     }
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Client client, Double additionalDiscount, Enum<RentalLengthTypes> rentalLengthType) {
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Customer customer, Double additionalDiscount, Enum<RentalLengthTypes> rentalLengthType) {
         super();
         try {
             setId();
@@ -73,7 +73,7 @@ public class Rental extends ObjectPlus {
             setEndDate(endDate);
             setDistance(distance, unit);
             setVehicle(vehicle);
-            setClient(client);
+            setClient(customer);
             setRentalLengthType(rentalLengthType);
             setAdditionalDiscount(additionalDiscount);
         } catch (Exception e) {
@@ -193,30 +193,30 @@ public class Rental extends ObjectPlus {
             vehicle.addRental(this);
         }
     }
-    public Client getClient() {
-        return client;
+    public Customer getClient() {
+        return customer;
     }
 
-    public void setClient(Client client) throws Exception {
-        if (this.client == null && client != null) {
+    public void setClient(Customer customer) throws Exception {
+        if (this.customer == null && customer != null) {
             // new client - no client previously assigned
-            this.client = client;
-            client.addRental(this);
+            this.customer = customer;
+            customer.addRental(this);
 
-        } else if (this.client != null && client == null) {
+        } else if (this.customer != null && customer == null) {
             // removing the client
-            Client tmp = this.client;
-            this.client = null;
+            Customer tmp = this.customer;
+            this.customer = null;
             tmp.removeRental(this);
 
-        } else if (this.client != null && client != null) {
+        } else if (this.customer != null && customer != null) {
             // changing the client
-            Client tmp = this.client;
-            this.client = null;
+            Customer tmp = this.customer;
+            this.customer = null;
             tmp.removeRental(this);
 
-            this.client = client;
-            client.addRental(this);
+            this.customer = customer;
+            customer.addRental(this);
         }
     }
 
@@ -249,6 +249,6 @@ public class Rental extends ObjectPlus {
                 "\nStart date: " + startDate +
                 "\nEnd date: " + endDate +
                 "\nRental length type: " + rentalLengthType +
-                "\nClient: " + client.getFirstName() + " " + client.getLastName();
+                "\nClient: " + customer.getFirstName() + " " + customer.getLastName();
     }
 }
