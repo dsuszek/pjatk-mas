@@ -39,6 +39,7 @@ build/
 # .idea files
 .idea/*
 .idea/**
+.idea/
 
 ## File-based project format:
 *.iws
@@ -56,4 +57,4 @@ atlassian-ide-plugin.xml
 
 /target/*
 
-.dat
+*.dat
