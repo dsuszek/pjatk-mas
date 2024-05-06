@@ -50,7 +50,7 @@ public class Rental extends ObjectPlus {
         }
     }
 
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Customer customer, Double additionalDiscount, Enum<RentalLengthTypes> rentalLengthType) {
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, Double additionalDiscount) {
         super();
         try {
             setId();
@@ -65,7 +65,7 @@ public class Rental extends ObjectPlus {
             removeFromExtent();
         }
     }
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Customer customer, Double additionalDiscount, Enum<RentalLengthTypes> rentalLengthType) {
+    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType,  Double additionalDiscount) {
         super();
         try {
             setId();

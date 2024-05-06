@@ -19,13 +19,14 @@ public abstract class Vehicle extends ObjectPlus {
     protected String vehicleRegistrationNumber;
     public abstract double calculateRentalPricePerKilometer();
 
-    public Vehicle(Brand brand, String model, String vehicleRegistrationNumber) {
+    public Vehicle(Brand brand, String model, String vehicleRegistrationNumber, CompanyBranch companyBranch) {
         super();
         try {
             setId();
             setBrand(brand);
             setModel(model);
             setVehicleRegistrationNumber(vehicleRegistrationNumber);
+            setCompanyBranch(companyBranch);
         } catch (Exception e) {
             e.printStackTrace();
             removeFromExtent();

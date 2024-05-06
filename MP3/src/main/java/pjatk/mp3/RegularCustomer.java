@@ -1,11 +1,13 @@
 package pjatk.mp3;
 
+import java.time.LocalDate;
+
 import static pjatk.mp3.Utils.*;
 
 public class RegularCustomer extends Person {
 
-    double discount;
-    public RegularCustomer(Person previousPerson, double discount) {
+    Double discount;
+    public RegularCustomer(Person previousPerson, Double discount) {
         super(previousPerson.firstName, previousPerson.lastName, previousPerson.birthDate);
         try {
             setDiscount(discount);
@@ -14,18 +16,18 @@ public class RegularCustomer extends Person {
         }
     }
 
-    public double getDiscount() {
+    public Double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(double discount) {
+    public void setDiscount(Double discount) {
         checkCorrectnessOfNumericalValueGreaterThanOrEqualToZero(discount, "Discount for experienced driver");
         this.discount = discount;
     }
 
     @Override
     public String toString() {
-        return "Driver ID: " + id +
+        return "Regular customer ID: " + id +
                 "\nFirst name: " + firstName +
                 "\nLast name: " + lastName +
                 "\nDiscount: " + discount;

@@ -3,10 +3,15 @@ package pjatk.mp3;
 public class Truck extends Vehicle {
     private double maximumAuthorisedMass;
 
-    public Truck(Brand brand, String model, String vehicleRegistrationNumber, double maximumAuthorisedMass) {
-        super(brand, model, vehicleRegistrationNumber);
+    public Truck(Brand brand, String model, String vehicleRegistrationNumber, CompanyBranch companyBranch, double maximumAuthorisedMass) {
+        super(brand, model, vehicleRegistrationNumber, companyBranch);
 
-        setMaximumAuthorisedMass(maximumAuthorisedMass);
+        try {
+            setMaximumAuthorisedMass(maximumAuthorisedMass);
+        } catch (Exception e) {
+            e.printStackTrace();
+            removeFromExtent();
+        }
     }
     public double getMaximumAuthorisedMass() {
         return maximumAuthorisedMass;

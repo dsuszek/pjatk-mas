@@ -1,7 +1,5 @@
 package pjatk.mp3;
 
-import jdk.jshell.spi.ExecutionControl;
-
 import java.util.*;
 
 import static pjatk.mp3.Utils.*;
@@ -9,11 +7,11 @@ import static pjatk.mp3.Utils.*;
 public class Car extends Vehicle {
     private double engineSize;
     private EnumSet<CarTypes> carTypes = EnumSet.of(CarTypes.CAR);
-    private Double suspensionHeight; // tylko dla typu samochodów SPORT_CAR
-    private Set<String> luxuryDesignElements; // tylko dla typu samochodów PREMIUM_CAR
-    private Double batteryCapacity; // tylko dla klasy samochodów ELECTRIC_CAR
-    public Car(Brand brand, String model, String vehicleRegistrationNumber, double engineSize) {
-        super(brand, model, vehicleRegistrationNumber);
+    private Double suspensionHeight; // w milimetrach, tylko dla samochodów typu SPORT_CAR
+    private Set<String> luxuryDesignElements; // tylko dla samochodów typu PREMIUM_CAR
+    private Double batteryCapacity; // w kWh, tylko dla samochodów typu ELECTRIC_CAR
+    public Car(Brand brand, String model, String vehicleRegistrationNumber, CompanyBranch companyBranch, double engineSize) {
+        super(brand, model, vehicleRegistrationNumber, companyBranch);
         try {
             setId();
             setBrand(brand);
@@ -25,8 +23,8 @@ public class Car extends Vehicle {
         }
     }
 
-    public Car(Brand brand, String model, String vehicleRegistrationNumber, double engineSize, EnumSet<CarTypes> carTypes) {
-        super(brand, model, vehicleRegistrationNumber);
+    public Car(Brand brand, String model, String vehicleRegistrationNumber, CompanyBranch companyBranch, double engineSize, EnumSet<CarTypes> carTypes) {
+        super(brand, model, vehicleRegistrationNumber, companyBranch);
         try {
             setId();
             setBrand(brand);
@@ -56,10 +54,9 @@ public class Car extends Vehicle {
         this.carTypes = carTypes;
     }
 
-    // @TODO dokonczyc metodę
-    // im większa pojemność silnika, tym wyższa opłata za każdy przejechany kilometr
     @Override
     public double calculateRentalPricePerKilometer() {
+        // im większa pojemność silnika, tym wyższa opłata za każdy przejechany kilometr
         // dla samochodów elektrycznych opłata za każdy przejechany kilometr jest stała i wynosi 1.0
         if (carTypes.contains(CarTypes.ELECTRIC_CAR)) {
             return 1.0d;
@@ -70,7 +67,7 @@ public class Car extends Vehicle {
 
     public Double getSuspensionHeight() {
         if (!carTypes.contains(CarTypes.SPORT_CAR)) {
-            throw new RuntimeException("Suspension height cannot be checked for this type of car.");
+            throw new RuntimeException("Information about suspension height is not available for this type of car.");
         }
         return suspensionHeight;
     }
@@ -86,7 +83,7 @@ public class Car extends Vehicle {
 
     public Set<String> getLuxuryDesignElements() {
         if(!carTypes.contains(CarTypes.PREMIUM_CAR)) {
-            throw new RuntimeException("This is not a premium car.");
+            throw new RuntimeException("Luxury elements are not available for this type of car.");
         }
 
         return Collections.unmodifiableSet(luxuryDesignElements);
@@ -94,26 +91,78 @@ public class Car extends Vehicle {
 
     public void setLuxuryDesignElement(Set<String> luxuryDesignElements) {
         if (!(carTypes.contains(CarTypes.PREMIUM_CAR)) && (!luxuryDesignElements.isEmpty())) {
-            throw new IllegalArgumentException("Luxury design elements cannot be added to this type of car.");
+            throw new RuntimeException("Luxury design elements cannot be added to this type of car.");
         }
+
+        checkCorrectnessOfSetOfStringsAttribute(luxuryDesignElements, "Luxury design elements");
 
         this.luxuryDesignElements = luxuryDesignElements;
     }
 
+    public void addLuxuryDesignElement(String luxuryDesignElement) {
+        if (!(carTypes.contains(CarTypes.PREMIUM_CAR))) {
+            throw new RuntimeException("Luxury design element cannot be added to this type of car.");
+        }
+    }
+
+    public Double getBatteryCapacity() {
+        if(!carTypes.contains(CarTypes.ELECTRIC_CAR)) {
+            throw new RuntimeException("Information about battery capacity is not available for this type of car.");
+        }
+
+        return batteryCapacity;
+    }
+
+    public void setBatteryCapacity(Double batteryCapacity) {
+        if (!(carTypes.contains(CarTypes.ELECTRIC_CAR))) {
+            throw new IllegalArgumentException("Information about battery capacity cannot be added to this type of car.");
+        }
+
+        checkCorrectnessOfNumericalValueGreaterThanZero(batteryCapacity, "Battery capacity");
+        this.batteryCapacity = batteryCapacity;
+    }
+
     @Override // Przesłonięcie metody.
     public String toString() {
-        if (this.companyBranch == null) {
+
+        if (carTypes.contains(CarTypes.SPORT_CAR) && suspensionHeight != null) {
+            return "Car " + id +
+                    "\nBrand: " + brand.getName() +
+                    "\nModel: " + model +
+                    "\nEngine size: " + engineSize +
+                    "\nCar types: " + carTypes +
+                    "\nSuspension height: " + suspensionHeight +
+                    "\nCompany branch: " + companyBranch +
+                    "\nDamages: " + damages +
+                    "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
+        }
+
+        if (carTypes.contains(CarTypes.ELECTRIC_CAR) && batteryCapacity != null) {
+            return "Car " + id +
+                    "\nBrand: " + brand.getName() +
+                    "\nModel: " + model +
+                    "\nEngine size: " + engineSize +
+                    "\nCar types: " + carTypes +
+                    "\nBattery capacity: " + batteryCapacity +
+                    "\nCompany branch: " + companyBranch +
+                    "\nDamages: " + damages +
+                    "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
+        }
+
+        if (carTypes.contains(CarTypes.PREMIUM_CAR) && !(luxuryDesignElements.isEmpty())) {
             return "Car ID: " + id +
                     "\nBrand: " + brand.getName() +
                     "\nModel: " + model +
                     "\nEngine size: " + engineSize +
                     "\nCar types: " + carTypes +
-                    "\nCompany branch: "  +
+                    "\nLuxury design elements: " + luxuryDesignElements +
+                    "\nCompany branch: " + companyBranch +
                     "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
         }
 
-        return "Car " + id +
+
+        return "Car ID: " + id +
                 "\nBrand: " + brand.getName() +
                 "\nModel: " + model +
                 "\nEngine size: " + engineSize +

@@ -16,9 +16,10 @@ public class Customer extends Person {
     public Customer(String firstName, String lastName, LocalDate birthDate, LocalDate currentDrivingLicenceIssueDate, LocalDate currentDrivingLicenceExpirationDate) {
         super(firstName, lastName, birthDate);
         try {
-
-
+            setCurrentDrivingLicenceIssueDate(currentDrivingLicenceIssueDate);
+            setCurrentDrivingLicenceExpirationDate(currentDrivingLicenceExpirationDate);
         } catch (Exception e) {
+            e.printStackTrace();
             removeFromExtent();
         }
     }
@@ -90,7 +91,7 @@ public class Customer extends Person {
 
     @Override // Przesłonięcie metody.
     public String toString() {
-        return "Client ID: " + id +
+        return "Customer ID: " + id +
                 "\nFirst name: " + firstName +
                 "\nLast name: " + lastName;
     }

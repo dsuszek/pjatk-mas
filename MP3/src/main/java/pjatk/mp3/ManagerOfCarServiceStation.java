@@ -47,7 +47,7 @@ public class ManagerOfCarServiceStation extends OfficeWorker implements IManualW
 
     @Override
     public boolean isWorkHealthAndSafetyTrainingValid() {
-        return false;
+        return (!this.dateUntilWhenWorkHealthAndSafetyTrainingIsValid.isBefore(LocalDate.now()));
     }
 
     @Override
@@ -60,6 +60,5 @@ public class ManagerOfCarServiceStation extends OfficeWorker implements IManualW
                 "\nHas valid sight test: " + isSightTestValid() +
                 "\nTechnical skills: " + technicalSkills +
                 "\nHas valid work health and safety training: " + isWorkHealthAndSafetyTrainingValid();
-
     }
 }
