@@ -36,7 +36,6 @@ public class Car extends ObjectPlus {
             setModel(model);
             setType(type);
             setEngineSize(engineSize);
-            addToExtent();
         } catch (Exception e) {
             removeFromExtent();
         }
