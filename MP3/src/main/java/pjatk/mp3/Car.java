@@ -135,9 +135,7 @@ public class Car extends Vehicle {
                     "\nCompany branch: " + companyBranch +
                     "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
-        }
-
-        if (carTypes.contains(CarTypes.ELECTRIC_CAR) && batteryCapacity != null) {
+        } else if (carTypes.contains(CarTypes.ELECTRIC_CAR) && batteryCapacity != null) {
             return "Car " + id +
                     "\nBrand: " + brand.getName() +
                     "\nModel: " + model +
@@ -147,9 +145,7 @@ public class Car extends Vehicle {
                     "\nCompany branch: " + companyBranch +
                     "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
-        }
-
-        if (carTypes.contains(CarTypes.PREMIUM_CAR) && !(luxuryDesignElements.isEmpty())) {
+        } else if (carTypes.contains(CarTypes.PREMIUM_CAR) && (luxuryDesignElements != null)) {
             return "Car ID: " + id +
                     "\nBrand: " + brand.getName() +
                     "\nModel: " + model +
@@ -159,16 +155,15 @@ public class Car extends Vehicle {
                     "\nCompany branch: " + companyBranch +
                     "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
+        } else {
+            return "Car ID: " + id +
+                    "\nBrand: " + brand.getName() +
+                    "\nModel: " + model +
+                    "\nEngine size: " + engineSize +
+                    "\nCar types: " + carTypes +
+                    "\nCompany branch: " + companyBranch +
+                    "\nDamages: " + damages +
+                    "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
         }
-
-
-        return "Car ID: " + id +
-                "\nBrand: " + brand.getName() +
-                "\nModel: " + model +
-                "\nEngine size: " + engineSize +
-                "\nCar types: " + carTypes +
-                "\nCompany branch: " + companyBranch +
-                "\nDamages: " + damages +
-                "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
     }
 }

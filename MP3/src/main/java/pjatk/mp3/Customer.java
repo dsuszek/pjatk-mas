@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static pjatk.mp3.Utils.checkCorrectnessOfStringAttribute;
+import static pjatk.mp3.Utils.*;
 
 public class Customer extends Person {
     private LocalDate currentDrivingLicenceIssueDate;
@@ -78,6 +78,7 @@ public class Customer extends Person {
     }
 
     public void setCurrentDrivingLicenceIssueDate(LocalDate currentDrivingLicenceIssueDate) {
+        checkIfDateIsNotInFuture(currentDrivingLicenceIssueDate, "Driving licence issue date");
         this.currentDrivingLicenceIssueDate = currentDrivingLicenceIssueDate;
     }
 
@@ -86,6 +87,7 @@ public class Customer extends Person {
     }
 
     public void setCurrentDrivingLicenceExpirationDate(LocalDate currentDrivingLicenceExpirationDate) {
+        checkIfDateIsNotInPast(currentDrivingLicenceExpirationDate, "Driving licence expiration date");
         this.currentDrivingLicenceExpirationDate = currentDrivingLicenceExpirationDate;
     }
 

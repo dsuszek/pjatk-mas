@@ -64,6 +64,12 @@ public class Utils {
         }
     }
 
+    public static void checkIfDateIsNotInFuture(LocalDate date, String paramName) {
+        if (date.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException(paramName + " cannot be in the future.");
+        }
+    }
+
     public static void logError(String message) {
         System.err.println(message);
     }

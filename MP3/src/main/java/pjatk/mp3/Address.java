@@ -77,10 +77,10 @@ public class Address implements Serializable {
 
     @Override // Przesłonięcie metody.
     public String toString() {
-        return "\n\tStreet name: " + streetName +
-                "\n\tStreet number: " + streetNumber +
-                "\n\tApartment number: " + apartmentNumber +
-                "\n\tCity: " + city +
-                "\n\tPostal code: " + postalCode;
+        return "\n\tStreet name: " + getStreetName() +
+                "\n\tStreet number: " + getStreetNumber() +
+                "\n\tApartment number: " + getApartmentNumber() +
+                "\n\tCity: " + getCity() +
+                "\n\tPostal code: " + getPostalCode();
     }
 }
