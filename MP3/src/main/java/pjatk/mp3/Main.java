@@ -14,7 +14,7 @@ public class Main {
         //  - ostrzeżeń o błędach w danych wejściowych
         //  zostały przygotowane w języku angielskim ze względu na brak problemów z odmianą słów.
 
-        // Elementy ocenanie w MP2:
+        // Elementy ocenanie w MP3:
         // 1. Dziedziczenie rozłączne
         // 2. Klasa abstrakcyjna
         // 3. Polimorficzne wołanie metody
