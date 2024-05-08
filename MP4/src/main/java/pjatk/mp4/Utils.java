@@ -70,8 +70,10 @@ public class Utils {
         }
     }
 
-    public static void logError(String message) {
-        System.err.println(message);
+    public static void checkIfDateIsNotNull(LocalDate date, String paramName) {
+        if (date == null) {
+            throw new IllegalArgumentException(paramName + " cannot be null.");
+        }
     }
 
     public static <T> void printInfoAboutObjects(List<T> objects) {

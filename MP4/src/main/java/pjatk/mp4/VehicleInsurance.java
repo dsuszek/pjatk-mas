@@ -42,10 +42,7 @@ public class VehicleInsurance extends ObjectPlus {
     }
 
     public void setStartDate(LocalDate startDate) {
-        if (startDate == null) {
-            logError("Start date cannot be null.");
-            throw new IllegalArgumentException("Start date cannot be null.");
-        }
+        checkIfDateIsNotNull(startDate, "Start date of vehicle insurance");
         this.startDate = startDate;
     }
 
@@ -54,11 +51,8 @@ public class VehicleInsurance extends ObjectPlus {
     }
 
     public void setEndDate(LocalDate endDate) {
-        if (endDate == null) {
-            throw new IllegalArgumentException("End date cannot be null.");
-        }
+        checkIfDateIsNotNull(endDate, "End date of vehicle insurance");
         if (endDate.isBefore(this.getStartDate())) {
-            logError("End date cannot be before start date.");
             throw new IllegalArgumentException("End date cannot be before start date.");
         }
         this.endDate = endDate;

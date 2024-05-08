@@ -56,8 +56,8 @@ public class Customer extends Person {
         }
 
         this.rentals.add(rental);
-        if (rental.getClient() == null) {
-            rental.setClient(this);
+        if (rental.getCustomer() == null) {
+            rental.setCustomer(this);
         }
     }
 
@@ -70,7 +70,7 @@ public class Customer extends Person {
             return;
         }
         this.rentals.remove(rental);
-        rental.setClient(null);
+        rental.setCustomer(null);
     }
 
     public LocalDate getCurrentDrivingLicenceIssueDate() {
@@ -78,6 +78,7 @@ public class Customer extends Person {
     }
 
     public void setCurrentDrivingLicenceIssueDate(LocalDate currentDrivingLicenceIssueDate) {
+        checkIfDateIsNotNull(currentDrivingLicenceIssueDate, "Driving licence issue date");
         checkIfDateIsNotInFuture(currentDrivingLicenceIssueDate, "Driving licence issue date");
         this.currentDrivingLicenceIssueDate = currentDrivingLicenceIssueDate;
     }
@@ -87,7 +88,11 @@ public class Customer extends Person {
     }
 
     public void setCurrentDrivingLicenceExpirationDate(LocalDate currentDrivingLicenceExpirationDate) {
+        checkIfDateIsNotNull(currentDrivingLicenceExpirationDate, "Driving licence expiration date");
         checkIfDateIsNotInPast(currentDrivingLicenceExpirationDate, "Driving licence expiration date");
+        if (currentDrivingLicenceExpirationDate.isBefore(this.currentDrivingLicenceIssueDate)) {
+            throw new IllegalArgumentException("Expiration date cannot be before issue date.");
+        }
         this.currentDrivingLicenceExpirationDate = currentDrivingLicenceExpirationDate;
     }
 
@@ -95,8 +100,6 @@ public class Customer extends Person {
     public String toString() {
         return "Customer ID: " + id +
                 "\nFirst name: " + firstName +
-                "\nLast name: " + lastName +
-                "\nCurrent driving licence issue date: " + currentDrivingLicenceIssueDate +
-                "\nCurrent driving licence expiration date: " + currentDrivingLicenceExpirationDate;
+                "\nLast name: " + lastName;
     }
 }
