@@ -72,14 +72,6 @@ public class RentalDoorToDoor extends Rental {
 
     @Override
     public double getCost() { // atrybut pochodny - zależy od wartości pozostałych
-        // DecimalFormat decimalFormat = new DecimalFormat("##.00");
-//        if (getAdditionalDiscount() == null) {
-//            return Double.parseDouble(decimalFormat.format(this.getDistance() * getKmPrice()) + getExtraFee());
-//        }
-//
-//        return Double.parseDouble( decimalFormat.format((this.getDistance() * getKmPrice()) - getAdditionalDiscount() + getExtraFee()));
-
-
         if (getAdditionalDiscount() == null) {
             return (this.getDistance() * getKmPrice()) + getExtraFee();
         }
