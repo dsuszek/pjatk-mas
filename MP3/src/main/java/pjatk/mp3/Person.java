@@ -53,12 +53,6 @@ public abstract class Person extends ObjectPlus {
         this.lastName = lastName;
     }
 
-
-
-
-
-
-
     public LocalDate getBirthDate() {
         return birthDate;
     }

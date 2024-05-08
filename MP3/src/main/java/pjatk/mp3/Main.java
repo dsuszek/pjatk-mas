@@ -138,12 +138,14 @@ public class Main {
         System.out.println(shortRentalDoorToDoor);
         System.out.println();
 
+        RentalOnPremises longRentalOnPremises = new RentalOnPremises(LocalDate.of(2024, 5, 3), LocalDate.of(2024, 5, 30), 750d, car2, customer1, RentalLengthTypes.LONG_TERM_RENTAL, true);
+        System.out.println(longRentalOnPremises);
 
 
         // 7. Dziedziczenie dynamiczne
-        // Szczegóły implementacji: wykorzystano "sprytne" kopiowanie obiektów.
+        // Szczegóły implementacji: wykorzystano "sprytne" kopiowanie obiektów
         // Po osiągnieciu pewnego poziomu wynajmów, klient uzyska status "stałego klienta" i będzie upoważniony do dodatkowych rabatów.
-         System.out.println();
+        System.out.println();
         System.out.println("Dynamic inheritance");
         System.out.println("-------------------------------");
         Person customer2 = new Customer("Michael", "Newman",LocalDate.of(1959,4,2), LocalDate.of(2010, 10, 2), LocalDate.of(2030, 10, 2));

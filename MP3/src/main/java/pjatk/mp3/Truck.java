@@ -1,5 +1,6 @@
 package pjatk.mp3;
 
+import static pjatk.mp3.Utils.checkCorrectnessOfNumericalValueGreaterThanZero;
 public class Truck extends Vehicle {
     private double maximumAuthorisedMass;
 
@@ -18,9 +19,7 @@ public class Truck extends Vehicle {
     }
 
     public void setMaximumAuthorisedMass(double maximumAuthorisedMass) {
-        if (maximumAuthorisedMass < 0) {
-            throw new IllegalArgumentException("Maximum authorized mass must be greater than 0.");
-        }
+        checkCorrectnessOfNumericalValueGreaterThanZero(maximumAuthorisedMass, "Maximum authorised mass");
         this.maximumAuthorisedMass = maximumAuthorisedMass;
     }
 

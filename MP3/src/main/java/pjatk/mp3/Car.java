@@ -126,7 +126,7 @@ public class Car extends Vehicle {
     public String toString() {
 
         if (carTypes.contains(CarTypes.SPORT_CAR) && suspensionHeight != null) {
-            return "Car " + id +
+            return "Car ID: " + id +
                     "\nBrand: " + brand.getName() +
                     "\nModel: " + model +
                     "\nEngine size: " + engineSize +
@@ -136,7 +136,7 @@ public class Car extends Vehicle {
                     "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
         } else if (carTypes.contains(CarTypes.ELECTRIC_CAR) && batteryCapacity != null) {
-            return "Car " + id +
+            return "Car ID: " + id +
                     "\nBrand: " + brand.getName() +
                     "\nModel: " + model +
                     "\nEngine size: " + engineSize +

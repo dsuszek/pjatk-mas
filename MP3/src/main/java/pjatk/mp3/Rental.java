@@ -28,7 +28,7 @@ public class Rental extends ObjectPlus {
             setEndDate(endDate);
             setDistance(distance);
             setVehicle(vehicle);
-            setClient(customer);
+            setCustomer(customer);
             setRentalLengthType(rentalLengthType);
         } catch (Exception e) {
             removeFromExtent();
@@ -43,7 +43,7 @@ public class Rental extends ObjectPlus {
             setEndDate(endDate);
             setDistance(distance, unit);
             setVehicle(vehicle);
-            setClient(customer);
+            setCustomer(customer);
             setRentalLengthType(rentalLengthType);
         } catch (Exception e) {
             removeFromExtent();
@@ -58,7 +58,7 @@ public class Rental extends ObjectPlus {
             setEndDate(endDate);
             setDistance(distance);
             setVehicle(vehicle);
-            setClient(customer);
+            setCustomer(customer);
             setRentalLengthType(rentalLengthType);
             setAdditionalDiscount(additionalDiscount);
         } catch (Exception e) {
@@ -73,7 +73,7 @@ public class Rental extends ObjectPlus {
             setEndDate(endDate);
             setDistance(distance, unit);
             setVehicle(vehicle);
-            setClient(customer);
+            setCustomer(customer);
             setRentalLengthType(rentalLengthType);
             setAdditionalDiscount(additionalDiscount);
         } catch (Exception e) {
@@ -94,10 +94,7 @@ public class Rental extends ObjectPlus {
     }
 
     public void setStartDate(LocalDate startDate) {
-        if (startDate == null) {
-            logError("Start date cannot be null.");
-            throw new IllegalArgumentException("Start date cannot be null.");
-        }
+        checkIfDateIsNotNull(startDate, "Start date of rental");
         this.startDate = startDate;
     }
 
@@ -106,12 +103,9 @@ public class Rental extends ObjectPlus {
     }
 
     public void setEndDate(LocalDate endDate) {
-        if (endDate == null) {
-            throw new IllegalArgumentException("End date cannot be null.");
-        }
+        checkIfDateIsNotNull(endDate, "End date of rental");
         if (endDate.isBefore(this.getStartDate())) {
-            logError("End date cannot be before start date.");
-            throw new IllegalArgumentException("End date cannot be before start date.");
+            throw new IllegalArgumentException("End date of rental cannot be before start date.");
         }
         this.endDate = endDate;
     }
@@ -120,12 +114,13 @@ public class Rental extends ObjectPlus {
         return startDate.until(endDate, ChronoUnit.DAYS);
     }
 
-    public double getCost() { // atrybut pochodny - zależy od trzech pozostałych
+    public double getCost() { // atrybut pochodny - zależy od wartości pozostałych
+        DecimalFormat decimalFormat = new DecimalFormat("##.00");
         if (additionalDiscount == null) {
-            return (this.distance * kmPrice);
+            return Double.parseDouble(decimalFormat.format(this.distance * kmPrice));
         }
 
-        DecimalFormat decimalFormat = new DecimalFormat("##.00");
+
         return Double.parseDouble( decimalFormat.format((this.distance * kmPrice) - additionalDiscount));
     }
 
@@ -193,24 +188,24 @@ public class Rental extends ObjectPlus {
             vehicle.addRental(this);
         }
     }
-    public Customer getClient() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    public void setClient(Customer customer) throws Exception {
+    public void setCustomer(Customer customer) throws Exception {
         if (this.customer == null && customer != null) {
-            // new client - no client previously assigned
+            // new customer - no customer previously assigned
             this.customer = customer;
             customer.addRental(this);
 
         } else if (this.customer != null && customer == null) {
-            // removing the client
+            // removing the customer
             Customer tmp = this.customer;
             this.customer = null;
             tmp.removeRental(this);
 
         } else if (this.customer != null && customer != null) {
-            // changing the client
+            // changing the customer
             Customer tmp = this.customer;
             this.customer = null;
             tmp.removeRental(this);
@@ -249,6 +244,6 @@ public class Rental extends ObjectPlus {
                 "\nStart date: " + startDate +
                 "\nEnd date: " + endDate +
                 "\nRental length type: " + rentalLengthType +
-                "\nClient: " + customer.getFirstName() + " " + customer.getLastName();
+                "\nCustomer: " + customer.getFirstName() + " " + customer.getLastName();
     }
 }

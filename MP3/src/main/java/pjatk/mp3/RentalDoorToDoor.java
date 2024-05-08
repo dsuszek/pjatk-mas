@@ -1,5 +1,6 @@
 package pjatk.mp3;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 
 import static pjatk.mp3.Utils.checkCorrectnessOfOptionalNumericalValueGreaterThanOrEqualToZero;
@@ -67,5 +68,35 @@ public class RentalDoorToDoor extends Rental {
 
     public void setDeliveryAddress(Address deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
+    }
+
+    @Override
+    public double getCost() { // atrybut pochodny - zależy od wartości pozostałych
+        // DecimalFormat decimalFormat = new DecimalFormat("##.00");
+//        if (getAdditionalDiscount() == null) {
+//            return Double.parseDouble(decimalFormat.format(this.getDistance() * getKmPrice()) + getExtraFee());
+//        }
+//
+//        return Double.parseDouble( decimalFormat.format((this.getDistance() * getKmPrice()) - getAdditionalDiscount() + getExtraFee()));
+
+
+        if (getAdditionalDiscount() == null) {
+            return (this.getDistance() * getKmPrice()) + getExtraFee();
+        }
+
+        return (this.getDistance() * getKmPrice()) - getAdditionalDiscount() + getExtraFee();
+    }
+
+    @Override // Przesłonięcie metody.
+    public String toString() {
+        return "Rental door to door ID: " + getId() +
+                "\nTotal cost: " + getCost() +
+                "\nTotal distance: " + getDistance() +
+                "\nStart date: " + getStartDate() +
+                "\nEnd date: " + getEndDate() +
+                "\nRental length type: " + getRentalLengthType() +
+                "\nCustomer: " + getCustomer().getFirstName() + " " + getCustomer().getLastName() +
+                "\nExtra fee: " + getExtraFee() +
+                "\nDelivery address: " + getDeliveryAddress();
     }
 }

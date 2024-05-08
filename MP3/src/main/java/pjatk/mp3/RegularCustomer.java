@@ -1,11 +1,8 @@
 package pjatk.mp3;
 
-import java.time.LocalDate;
-
 import static pjatk.mp3.Utils.*;
 
 public class RegularCustomer extends Person {
-
     Double discount;
     public RegularCustomer(Person previousPerson, Double discount) {
         super(previousPerson.firstName, previousPerson.lastName, previousPerson.birthDate);
