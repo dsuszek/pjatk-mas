@@ -48,7 +48,7 @@ public class Customer extends Person {
 
     public void addRental(Rental rental) throws Exception {
         if (rental == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Rental cannot be null.");
         }
 
         if (this.rentals.contains(rental)) {
