@@ -13,10 +13,6 @@ public class Car extends Vehicle {
     public Car(Brand brand, String model, String vehicleRegistrationNumber, CompanyBranch companyBranch, double engineSize) {
         super(brand, model, vehicleRegistrationNumber, companyBranch);
         try {
-            setId();
-            setBrand(brand);
-            setModel(model);
-            setVehicleRegistrationNumber(vehicleRegistrationNumber);
             setEngineSize(engineSize);
         } catch (Exception e) {
             removeFromExtent();
@@ -26,10 +22,6 @@ public class Car extends Vehicle {
     public Car(Brand brand, String model, String vehicleRegistrationNumber, CompanyBranch companyBranch, double engineSize, EnumSet<CarTypes> carTypes) {
         super(brand, model, vehicleRegistrationNumber, companyBranch);
         try {
-            setId();
-            setBrand(brand);
-            setModel(model);
-            setVehicleRegistrationNumber(vehicleRegistrationNumber);
             setEngineSize(engineSize);
             setCarTypes(carTypes);
         } catch (Exception e) {
