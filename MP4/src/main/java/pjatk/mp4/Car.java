@@ -13,10 +13,6 @@ public class Car extends Vehicle {
     public Car(Brand brand, String model, String vehicleRegistrationNumber, CompanyBranch companyBranch, double engineSize) {
         super(brand, model, vehicleRegistrationNumber, companyBranch);
         try {
-            setId();
-            setBrand(brand);
-            setModel(model);
-            setVehicleRegistrationNumber(vehicleRegistrationNumber);
             setEngineSize(engineSize);
         } catch (Exception e) {
             removeFromExtent();
@@ -26,10 +22,6 @@ public class Car extends Vehicle {
     public Car(Brand brand, String model, String vehicleRegistrationNumber, CompanyBranch companyBranch, double engineSize, EnumSet<CarTypes> carTypes) {
         super(brand, model, vehicleRegistrationNumber, companyBranch);
         try {
-            setId();
-            setBrand(brand);
-            setModel(model);
-            setVehicleRegistrationNumber(vehicleRegistrationNumber);
             setEngineSize(engineSize);
             setCarTypes(carTypes);
         } catch (Exception e) {
@@ -126,42 +118,42 @@ public class Car extends Vehicle {
     public String toString() {
 
         if (carTypes.contains(CarTypes.SPORT_CAR) && suspensionHeight != null) {
-            return "Car ID: " + id +
+            return "Car registration number: " + vehicleRegistrationNumber +
                     "\nBrand: " + brand.getName() +
                     "\nModel: " + model +
                     "\nEngine size: " + engineSize +
                     "\nCar types: " + carTypes +
                     "\nSuspension height: " + suspensionHeight +
-                    "\nCompany branch: " + companyBranch +
+                    "\nCompany branch: " + companyBranch.getName() +
                     "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
         } else if (carTypes.contains(CarTypes.ELECTRIC_CAR) && batteryCapacity != null) {
-            return "Car ID: " + id +
+            return "Car registration number: " + vehicleRegistrationNumber +
                     "\nBrand: " + brand.getName() +
                     "\nModel: " + model +
                     "\nEngine size: " + engineSize +
                     "\nCar types: " + carTypes +
                     "\nBattery capacity: " + batteryCapacity +
-                    "\nCompany branch: " + companyBranch +
+                    "\nCompany branch: " + companyBranch.getName() +
                     "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
         } else if (carTypes.contains(CarTypes.PREMIUM_CAR) && (luxuryDesignElements != null)) {
-            return "Car ID: " + id +
+            return "Car registration number: " + vehicleRegistrationNumber +
                     "\nBrand: " + brand.getName() +
                     "\nModel: " + model +
                     "\nEngine size: " + engineSize +
                     "\nCar types: " + carTypes +
                     "\nLuxury design elements: " + luxuryDesignElements +
-                    "\nCompany branch: " + companyBranch +
+                    "\nCompany branch: " + companyBranch.getName() +
                     "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
         } else {
-            return "Car ID: " + id +
+            return "Car registration number: " + vehicleRegistrationNumber +
                     "\nBrand: " + brand.getName() +
                     "\nModel: " + model +
                     "\nEngine size: " + engineSize +
                     "\nCar types: " + carTypes +
-                    "\nCompany branch: " + companyBranch +
+                    "\nCompany branch: " + companyBranch.getName() +
                     "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
         }

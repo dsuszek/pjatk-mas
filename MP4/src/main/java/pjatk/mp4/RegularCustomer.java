@@ -4,7 +4,7 @@ import static pjatk.mp4.Utils.*;
 
 public class RegularCustomer extends Person {
 
-    Double discount;
+    private Double discount;
     public RegularCustomer(Person previousPerson, Double discount) {
         super(previousPerson.firstName, previousPerson.lastName, previousPerson.birthDate);
         try {

@@ -7,11 +7,25 @@ import static pjatk.mp4.Utils.checkCorrectnessOfNumericalValueGreaterThanOrEqual
 
 public class SalesAgent extends OfficeWorker {
     private double commission;
+    private CompanyBranch companyBranch;
+    private InsuranceCompany insuranceCompany;
 
-    public SalesAgent(String firstName, String lastName, LocalDate birthDate, Set<String> softSkills, LocalDate dateUntilWhenSightTestIsValid, double commission) {
+    public SalesAgent(String firstName, String lastName, LocalDate birthDate, Set<String> softSkills, LocalDate dateUntilWhenSightTestIsValid, double commission, CompanyBranch companyBranch) {
         super(firstName, lastName, birthDate, softSkills, dateUntilWhenSightTestIsValid);
         try {
             setCommission(commission);
+            addLinkXor("EmployeeOfCompanyBranch", "EmployerCompanyBranch", companyBranch);
+        } catch (Exception e) {
+            e.printStackTrace();
+            removeFromExtent();
+        }
+    }
+
+    public SalesAgent(String firstName, String lastName, LocalDate birthDate, Set<String> softSkills, LocalDate dateUntilWhenSightTestIsValid, double commission, InsuranceCompany insuranceCompany) {
+        super(firstName, lastName, birthDate, softSkills, dateUntilWhenSightTestIsValid);
+        try {
+            setCommission(commission);
+            addLinkXor("EmployeeOfInsuranceCompany", "EmployerInsuranceCompany", insuranceCompany);
         } catch (Exception e) {
             e.printStackTrace();
             removeFromExtent();
@@ -35,7 +49,9 @@ public class SalesAgent extends OfficeWorker {
                 "\nAge: " + getAge() +
                 "\nSkills relevant for office work: " + getOfficeWorkSkills().toString() +
                 "\nHas valid sight test: " + isSightTestValid() +
-                "\nCommission: " + commission;
+                "\nCommission: " + commission +
+                "\nWorks in: " + companyBranch +
+                "\nWorks in insurance company: " + insuranceCompany;
     }
 }
 

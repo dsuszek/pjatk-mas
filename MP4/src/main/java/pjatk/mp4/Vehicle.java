@@ -1,9 +1,6 @@
 package pjatk.mp4;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static pjatk.mp4.Utils.checkCorrectnessOfStringAttribute;
 
@@ -17,6 +14,7 @@ public abstract class Vehicle extends ObjectPlus {
     protected Set<Rental> rentals = new HashSet<>();
     protected Set<VehicleInsurance> vehicleInsurances = new HashSet<>();
     protected String vehicleRegistrationNumber;
+    protected static Set<String> allVehicleRegistrationNumbers = new HashSet<>();
     public abstract double calculateRentalPricePerKilometer();
 
     public Vehicle(Brand brand, String model, String vehicleRegistrationNumber, CompanyBranch companyBranch) {
@@ -86,7 +84,13 @@ public abstract class Vehicle extends ObjectPlus {
 
     public void setVehicleRegistrationNumber(String vehicleRegistrationNumber) {
         checkCorrectnessOfStringAttribute(vehicleRegistrationNumber, "Vehicle registration number");
-        this.vehicleRegistrationNumber = vehicleRegistrationNumber;
+        synchronized (allVehicleRegistrationNumbers) {
+            if (allVehicleRegistrationNumbers.contains(vehicleRegistrationNumber)) {
+                throw new IllegalArgumentException("Vehicle registration number must be unique. The value " + vehicleRegistrationNumber + " already exists.");
+            }
+            this.vehicleRegistrationNumber = vehicleRegistrationNumber;
+            allVehicleRegistrationNumbers.add(vehicleRegistrationNumber);
+        }
     }
 
     public Set<String> getDamages() {

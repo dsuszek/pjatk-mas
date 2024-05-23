@@ -31,11 +31,10 @@ public class Truck extends Vehicle {
 
     @Override
     public String toString() {
-        return "Truck ID: " + getId() +
-                "\nBrand: " + getBrand() +
-                "\nModel: " + getModel() +
-                "\nRegistration number: " + getVehicleRegistrationNumber() +
-                "\nMaximum authorised mass: " + getMaximumAuthorisedMass() +
+        return "Truck registration number: " + vehicleRegistrationNumber +
+                "\nBrand: " + brand +
+                "\nModel: " + model +
+                "\nMaximum authorised mass: " + maximumAuthorisedMass +
                 "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
     }
 }

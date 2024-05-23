@@ -1,13 +1,10 @@
 package pjatk.mp4;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static pjatk.mp4.Utils.checkCorrectnessOfStringAttribute;
 
-public class CompanyBranch extends ObjectPlus {
+public class CompanyBranch extends ObjectPlus4 {
     private UUID id;
     private String name;
     private Address address;

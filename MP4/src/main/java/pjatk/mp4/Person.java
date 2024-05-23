@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import static pjatk.mp4.Utils.checkCorrectnessOfStringAttribute;
 
-public abstract class Person extends ObjectPlus {
+public abstract class Person extends ObjectPlus4 {
 
     // Wszystkie atrybuty klasy Person muszą być widoczne dla klas dziedziczących po niej - używamy ograniczenia protected.
     protected UUID id;
