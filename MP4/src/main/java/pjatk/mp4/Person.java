@@ -68,13 +68,4 @@ public abstract class Person extends ObjectPlus4 {
     public int getAge() { // atrybut pochodny
         return Period.between(this.birthDate, LocalDate.now()).getYears();
     }
-
-    @Override
-    public String toString() {
-        return "Person ID: " + id +
-                "\nFirst name: " + firstName +
-                "\nLast name: " + lastName +
-                "\nBirth date: " + birthDate +
-                "\nAge: " + getAge();
-    }
 }

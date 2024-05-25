@@ -1,16 +1,20 @@
 package pjatk.mp4;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import static pjatk.mp4.Utils.*;
 
-public class ManagerOfCarServiceStation extends OfficeWorker implements IManualWorker {
+public class Mechanic extends Employee implements IManualWorker {
     private Set<String> technicalSkills;
     private LocalDate dateUntilWhenWorkHealthAndSafetyTrainingIsValid;
+    protected List<VehicleRepair> vehicleRepairs = new ArrayList<>();
 
-    public ManagerOfCarServiceStation(String firstName, String lastName, LocalDate birthDate, Set<String> softSkills, LocalDate dateUntilWhenSightTestIsValid, Set<String> technicalSkills, LocalDate dateUntilWhenWorkHealthAndSafetyTrainingIsValid) {
-        super(firstName, lastName, birthDate, softSkills, dateUntilWhenSightTestIsValid);
+    public Mechanic(String firstName, String lastName, LocalDate birthDate, Set<String> technicalSkills, LocalDate dateUntilWhenWorkHealthAndSafetyTrainingIsValid) {
+        super(firstName, lastName, birthDate);
         try {
             setTechnicalSkills(technicalSkills);
             setDateUntilWhenWorkHealthAndSafetyTrainingIsValid(dateUntilWhenWorkHealthAndSafetyTrainingIsValid);
@@ -53,15 +57,44 @@ public class ManagerOfCarServiceStation extends OfficeWorker implements IManualW
         return (!this.dateUntilWhenWorkHealthAndSafetyTrainingIsValid.isBefore(LocalDate.now()));
     }
 
+    public List<VehicleRepair> getVehicleRepairs() {
+        return Collections.unmodifiableList(vehicleRepairs);
+    }
+
+    public void addVehicleRepair(VehicleRepair vehicleRepair) {
+        if (vehicleRepair == null) {
+            throw new IllegalArgumentException("Empty vehicle repair cannot be added to the history.");
+        }
+
+        if (this.vehicleRepairs.contains(vehicleRepair)) {
+            return;
+        }
+
+        this.vehicleRepairs.add(vehicleRepair);
+        if (vehicleRepair.getMechanic() == null) {
+            vehicleRepair.setMechanic(this);
+        }
+    }
+
+    public void removeVehicleRepair(VehicleRepair vehicleRepair) {
+        if (vehicleRepair == null) {
+            throw new IllegalArgumentException("Empty vehicle repair cannot be removed from the history.");
+        }
+
+        if (!this.vehicleRepairs.contains(vehicleRepair)) {
+            return;
+        }
+        this.vehicleRepairs.remove(vehicleRepair);
+        vehicleRepair.setMechanic(null);
+    }
+
     @Override
     public String toString() {
-        return "Manager of car service station ID: " + id +
+        return "Mechanic ID: " + id +
                 "\nFirst name: " + firstName +
                 "\nLast name: " + lastName +
                 "\nAge: " + getAge() +
-                "\nSkills relevant for office work: " + officeWorkSkills +
-                "\nHas valid sight test: " + isSightTestValid() +
-                "\nTechnical skills: " + technicalSkills +
-                "\nHas valid work health and safety training: " + isWorkHealthAndSafetyTrainingValid();
+                "\nHas valid work health and safety training: " + isWorkHealthAndSafetyTrainingValid() +
+                "\nTechnical skills: " + technicalSkills;
     }
 }

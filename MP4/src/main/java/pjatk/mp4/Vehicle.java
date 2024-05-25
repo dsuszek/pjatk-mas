@@ -10,9 +10,9 @@ public abstract class Vehicle extends ObjectPlus {
     protected Brand brand;
     protected String model;
     protected CompanyBranch companyBranch;
-    protected Set<String> damages = new HashSet<>(); // atrybut powtarzalny
     protected Set<Rental> rentals = new HashSet<>();
-    protected Set<VehicleInsurance> vehicleInsurances = new HashSet<>();
+    protected List<VehicleRepair> vehicleRepairs = new ArrayList<>();
+    protected List<VehicleInsurance> vehicleInsurances = new ArrayList<>();
     protected String vehicleRegistrationNumber;
     protected static Set<String> allVehicleRegistrationNumbers = new HashSet<>();
     public abstract double calculateRentalPricePerKilometer();
@@ -93,19 +93,6 @@ public abstract class Vehicle extends ObjectPlus {
         }
     }
 
-    public Set<String> getDamages() {
-        return Collections.unmodifiableSet(damages);
-    }
-
-    public void addDamage(String damage) {
-        checkCorrectnessOfStringAttribute("Damage", damage);
-        this.damages.add(damage);
-    }
-
-    public void removeDamage(String damage) {
-        this.damages.remove(damage);
-    }
-
     public CompanyBranch getCompanyBranch() {
         return companyBranch;
     }
@@ -165,8 +152,39 @@ public abstract class Vehicle extends ObjectPlus {
         rental.setVehicle(null);
     }
 
-    public Set<VehicleInsurance> getVehicleInsurances() {
-        return Collections.unmodifiableSet(vehicleInsurances);
+    public List<VehicleRepair> getVehicleRepairs() {
+        return Collections.unmodifiableList(vehicleRepairs);
+    }
+
+    public void addVehicleRepair(VehicleRepair vehicleRepair) {
+        if (vehicleRepair == null) {
+            throw new IllegalArgumentException("Empty vehicle repair cannot be added to the history.");
+        }
+
+        if (this.vehicleRepairs.contains(vehicleRepair)) {
+            return;
+        }
+
+        this.vehicleRepairs.add(vehicleRepair);
+        if (vehicleRepair.getVehicle() == null) {
+            vehicleRepair.setVehicle(this);
+        }
+    }
+
+    public void removeVehicleRepair(VehicleRepair vehicleRepair) {
+        if (vehicleRepair == null) {
+            throw new IllegalArgumentException("Empty vehicle repair cannot be removed from the history.");
+        }
+
+        if (!this.vehicleRepairs.contains(vehicleRepair)) {
+            return;
+        }
+        this.vehicleRepairs.remove(vehicleRepair);
+        vehicleRepair.setVehicle(null);
+    }
+
+    public List<VehicleInsurance> getVehicleInsurances() {
+        return Collections.unmodifiableList(vehicleInsurances);
     }
 
     public void addVehicleInsurance(VehicleInsurance vehicleInsurance) {

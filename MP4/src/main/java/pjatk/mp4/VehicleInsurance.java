@@ -12,9 +12,9 @@ public class VehicleInsurance extends ObjectPlus {
     private double cost;
     private String scope;
     private Vehicle vehicle;
-    private Insurer insurer;
+    private InsuranceCompany insuranceCompany;
 
-    public VehicleInsurance(LocalDate startDate, LocalDate endDate, double cost, String scope, Vehicle vehicle, Insurer insurer) {
+    public VehicleInsurance(LocalDate startDate, LocalDate endDate, double cost, String scope, Vehicle vehicle, InsuranceCompany insuranceCompany) {
         super();
         try {
             setId();
@@ -23,7 +23,7 @@ public class VehicleInsurance extends ObjectPlus {
             setCost(cost);
             setScope(scope);
             setVehicle(vehicle);
-            setInsurer(insurer);
+            setInsurer(insuranceCompany);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,40 +108,40 @@ public class VehicleInsurance extends ObjectPlus {
         }
     }
 
-    public Insurer getInsurer() {
-        return insurer;
+    public InsuranceCompany getInsurer() {
+        return insuranceCompany;
     }
 
-    public void setInsurer(Insurer insurer) {
+    public void setInsurer(InsuranceCompany insuranceCompany) {
 
-        if (this.insurer == null && insurer != null) {
+        if (this.insuranceCompany == null && insuranceCompany != null) {
             // new insurer - no insurer previously assigned
-            this.insurer = insurer;
+            this.insuranceCompany = insuranceCompany;
 
-            if (insurer.getVehicleInsurances().contains(this)) {
+            if (insuranceCompany.getVehicleInsurances().contains(this)) {
                 return;
             }
-            insurer.addVehicleInsurance(this);
+            insuranceCompany.addVehicleInsurance(this);
 
-        } else if (this.insurer != null && insurer == null) {
+        } else if (this.insuranceCompany != null && insuranceCompany == null) {
             // removing the insurer
-            Insurer tmp = this.insurer;
-            this.insurer = null;
+            InsuranceCompany tmp = this.insuranceCompany;
+            this.insuranceCompany = null;
             tmp.removeVehicleInsurance(this);
 
-        } else if (this.insurer != null && insurer != null) {
+        } else if (this.insuranceCompany != null && insuranceCompany != null) {
             // changing the insurer
-            Insurer tmp = this.insurer;
-            this.insurer = null;
+            InsuranceCompany tmp = this.insuranceCompany;
+            this.insuranceCompany = null;
             tmp.removeVehicleInsurance(this);
 
-            this.insurer = null;
-            insurer.addVehicleInsurance(this);
+            this.insuranceCompany = null;
+            insuranceCompany.addVehicleInsurance(this);
         }
     }
 
     public void removeCarInsurance() {
-        this.insurer.removeVehicleInsurance(this);
+        this.insuranceCompany.removeVehicleInsurance(this);
         this.vehicle.removeVehicleInsurance(this);
         this.removeFromExtent();
     }
@@ -158,6 +158,6 @@ public class VehicleInsurance extends ObjectPlus {
                 "\n\tBrand: " + vehicle.getBrand() +
                 "\n\tModel: " + vehicle.getModel() +
                 "\n\tCar's company branch: " + vehicle.getCompanyBranch() +
-                "\nInsurance company: " + insurer.getCompanyName();
+                "\nInsurance company: " + insuranceCompany.getCompanyName();
     }
 }

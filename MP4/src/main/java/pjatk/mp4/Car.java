@@ -125,7 +125,6 @@ public class Car extends Vehicle {
                     "\nCar types: " + carTypes +
                     "\nSuspension height: " + suspensionHeight +
                     "\nCompany branch: " + companyBranch.getName() +
-                    "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
         } else if (carTypes.contains(CarTypes.ELECTRIC_CAR) && batteryCapacity != null) {
             return "Car registration number: " + vehicleRegistrationNumber +
@@ -135,7 +134,6 @@ public class Car extends Vehicle {
                     "\nCar types: " + carTypes +
                     "\nBattery capacity: " + batteryCapacity +
                     "\nCompany branch: " + companyBranch.getName() +
-                    "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
         } else if (carTypes.contains(CarTypes.PREMIUM_CAR) && (luxuryDesignElements != null)) {
             return "Car registration number: " + vehicleRegistrationNumber +
@@ -145,7 +143,6 @@ public class Car extends Vehicle {
                     "\nCar types: " + carTypes +
                     "\nLuxury design elements: " + luxuryDesignElements +
                     "\nCompany branch: " + companyBranch.getName() +
-                    "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
         } else {
             return "Car registration number: " + vehicleRegistrationNumber +
@@ -154,7 +151,6 @@ public class Car extends Vehicle {
                     "\nEngine size: " + engineSize +
                     "\nCar types: " + carTypes +
                     "\nCompany branch: " + companyBranch.getName() +
-                    "\nDamages: " + damages +
                     "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
         }
     }

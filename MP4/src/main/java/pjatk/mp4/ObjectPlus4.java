@@ -37,6 +37,7 @@ public abstract class ObjectPlus4 extends ObjectPlusPlus {
             // jeśli nie ma powiązań, poniżej zostanie dodane powiązanie korzystając z "normalnej" metody z nadklasy
         }
         // dodanie powiązania
+        addXorRole(roleName);
         super.addLink(roleName, reverseRoleName, targetObject);
     }
 
