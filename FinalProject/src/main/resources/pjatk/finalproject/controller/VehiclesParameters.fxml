@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="pjatk.finalproject.controller.VehicleParametersController"
+      alignment="CENTER"
+      spacing="10">
+    <children>
+        <Label text="Select Brand:"/>
+        <ComboBox fx:id="brandComboBox"/>
+        <Label text="Select Model:"/>
+        <ComboBox fx:id="modelComboBox"/>
+    </children>
+</VBox>
