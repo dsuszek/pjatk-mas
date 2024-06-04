@@ -4,8 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import pjatk.finalproject.controller.MainWindowController;
 import pjatk.finalproject.model.*;
@@ -36,12 +34,11 @@ public class Main extends Application {
 
             Scene scene = new Scene(root, 800, 800);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Loaded Data");
+            primaryStage.setTitle("Rent a car");
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public static void main(String[] args) {

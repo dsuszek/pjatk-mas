@@ -4,9 +4,10 @@
 <?import javafx.scene.control.Label?>
 
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
 <VBox xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="pjatk.finalproject.controller.VehicleParametersController"
+      fx:controller="pjatk.finalproject.controller.VehicleParametersWindowController"
       alignment="CENTER"
       spacing="10">
     <children>
@@ -14,5 +15,8 @@
         <ComboBox fx:id="brandComboBox"/>
         <Label text="Select Model:"/>
         <ComboBox fx:id="modelComboBox"/>
+        <Button text="Display Vehicle Details" onAction="#handleDisplayVehicleDetails" />
+        <Label fx:id="vehicleDetailsLabel" text="Detailed information about the vehicle:" />
+        <Button text="Back to Main Menu" onAction="#handleBackToMainMenu" />
     </children>
 </VBox>
