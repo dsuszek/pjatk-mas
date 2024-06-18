@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.layout.Region?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="pjatk.finalproject.controller.AddressWindowController"
+            prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <VBox alignment="TOP_LEFT" spacing="10" layoutX="50" layoutY="20">
+            <Label text="Mobile4U - Rent a car" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Street name:"/>
+                <TextField fx:id="streetNameField"/>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Street number:"/>
+                <TextField fx:id="streetNumberField"/>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Apartment number:"/>
+                <TextField fx:id="apartmentNumberField"/>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="City:"/>
+                <TextField fx:id="cityField"/>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Postal code:"/>
+                <TextField fx:id="postalCodeField"/>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button text="Back to Main Menu" onAction="#handleBackToMainMenu"/>
+                <Region fx:id="spacer" HBox.hgrow="ALWAYS"/>
+                <Button text="Continue" onAction="#handleContinue" style="-fx-background-color: blue; -fx-text-fill: white;"/>
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>

@@ -1,8 +1,7 @@
 package pjatk.finalproject.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.Scene;
@@ -19,42 +18,41 @@ public class MainWindowController {
     private ImageView logoImageView;
 
     @FXML
-    private ComboBox<String> regionComboBox;
+    private ComboBox<Region> regionComboBox;
+    @FXML
+    private Label branchLabel;
 
     @FXML
-    private ComboBox<String> companyBranchComboBox;
+    private ListView<CompanyBranch> companyBranchListView;
     private List<Region> regions;
     private Region selectedRegion;
     private CompanyBranch selectedBranch;
 
     public void setRegions(List<Region> regions) {
         this.regions = regions;
-        for (Region region : this.regions) {
-            regionComboBox.getItems().add(region.getName());
-        }
-        companyBranchComboBox.setDisable(true);
-
-        regionComboBox.setOnAction(event -> {
-            String selectedRegionName = regionComboBox.getSelectionModel().getSelectedItem();
-            selectedRegion = regions.stream().filter(r -> r.getName().equals(selectedRegionName)).findFirst().orElse(null);
-            updateCompanyBranchComboBox(selectedRegion);
-        });
+        regionComboBox.getItems().addAll(regions);
     }
 
-    private void updateCompanyBranchComboBox(Region region) {
-        companyBranchComboBox.getItems().clear();
-        if (region != null) {
-            for (CompanyBranch branch : region.getCompanyBranches()) {
-                companyBranchComboBox.getItems().add(branch.getName());
-            }
-            companyBranchComboBox.setDisable(false);
-
-            companyBranchComboBox.setOnAction(event -> {
-                String selectedBranchName = companyBranchComboBox.getSelectionModel().getSelectedItem();
-                selectedBranch = region.getCompanyBranches().stream().filter(b -> b.getName().equals(selectedBranchName)).findFirst().orElse(null);
-            });
+    @FXML
+    private void handleRegionSelection() {
+        selectedRegion = regionComboBox.getSelectionModel().getSelectedItem();
+        if (selectedRegion != null) {
+            companyBranchListView.getItems().clear();
+            companyBranchListView.getItems().addAll(selectedRegion.getCompanyBranches());
+            branchLabel.setVisible(true);
+            companyBranchListView.setVisible(true);
+            selectedBranch = null;
+        } else {
+            branchLabel.setVisible(false);
+            companyBranchListView.setVisible(false);
         }
     }
+
+    @FXML
+    private void handleBranchSelection() {
+        selectedBranch = companyBranchListView.getSelectionModel().getSelectedItem();
+    }
+
 
     @FXML
     private void handleContinue() {
@@ -88,5 +86,31 @@ public class MainWindowController {
         logoImageView.setImage(logo);
         logoImageView.setFitHeight(350);
         logoImageView.setPreserveRatio(true);
+
+        regionComboBox.setOnAction(event -> handleRegionSelection());
+        companyBranchListView.setOnMouseClicked(event -> handleBranchSelection());
+
+        regionComboBox.setCellFactory(param -> new ListCell<Region>() {
+            @Override
+            protected void updateItem(Region item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item.getName());
+            }
+        });
+        regionComboBox.setButtonCell(new ListCell<Region>() {
+            @Override
+            protected void updateItem(Region item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item.getName());
+            }
+        });
+
+        companyBranchListView.setCellFactory(param -> new ListCell<CompanyBranch>() {
+            @Override
+            protected void updateItem(CompanyBranch item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item.getName());
+            }
+        });
     }
 }

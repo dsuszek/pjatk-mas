@@ -33,6 +33,7 @@ public class Main extends Application {
             controller.setRegions(regions);
 
             Scene scene = new Scene(root, 800, 800);
+            scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Rent a car");
             primaryStage.show();
@@ -45,3 +46,5 @@ public class Main extends Application {
         launch(args);
     }
 }
+
+

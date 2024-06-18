@@ -70,7 +70,7 @@ public class RentalDoorToDoor extends Rental {
     }
 
     @Override
-    public double getCost() { // atrybut pochodny - zależy od wartości pozostałych
+    public Double getCost() { // atrybut pochodny - zależy od wartości pozostałych
 
         if (getAdditionalDiscount() == null) {
             return (this.getDistance() * getKmPrice()) + getExtraFee();

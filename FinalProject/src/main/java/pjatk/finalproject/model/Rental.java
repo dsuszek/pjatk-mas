@@ -11,8 +11,8 @@ public class Rental extends ObjectPlus {
     private UUID id;
     private LocalDate startDate;
     private LocalDate endDate;
-    private double distance; // atrybut wymagany
-    private static double kmPrice = 1.70; // atrybut klasowy - dla wszystkich samochodów opłata za każdy przejechany kilometr jest taka sama
+    private Double distance;
+    private static double kmPrice = 0.90; // atrybut klasowy - dla wszystkich samochodów opłata za każdy przejechany kilometr jest taka sama
     private Vehicle vehicle;
     private Customer customer;
 
@@ -20,7 +20,7 @@ public class Rental extends ObjectPlus {
     private Enum<RentalLengthTypes> rentalLengthType;
     private Double additionalDiscount; // atrybut opcjonalny - dodatkowa zniżka dla wynajmów długoterminowych
 
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType) {
+    public Rental(LocalDate startDate, LocalDate endDate, Double distance, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType) {
         super();
         try {
             setId();
@@ -35,7 +35,7 @@ public class Rental extends ObjectPlus {
         }
     }
 
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType) {
+    public Rental(LocalDate startDate, LocalDate endDate, Double distance, String unit, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType) {
         super();
         try {
             setId();
@@ -50,7 +50,7 @@ public class Rental extends ObjectPlus {
         }
     }
 
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, Double additionalDiscount) {
+    public Rental(LocalDate startDate, LocalDate endDate, Double distance, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, Double additionalDiscount) {
         super();
         try {
             setId();
@@ -65,7 +65,7 @@ public class Rental extends ObjectPlus {
             removeFromExtent();
         }
     }
-    public Rental(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType,  Double additionalDiscount) {
+    public Rental(LocalDate startDate, LocalDate endDate, Double distance, String unit, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType,  Double additionalDiscount) {
         super();
         try {
             setId();
@@ -114,7 +114,7 @@ public class Rental extends ObjectPlus {
         return startDate.until(endDate, ChronoUnit.DAYS);
     }
 
-    public double getCost() { // atrybut pochodny - zależy od wartości pozostałych
+    public Double getCost() { // atrybut pochodny - zależy od wartości pozostałych
         DecimalFormat decimalFormat = new DecimalFormat("##.00");
         if (additionalDiscount == null) {
             return Double.parseDouble(decimalFormat.format(this.distance * kmPrice));
@@ -124,12 +124,12 @@ public class Rental extends ObjectPlus {
         return Double.parseDouble( decimalFormat.format((this.distance * kmPrice) - additionalDiscount));
     }
 
-    public double getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(double distance) {
-        checkCorrectnessOfNumericalValueGreaterThanOrEqualToZero(distance, "Distance");
+    public void setDistance(Double distance) {
+        checkCorrectnessOfOptionalNumericalValueGreaterThanZero(distance, "Distance");
         this.distance = distance;
     }
 
@@ -220,6 +220,8 @@ public class Rental extends ObjectPlus {
     }
 
     public void setRentalLengthType(Enum<RentalLengthTypes> rentalLengthType) {
+        // @TODO automatycznie ustawiac rodzaj wynajmu ze względu na dlugosc
+        // metoda getLengthOfRental()
         this.rentalLengthType = rentalLengthType;
     }
 

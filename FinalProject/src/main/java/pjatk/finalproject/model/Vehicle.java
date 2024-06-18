@@ -12,7 +12,6 @@ public abstract class Vehicle extends ObjectPlus {
     protected CompanyBranch companyBranch;
     protected Set<Rental> rentals = new HashSet<>();
     protected List<VehicleRepair> vehicleRepairs = new ArrayList<>();
-    protected List<VehicleInsurance> vehicleInsurances = new ArrayList<>();
     protected String vehicleRegistrationNumber;
     protected static Set<String> allVehicleRegistrationNumbers = new HashSet<>();
     public abstract double calculateRentalPricePerKilometer();
@@ -181,36 +180,5 @@ public abstract class Vehicle extends ObjectPlus {
         }
         this.vehicleRepairs.remove(vehicleRepair);
         vehicleRepair.setVehicle(null);
-    }
-
-    public List<VehicleInsurance> getVehicleInsurances() {
-        return Collections.unmodifiableList(vehicleInsurances);
-    }
-
-    public void addVehicleInsurance(VehicleInsurance vehicleInsurance) {
-        if (vehicleInsurance == null) {
-            throw new IllegalArgumentException("Empty vehicle insurance cannot be added to the history.");
-        }
-
-        if (this.vehicleInsurances.contains(vehicleInsurance)) {
-            return;
-        }
-
-        this.vehicleInsurances.add(vehicleInsurance);
-        if (vehicleInsurance.getVehicle() == null) {
-            vehicleInsurance.setVehicle(this);
-        }
-    }
-
-    public void removeVehicleInsurance(VehicleInsurance vehicleInsurance) {
-        if (vehicleInsurance == null) {
-            throw new IllegalArgumentException("Empty vehicle insurance cannot be removed from the history.");
-        }
-
-        if (!this.vehicleInsurances.contains(vehicleInsurance)) {
-            return;
-        }
-        this.vehicleInsurances.remove(vehicleInsurance);
-        vehicleInsurance.setVehicle(null);
     }
 }

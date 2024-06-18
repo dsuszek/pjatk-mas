@@ -4,9 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import pjatk.finalproject.model.*;
 
 import java.io.IOException;
@@ -17,12 +15,20 @@ import java.util.stream.Collectors;
 public class VehicleParametersWindowController {
 
     @FXML
-    private ComboBox<String> brandComboBox;
+    private ComboBox<Brand> brandComboBox;
     @FXML
     private ComboBox<String> modelComboBox;
     @FXML
+    private DatePicker endDatePicker;
+    @FXML
     private Label vehicleDetailsLabel;
+    @FXML
+    private CheckBox rentalDoorToDoorCheckBox;
+    @FXML
+    private ListView<Vehicle> vehicleListView;
     private List<Vehicle> availableVehicles = new ArrayList<>();
+    private Brand selectedBrand;
+    private String selectedModel;
 
     public void setRegionAndBranch(Region region, CompanyBranch branch) {
 
@@ -32,7 +38,6 @@ public class VehicleParametersWindowController {
         brandComboBox.getItems().addAll(
                 availableVehicles.stream()
                         .map(Vehicle::getBrand)
-                        .map(Brand::getName)
                         .distinct()
                         .toList()
         );
@@ -40,12 +45,12 @@ public class VehicleParametersWindowController {
         brandComboBox.setOnAction(event -> updateModelComboBox(availableVehicles, brandComboBox.getSelectionModel().getSelectedItem()));
     }
 
-    private void updateModelComboBox(List<Vehicle> availableVehicles, String selectedBrand) {
+    private void updateModelComboBox(List<Vehicle> availableVehicles, Brand selectedBrand) {
         modelComboBox.getItems().clear();
         if (selectedBrand != null) {
             modelComboBox.getItems().addAll(
                     availableVehicles.stream()
-                            .filter(car -> car.getBrand().getName().equals(selectedBrand))
+                            .filter(vehicle -> vehicle.getBrand().equals(selectedBrand))
                             .map(Vehicle::getModel)
                             .distinct()
                             .toList()
@@ -54,8 +59,6 @@ public class VehicleParametersWindowController {
     }
 
     private List<Vehicle> getAvailableVehicles(Region region, CompanyBranch branch) {
-        // This method should return a list of available cars based on the region and branch.
-        // Replace with actual logic to fetch available cars.
         return region.getCompanyBranches().stream()
                 .filter(b -> b.equals(branch))
                 .flatMap(b -> b.getVehicles().stream())
@@ -64,8 +67,8 @@ public class VehicleParametersWindowController {
 
     @FXML
     private void handleDisplayVehicleDetails() {
-        String selectedBrand = brandComboBox.getSelectionModel().getSelectedItem();
-        String selectedModel = modelComboBox.getSelectionModel().getSelectedItem();
+        selectedBrand = brandComboBox.getSelectionModel().getSelectedItem();
+        selectedModel = modelComboBox.getSelectionModel().getSelectedItem().toString();
 
         if (selectedBrand == null || selectedModel == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -76,12 +79,12 @@ public class VehicleParametersWindowController {
             return;
         }
 
-        vehicleDetailsLabel.setText("");
+        StringBuilder details = new StringBuilder();
+
         availableVehicles.stream()
-                .filter(vehicle -> vehicle.getBrand().getName().equals(selectedBrand) && vehicle.getModel().equals(selectedModel))
-                .findAny()
-                .ifPresent(vehicle -> {
-                    StringBuilder details = new StringBuilder("Registration Number: " + vehicle.getVehicleRegistrationNumber());
+                .filter(vehicle -> vehicle.getBrand().equals(selectedBrand) && vehicle.getModel().equals(selectedModel))
+                .forEach(vehicle -> {
+                    details.append("Registration Number: ").append(vehicle.getVehicleRegistrationNumber());
                     if (vehicle instanceof Car) {
                         Car car = (Car) vehicle;
                         details.append("\nEngine Size: ").append(car.getEngineSize());
@@ -90,8 +93,37 @@ public class VehicleParametersWindowController {
                         Truck truck = (Truck) vehicle;
                         details.append("\nMaximum Authorised Mass: ").append(truck.getMaximumAuthorisedMass());
                     }
-                    vehicleDetailsLabel.setText(details.toString());
+                    details.append("\n\n");
                 });
+
+        if (details.isEmpty()) {
+            details.append("No vehicles found for the selected brand and model.");
+        }
+
+        vehicleDetailsLabel.setText(details.toString());
+    }
+
+
+    @FXML
+    private void handleSearch() {
+        selectedBrand = brandComboBox.getSelectionModel().getSelectedItem();
+        selectedModel = modelComboBox.getSelectionModel().getSelectedItem();
+
+        if (selectedBrand == null || selectedModel == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Selection Missing");
+            alert.setContentText("Please select both brand and model.");
+            alert.showAndWait();
+            return;
+        }
+
+        List<Vehicle> filteredVehicles = availableVehicles.stream()
+                .filter(vehicle -> vehicle.getBrand().equals(selectedBrand) && vehicle.getModel().equals(selectedModel))
+                .toList();
+
+        vehicleListView.getItems().clear();
+        vehicleListView.getItems().addAll(filteredVehicles);
     }
 
     @FXML
@@ -111,5 +143,63 @@ public class VehicleParametersWindowController {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void handleContinue() {
+        if (endDatePicker.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("End Date Missing");
+            alert.setContentText("Please select an end date for the rental.");
+            alert.showAndWait();
+        }
+
+        if (rentalDoorToDoorCheckBox.isSelected()) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("AddressWindow.fxml"));
+                Parent root = loader.load();
+
+                AddressWindowController controller = loader.getController();
+
+                Scene currentScene = brandComboBox.getScene();
+                currentScene.setRoot(root);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    public void initialize() {
+        brandComboBox.setCellFactory(param -> new ListCell<Brand>() {
+            @Override
+            protected void updateItem(Brand item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item.getName());
+            }
+        });
+        brandComboBox.setButtonCell(new ListCell<Brand>() {
+            @Override
+            protected void updateItem(Brand item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item.getName());
+            }
+        });
+
+        modelComboBox.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item);
+            }
+        });
+        modelComboBox.setButtonCell(new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item);
+            }
+        });
     }
 }
