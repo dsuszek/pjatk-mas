@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import pjatk.finalproject.model.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,12 +28,18 @@ public class VehicleParametersWindowController {
     @FXML
     private ListView<Vehicle> vehicleListView;
     private List<Vehicle> availableVehicles = new ArrayList<>();
+    private Region selectedRegion;
+    private CompanyBranch selectedCompanyBranch;
     private Brand selectedBrand;
     private String selectedModel;
+    private Vehicle selectedVehicle;
+    private LocalDate selectedEndDate;
 
-    public void setRegionAndBranch(Region region, CompanyBranch branch) {
+    public void setRegionAndBranch(Region region, CompanyBranch companyBranch) {
+        selectedRegion = region;
+        selectedCompanyBranch = companyBranch;
 
-        availableVehicles = getAvailableVehicles(region, branch);
+        availableVehicles = getAvailableVehicles(region, companyBranch);
 
         // Populate brandComboBox with unique car brands from available cars
         brandComboBox.getItems().addAll(
@@ -63,6 +70,39 @@ public class VehicleParametersWindowController {
                 .filter(b -> b.equals(branch))
                 .flatMap(b -> b.getVehicles().stream())
                 .collect(Collectors.toList());
+    }
+
+    @FXML
+    public void initialize() {
+        brandComboBox.setCellFactory(param -> new ListCell<Brand>() {
+            @Override
+            protected void updateItem(Brand item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item.getName());
+            }
+        });
+        brandComboBox.setButtonCell(new ListCell<Brand>() {
+            @Override
+            protected void updateItem(Brand item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item.getName());
+            }
+        });
+
+        modelComboBox.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item);
+            }
+        });
+        modelComboBox.setButtonCell(new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item);
+            }
+        });
     }
 
     @FXML
@@ -147,59 +187,86 @@ public class VehicleParametersWindowController {
 
     @FXML
     private void handleContinue() {
-        if (endDatePicker.getValue() == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("End Date Missing");
-            alert.setContentText("Please select an end date for the rental.");
-            alert.showAndWait();
+        if (!isInputValid()) {
+            return;
         }
 
+        selectedVehicle = vehicleListView.getSelectionModel().getSelectedItem();
+        selectedEndDate = endDatePicker.getValue();
+
+
         if (rentalDoorToDoorCheckBox.isSelected()) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("AddressWindow.fxml"));
-                Parent root = loader.load();
-
-                AddressWindowController controller = loader.getController();
-
-                Scene currentScene = brandComboBox.getScene();
-                currentScene.setRoot(root);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            loadAddressWindow(selectedRegion, selectedCompanyBranch, selectedVehicle, selectedEndDate);
+        } else {
+            loadSummaryWindow(selectedRegion, selectedCompanyBranch, selectedVehicle, selectedEndDate);
         }
     }
 
-    @FXML
-    public void initialize() {
-        brandComboBox.setCellFactory(param -> new ListCell<Brand>() {
-            @Override
-            protected void updateItem(Brand item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? "" : item.getName());
-            }
-        });
-        brandComboBox.setButtonCell(new ListCell<Brand>() {
-            @Override
-            protected void updateItem(Brand item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? "" : item.getName());
-            }
-        });
+    private boolean isInputValid() {
+        if (brandComboBox.getSelectionModel().getSelectedItem() == null) {
+            showAlert("Error", "Brand Missing", "Please select a brand.");
+            return false;
+        }
 
-        modelComboBox.setCellFactory(param -> new ListCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? "" : item);
-            }
-        });
-        modelComboBox.setButtonCell(new ListCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? "" : item);
-            }
-        });
+        if (modelComboBox.getSelectionModel().getSelectedItem() == null) {
+            showAlert("Error", "Model Missing", "Please select a model.");
+            return false;
+        }
+
+        if (vehicleListView.getSelectionModel().getSelectedItem() == null) {
+            showAlert("Error", "Vehicle Missing", "Please select a vehicle.");
+            return false;
+        }
+
+        if (endDatePicker.getValue() == null) {
+            showAlert("Error", "End Date Missing", "Please select an end date.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void loadAddressWindow(Region region, CompanyBranch companyBranch, Vehicle vehicle, LocalDate endDate) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddressWindow.fxml"));
+            Parent root = loader.load();
+
+            AddressWindowController controller = loader.getController();
+            controller.setRegion(region);
+            controller.setCompanyBranch(companyBranch);
+            controller.setVehicle(vehicle);
+            controller.setEndDate(endDate);
+
+            Scene currentScene = brandComboBox.getScene();
+            currentScene.setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadSummaryWindow(Region region, CompanyBranch companyBranch, Vehicle vehicle, LocalDate endDate) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SummaryWindow.fxml"));
+            Parent root = loader.load();
+
+            SummaryWindowController controller = loader.getController();
+            controller.setRegion(region);
+            controller.setCompanyBranch(companyBranch);
+            controller.setVehicle(vehicle);
+            controller.setEndDate(endDate);
+
+            Scene currentScene = brandComboBox.getScene();
+            currentScene.setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

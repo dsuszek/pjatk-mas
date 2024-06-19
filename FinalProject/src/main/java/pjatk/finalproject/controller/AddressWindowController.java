@@ -5,17 +5,25 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import pjatk.finalproject.model.Address;
-import pjatk.finalproject.model.ObjectPlus;
-import pjatk.finalproject.model.Region;
+import pjatk.finalproject.model.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class AddressWindowController {
 
+    @FXML
+    private Label regionLabel;
+    @FXML
+    private Label companyBranchLabel;
+    @FXML
+    private Label vehicleLabel;
+    @FXML
+    private Label endDateLabel;
     @FXML
     private TextField streetNameField;
     @FXML
@@ -30,6 +38,22 @@ public class AddressWindowController {
     private Address address;
     private Stage dialogStage;
     private boolean submitClicked = false;
+
+    public void setRegion(Region region) {
+        regionLabel.setText(region.getName());
+    }
+
+    public void setCompanyBranch(CompanyBranch companyBranch) {
+        companyBranchLabel.setText(companyBranch.getName());
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        vehicleLabel.setText(vehicle.getBrand().getName() + " " + vehicle.getModel());
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        endDateLabel.setText(endDate.toString());
+    }
 
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
@@ -58,11 +82,6 @@ public class AddressWindowController {
         }
     }
 
-    private boolean isInputValid() {
-        // Add validation logic if necessary
-        return true;
-    }
-
     @FXML
     private void handleBackToMainMenu() {
         try {
@@ -82,44 +101,49 @@ public class AddressWindowController {
         }
     }
 
-    private boolean isDataMissing(TextField textField, String headerText, String contextText) {
-        if (textField.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(headerText);
-            alert.setContentText(contextText);
-            alert.showAndWait();
-            return true;
-        }
-        return false;
-    }
-
     @FXML
     private void handleContinue() {
-        if (isDataMissing(streetNameField, "Street Name Missing", "Please fill in the information about street name.")) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("AddressWindow.fxml"));
-                Parent root = loader.load();
+        if (!isInputValid()) {
+            return;
+        }
 
-                AddressWindowController controller = loader.getController();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SummaryWithAddressWindow.fxml"));
+            Parent root = loader.load();
 
-                Scene currentScene = streetNameField.getScene();
-                currentScene.setRoot(root);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("SummaryWindow.fxml"));
-                Parent root = loader.load();
+            SummaryWithAddressWindowController controller = loader.getController();
+            controller.setStreetName(streetNameField.getText());
+            controller.setStreetNumber(streetNumberField.getText());
+            controller.setApartmentNumber(apartmentNumberField.getText());
+            controller.setCity(cityField.getText());
+            controller.setPostalCode(postalCodeField.getText());
 
-                SummaryWindowController controller = loader.getController();
-
-                Scene currentScene = streetNameField.getScene();
-                currentScene.setRoot(root);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Scene currentScene = streetNameField.getScene();
+            currentScene.setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+    private boolean isInputValid() {
+        TextField[] fields = {streetNameField, streetNumberField, apartmentNumberField, cityField, postalCodeField};
+        String[] fieldNames = {"Street Name", "Street Number", "Apartment Number", "City", "Postal Code"};
+
+        for (int i = 0; i < fields.length; i++) {
+            if (fields[i].getText() == null || fields[i].getText().isEmpty()) {
+                showAlert("Error", fieldNames[i] + " Missing", "Please enter a value for " + fieldNames[i] + ".");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void showAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
 }

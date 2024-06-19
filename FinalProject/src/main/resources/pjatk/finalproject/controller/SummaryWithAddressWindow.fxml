@@ -5,7 +5,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="pjatk.finalproject.controller.SummaryWindowController"
+      fx:controller="pjatk.finalproject.controller.SummaryWithAddressWindowController"
       alignment="CENTER"
       spacing="10"
       style="-fx-padding: 20;">
@@ -31,5 +31,15 @@
             <Label text="End Date:" style="-fx-font-size: 14; -fx-padding: 0;" maxWidth="Infinity"/>
             <Label fx:id="endDateLabel" style="-fx-font-size: 18;" maxWidth="Infinity" minHeight="40"/>
         </VBox>
+        <Label text="Street Name:"/>
+        <Label fx:id="streetNameLabel"/>
+        <Label text="Street Number:"/>
+        <Label fx:id="streetNumberLabel"/>
+        <Label text="Apartment Number:"/>
+        <Label fx:id="apartmentNumberLabel"/>
+        <Label text="City:"/>
+        <Label fx:id="cityLabel"/>
+        <Label text="Postal Code:"/>
+        <Label fx:id="postalCodeLabel"/>
     </children>
 </VBox>
