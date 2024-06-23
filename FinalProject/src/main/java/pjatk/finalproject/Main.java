@@ -35,7 +35,9 @@ public class Main extends Application {
             Scene scene = new Scene(root, 800, 800);
             scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Rent a car");
+            primaryStage.setTitle("Create A New Rental");
+            primaryStage.setMinHeight(800);
+            primaryStage.setMinWidth(800);
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();

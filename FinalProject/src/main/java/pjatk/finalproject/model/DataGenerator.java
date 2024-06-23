@@ -7,23 +7,6 @@ import java.time.LocalDate;
 public class DataGenerator {
     public static void main(String[] args) throws Exception {
 
-        // Wszystkie nazwy:
-        //  - zmiennych,
-        //  - metod,
-        //  - klas,
-        //  - ostrzeżeń o błędach w danych wejściowych
-        //  zostały przygotowane w języku angielskim ze względu na brak problemów z odmianą słów.
-
-        // Elementy ocenanie w MP2:
-        // Asocjacja binarna
-        // Asocjacja z atrybutem
-        // Asocjacja kwalifikowana
-        // Kompozycja
-
-        // Każda z asocjacji musi mieć liczność co najmniej 1-* oraz automatyczne tworzenie połączenia zwrotnego.
-
-
-        // Najpierw tworzone są obiekty, które będą niezbędne do przedstawiania sposobu działania programu.
         Region region1 = new Region("Southern");
         Region region2 = new Region("Eastern");
         Region region3 = new Region("Western");
@@ -46,7 +29,6 @@ public class DataGenerator {
         Brand brand7 = new Brand("BMW", "Germany", 1916);
         Brand brand8 = new Brand("Chevrolet", "USA", 1911);
 
-
         Car car1 = new Car(brand1, "GL", "KL 43D", companyBranch2, 3.0);
         Car car2 = new Car(brand1, "CLA", "SD 43FF", companyBranch2, 2.4);
         Car car3 = new Car(brand2, "S500", "KK M434", companyBranch1, 1.3);
@@ -64,48 +46,59 @@ public class DataGenerator {
         Car car15 = new Car(brand8, "Impala", "FF 5566", companyBranch7, 3.6);
         Car car16 = new Car(brand7, "3 Series", "GG 7788", companyBranch1, 2.0);
         Car car17 = new Car(brand6, "Focus", "HH 9900", companyBranch2, 1.5);
+        Car car18 = new Car(brand2, "C300", "IJ 1234", companyBranch3, 2.0);
+        Car car19 = new Car(brand3, "Astra", "JK 5678", companyBranch4, 1.4);
+        Car car20 = new Car(brand4, "Baleno", "LM 9101", companyBranch2, 1.8);
+        Car car21 = new Car(brand5, "RAV4", "NO 1122", companyBranch5, 2.5);
+        Car car22 = new Car(brand6, "Explorer", "PQ 3344", companyBranch6, 3.0);
+        Car car23 = new Car(brand7, "X3", "RS 5566", companyBranch7, 2.0);
+        Car car24 = new Car(brand8, "Cruze", "TU 7788", companyBranch1, 1.6);
+        Car car25 = new Car(brand2, "E350", "VW 9900", companyBranch3, 3.5);
+        Car car26 = new Car(brand3, "Insignia", "XY 1234", companyBranch4, 2.0);
+        Car car27 = new Car(brand4, "Swift", "YZ 5678", companyBranch2, 1.2);
+        Car car28 = new Car(brand5, "Highlander", "AB 9101", companyBranch5, 3.5);
+        Car car29 = new Car(brand6, "Fiesta", "CD 1122", companyBranch6, 1.0);
+        Car car30 = new Car(brand7, "Z4", "EF 3344", companyBranch7, 2.5);
+        Car car31 = new Car(brand8, "Traverse", "GH 5566", companyBranch1, 3.6);
+        Car car32 = new Car(brand2, "A-Class", "IJ 7788", companyBranch3, 1.3);
+        Car car33 = new Car(brand3, "Meriva", "KL 9910", companyBranch4, 1.6);
+        Car car34 = new Car(brand3, "Meriva", "KL 9956", companyBranch4, 1.7);
+        Car car35 = new Car(brand3, "Meriva", "KL 9900", companyBranch4, 1.8);
+        Car car36 = new Car(brand3, "Meriva", "KV RF00", companyBranch4, 1.9);
+        Car car37 = new Car(brand3, "Meriva", "KL 95H0", companyBranch4, 1.5);
+        Car car38 = new Car(brand3, "Meriva", "KG G9B0", companyBranch4, 1.6);
+        Car car39 = new Car(brand4, "Ertiga", "MN 1234", companyBranch2, 1.5);
+        Car car40 = new Car(brand5, "Prius", "OP 5678", companyBranch5, 1.8);
+        Car car41 = new Car(brand6, "Escape", "QR 9101", companyBranch6, 2.0);
+        Car car42 = new Car(brand7, "7 Series", "ST 1122", companyBranch7, 3.0);
+        Car car43 = new Car(brand8, "Tahoe", "UV 3344", companyBranch1, 5.3);
+        Car car44 = new Car(brand2, "GLA", "WX 5566", companyBranch3, 2.1);
+        Car car45 = new Car(brand3, "Corsa", "YZ 7788", companyBranch4, 1.0);
+        Car car46 = new Car(brand3, "Corsa", "BZ 7788", companyBranch4, 1.2);
+        Car car47 = new Car(brand3, "Corsa", "MZ 7718", companyBranch4, 1.2);
+        Car car48 = new Car(brand3, "Corsa", "YZ 7238", companyBranch4, 1.2);
+        Car car49 = new Car(brand3, "Corsa", "YZ 5548", companyBranch4, 1.2);
+        Truck truck1 = new Truck(brand1, "Actros", "LL F343", companyBranch1, 6.0);
 
-        Customer client1 = new Customer("Marc", "Jacobs", LocalDate.of(1989, 2, 4), LocalDate.of(2020, 1, 1), LocalDate.of(2030,1,1));
-        Customer client2 = new Customer("Jane", "Bright", LocalDate.of(1994, 6, 5), LocalDate.of(2018, 1, 1), LocalDate.of(2028,1,1));
-        Customer client3 = new Customer("John", "Lemon", LocalDate.of(1999, 2, 14), LocalDate.of(2022, 1, 1), LocalDate.of(2032,1,1));
-        Customer client4 = new Customer("Alice", "Wonderland", LocalDate.of(1985, 8, 15), LocalDate.of(2019, 1, 1), LocalDate.of(2029, 1, 1));
-        Customer client5 = new Customer("Bob", "Builder", LocalDate.of(1990, 3, 10), LocalDate.of(2017, 1, 1), LocalDate.of(2027, 1, 1));
-        Customer client6 = new Customer("Charlie", "Chaplin", LocalDate.of(1975, 12, 25), LocalDate.of(2015, 1, 1), LocalDate.of(2025, 1, 1));
-        Customer client7 = new Customer("Diana", "Prince", LocalDate.of(1988, 11, 30), LocalDate.of(2021, 1, 1), LocalDate.of(2031, 1, 1));
+        Customer customer1 = new Customer("Marc", "Jacobs", LocalDate.of(1989, 2, 4), LocalDate.of(2020, 1, 1), LocalDate.of(2030,1,1));
 
-        Rental rental1 = new Rental(LocalDate.of(2024, 2, 2), LocalDate.of(2024, 2, 15), 530.0d, car4, client1, RentalLengthTypes.LONG_TERM_RENTAL);
-        Rental rental2 = new Rental(LocalDate.of(2024, 1, 4), LocalDate.of(2024, 1, 20), 1412.5d, car2, client1,RentalLengthTypes.LONG_TERM_RENTAL);
-        Rental rental3 = new Rental(LocalDate.of(2024, 5, 24), LocalDate.of(2024, 6, 12), 98.0d, car2, client3,RentalLengthTypes.LONG_TERM_RENTAL);
-        Rental rental4 = new Rental(LocalDate.of(2024, 2, 5), LocalDate.of(2024, 3, 1), 1412.5d, car2, client2, RentalLengthTypes.LONG_TERM_RENTAL);
-        Rental rental5 = new Rental(LocalDate.of(2024, 7, 12), LocalDate.of(2024, 7, 13), 34.0d, car3, client1, RentalLengthTypes.SHORT_TERM_RENTAL);
-        Rental rental6 = new Rental(LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 10), 500.0d, car10, client4, RentalLengthTypes.SHORT_TERM_RENTAL);
-        Rental rental7 = new Rental(LocalDate.of(2024, 4, 15), LocalDate.of(2024, 4, 25), 750.0d, car11, client5, RentalLengthTypes.SHORT_TERM_RENTAL);
-        Rental rental8 = new Rental(LocalDate.of(2024, 5, 5), LocalDate.of(2024, 5, 20), 1000.0d, car12, client6, RentalLengthTypes.LONG_TERM_RENTAL);
-        Rental rental9 = new Rental(LocalDate.of(2024, 6, 10), LocalDate.of(2024, 6, 30), 1250.0d, car13, client7, RentalLengthTypes.LONG_TERM_RENTAL);
-        Rental rental10 = new Rental(LocalDate.of(2024, 7, 1), LocalDate.of(2024, 7, 15), 600.0d, car14, client4, RentalLengthTypes.SHORT_TERM_RENTAL);
-        Rental rental11 = new Rental(LocalDate.of(2024, 8, 20), LocalDate.of(2024, 9, 5), 800.0d, car15, client5, RentalLengthTypes.LONG_TERM_RENTAL);
-        Rental rental12 = new Rental(LocalDate.of(2024, 10, 5), LocalDate.of(2024, 10, 15), 650.0d, car16, client6, RentalLengthTypes.SHORT_TERM_RENTAL);
-        Rental rental13 = new Rental(LocalDate.of(2024, 11, 1), LocalDate.of(2024, 11, 20), 900.0d, car17, client7, RentalLengthTypes.LONG_TERM_RENTAL);
-
-        companyBranch1.addVehicleQualified(car1);
-        companyBranch1.addVehicleQualified(car2);
-        companyBranch1.addVehicleQualified(car3);
-        companyBranch3.addVehicleQualified(car5);
-        companyBranch3.addVehicleQualified(car6);
-        companyBranch3.addVehicleQualified(car7);
-        companyBranch4.addVehicleQualified(car8);
-        companyBranch4.addVehicleQualified(car9);
-        companyBranch3.addVehicleQualified(car5);
-        companyBranch3.addVehicleQualified(car7);
-        companyBranch4.addVehicleQualified(car8);
-        companyBranch4.addVehicleQualified(car9);
-        companyBranch5.addVehicleQualified(car10);
-        companyBranch5.addVehicleQualified(car11);
-        companyBranch6.addVehicleQualified(car12);
-        companyBranch6.addVehicleQualified(car13);
-        companyBranch7.addVehicleQualified(car14);
-        companyBranch7.addVehicleQualified(car15);
-
+        RentalDoorToDoor rentalDoorToDoor = new RentalDoorToDoor(
+                LocalDate.of(2024, 6, 3),
+                LocalDate.of(2024, 6, 4),
+                15.0,
+                car5,
+                customer1,
+                RentalLengthTypes.SHORT_TERM_RENTAL,
+                0,
+                new Address("St. Mark's", (short)4, (short)1, "London", "34-434"));
+        RentalOnPremises rentalOnPremises = new RentalOnPremises
+                (LocalDate.of(2024, 5, 1),
+                        LocalDate.of(2024, 5, 14),
+                        100.0,
+                        car6,
+                        customer1,
+                        RentalLengthTypes.LONG_TERM_RENTAL,
+                        true);
         try {
             ObjectPlus.writeExtents();
         } catch (IOException e) {

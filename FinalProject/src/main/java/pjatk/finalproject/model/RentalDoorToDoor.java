@@ -8,7 +8,7 @@ public class RentalDoorToDoor extends Rental {
     private double extraFee;
     private Address deliveryAddress;
 
-    public RentalDoorToDoor(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, double extraFee, Address deliveryAddress) {
+    public RentalDoorToDoor(LocalDate startDate, LocalDate endDate, Double distance, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, double extraFee, Address deliveryAddress) {
         super(startDate, endDate, distance, vehicle, customer, rentalLengthType);
         try {
             setExtraFee(extraFee);
@@ -19,7 +19,7 @@ public class RentalDoorToDoor extends Rental {
         }
     }
 
-    public RentalDoorToDoor(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, double extraFee, Address deliveryAddress) {
+    public RentalDoorToDoor(LocalDate startDate, LocalDate endDate, Double distance, String unit, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, double extraFee, Address deliveryAddress) {
         super(startDate, endDate, distance, unit, vehicle, customer, rentalLengthType);
         try {
             setExtraFee(extraFee);
@@ -30,7 +30,7 @@ public class RentalDoorToDoor extends Rental {
         }
     }
 
-    public RentalDoorToDoor(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, Double additionalDiscount, double extraFee, Address deliveryAddress) {
+    public RentalDoorToDoor(LocalDate startDate, LocalDate endDate, Double distance, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, Double additionalDiscount, double extraFee, Address deliveryAddress) {
         super(startDate, endDate, distance, vehicle, customer, rentalLengthType, additionalDiscount);
         try {
             setExtraFee(extraFee);
@@ -41,7 +41,7 @@ public class RentalDoorToDoor extends Rental {
         }
     }
 
-    public RentalDoorToDoor(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, Double additionalDiscount, double extraFee, Address deliveryAddress) {
+    public RentalDoorToDoor(LocalDate startDate, LocalDate endDate, Double distance, String unit, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, Double additionalDiscount, double extraFee, Address deliveryAddress) {
         super(startDate, endDate, distance, unit, vehicle, customer, rentalLengthType, additionalDiscount);
         try {
             setExtraFee(extraFee);
@@ -71,6 +71,10 @@ public class RentalDoorToDoor extends Rental {
 
     @Override
     public Double getCost() { // atrybut pochodny - zależy od wartości pozostałych
+
+        if (this.getDistance() == null) {
+            return 0.0;
+        }
 
         if (getAdditionalDiscount() == null) {
             return (this.getDistance() * getKmPrice()) + getExtraFee();

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<VBox xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="pjatk.finalproject.controller.VehicleDetailsPopupController"
+      alignment="CENTER"
+      spacing="10"
+      style="-fx-padding: 20;">
+    <children>
+        <Label text="Vehicles Details" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+        <Label fx:id="vehicleDetailsLabel" wrapText="true" style="-fx-font-size: 18;"/>
+        <Button text="Close" onAction="#handleClose"/>
+    </children>
+</VBox>

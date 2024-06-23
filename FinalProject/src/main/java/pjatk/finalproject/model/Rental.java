@@ -116,6 +116,11 @@ public class Rental extends ObjectPlus {
 
     public Double getCost() { // atrybut pochodny - zależy od wartości pozostałych
         DecimalFormat decimalFormat = new DecimalFormat("##.00");
+
+        if (this.getDistance() == null) {
+            return 0.0;
+        }
+
         if (additionalDiscount == null) {
             return Double.parseDouble(decimalFormat.format(this.distance * kmPrice));
         }
@@ -220,8 +225,6 @@ public class Rental extends ObjectPlus {
     }
 
     public void setRentalLengthType(Enum<RentalLengthTypes> rentalLengthType) {
-        // @TODO automatycznie ustawiac rodzaj wynajmu ze względu na dlugosc
-        // metoda getLengthOfRental()
         this.rentalLengthType = rentalLengthType;
     }
 

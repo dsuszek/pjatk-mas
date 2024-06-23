@@ -2,6 +2,8 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
 
 <VBox xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -31,15 +33,35 @@
             <Label text="End Date:" style="-fx-font-size: 14; -fx-padding: 0;" maxWidth="Infinity"/>
             <Label fx:id="endDateLabel" style="-fx-font-size: 18;" maxWidth="Infinity" minHeight="40"/>
         </VBox>
-        <Label text="Street Name:"/>
-        <Label fx:id="streetNameLabel"/>
-        <Label text="Street Number:"/>
-        <Label fx:id="streetNumberLabel"/>
-        <Label text="Apartment Number:"/>
-        <Label fx:id="apartmentNumberLabel"/>
-        <Label text="City:"/>
-        <Label fx:id="cityLabel"/>
-        <Label text="Postal Code:"/>
-        <Label fx:id="postalCodeLabel"/>
+
+        <VBox spacing="5" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: lightgray; -fx-margin: 0 20;">
+            <Label text="Street Name:" style="-fx-font-size: 14; -fx-padding: 0;" maxWidth="Infinity"/>
+            <Label fx:id="streetNameLabel" style="-fx-font-size: 18;" maxWidth="Infinity" minHeight="40"/>
+        </VBox>
+
+        <VBox spacing="5" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: lightgray; -fx-margin: 0 20;">
+            <Label text="Street Number:" style="-fx-font-size: 14; -fx-padding: 0;" maxWidth="Infinity"/>
+            <Label fx:id="streetNumberLabel" style="-fx-font-size: 18;" maxWidth="Infinity" minHeight="40"/>
+        </VBox>
+
+        <VBox spacing="5" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: lightgray; -fx-margin: 0 20;">
+            <Label text="Apartment Number:" style="-fx-font-size: 14; -fx-padding: 0;" maxWidth="Infinity"/>
+            <Label fx:id="apartmentNumberLabel" style="-fx-font-size: 18;" maxWidth="Infinity" minHeight="40"/>
+        </VBox>
+
+        <VBox spacing="5" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: lightgray; -fx-margin: 0 20;">
+            <Label text="City:" style="-fx-font-size: 14; -fx-padding: 0;" maxWidth="Infinity"/>
+            <Label fx:id="cityLabel" style="-fx-font-size: 18;" maxWidth="Infinity" minHeight="40"/>
+        </VBox>
+
+        <VBox spacing="5" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: lightgray; -fx-margin: 0 20;">
+            <Label text="Postal Code:" style="-fx-font-size: 14; -fx-padding: 0;" maxWidth="Infinity"/>
+            <Label fx:id="postalCodeLabel" style="-fx-font-size: 18;" maxWidth="Infinity" minHeight="40"/>
+        </VBox>
+
+        <HBox alignment="CENTER" spacing="10">
+            <Button text="Cancel" onAction="#handleCancel" style="-fx-background-color: red; -fx-text-fill: white; -fx-padding: 10;" maxWidth="100"/>
+            <Button text="Create Rental" onAction="#handleCreateRental" style="-fx-background-color: green; -fx-text-fill: white; -fx-padding: 10;" maxWidth="100"/>
+        </HBox>
     </children>
 </VBox>

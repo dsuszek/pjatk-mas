@@ -7,14 +7,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.layout.Region?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="pjatk.finalproject.controller.AddressWindowController"
             prefHeight="400.0" prefWidth="600.0">
     <children>
-        <VBox alignment="TOP_LEFT" spacing="10" layoutX="50" layoutY="20">
-            <Label text="Mobile4U - Rent a car" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+        <VBox alignment="CENTER" spacing="10" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-padding: 20;">
+
             <VBox spacing="5" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: lightgray; -fx-margin: 0 20;">
                 <Label text="Region:" style="-fx-font-size: 14; -fx-padding: 0;" maxWidth="Infinity"/>
                 <Label fx:id="regionLabel" style="-fx-font-size: 18;" maxWidth="Infinity" minHeight="40"/>
@@ -34,30 +33,36 @@
                 <Label text="End Date:" style="-fx-font-size: 14; -fx-padding: 0;" maxWidth="Infinity"/>
                 <Label fx:id="endDateLabel" style="-fx-font-size: 18;" maxWidth="Infinity" minHeight="40"/>
             </VBox>
-            <HBox spacing="10" alignment="CENTER">
-                <Label text="Street name:"/>
-                <TextField fx:id="streetNameField"/>
-            </HBox>
-            <HBox spacing="10" alignment="CENTER">
-                <Label text="Street number:"/>
-                <TextField fx:id="streetNumberField"/>
-            </HBox>
-            <HBox spacing="10" alignment="CENTER">
-                <Label text="Apartment number:"/>
-                <TextField fx:id="apartmentNumberField"/>
-            </HBox>
-            <HBox spacing="10" alignment="CENTER">
-                <Label text="City:"/>
-                <TextField fx:id="cityField"/>
-            </HBox>
-            <HBox spacing="10" alignment="CENTER">
-                <Label text="Postal code:"/>
-                <TextField fx:id="postalCodeField"/>
-            </HBox>
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Button text="Back to Main Menu" onAction="#handleBackToMainMenu"/>
-                <Region fx:id="spacer" HBox.hgrow="ALWAYS"/>
-                <Button text="Continue" onAction="#handleContinue" style="-fx-background-color: blue; -fx-text-fill: white;"/>
+
+            <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+                <Label text="Street name:" style="-fx-font-size: 14;" maxWidth="Infinity"/>
+                <TextField fx:id="streetNameField" maxWidth="Infinity"/>
+            </VBox>
+
+            <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+                <Label text="Street number:" style="-fx-font-size: 14;" maxWidth="Infinity"/>
+                <TextField fx:id="streetNumberField" maxWidth="Infinity"/>
+            </VBox>
+
+            <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+                <Label text="Apartment number:" style="-fx-font-size: 14;" maxWidth="Infinity"/>
+                <TextField fx:id="apartmentNumberField" maxWidth="Infinity"/>
+            </VBox>
+
+            <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+                <Label text="City:" style="-fx-font-size: 14;" maxWidth="Infinity"/>
+                <TextField fx:id="cityField" maxWidth="Infinity"/>
+            </VBox>
+
+            <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+                <Label text="Postal code:" style="-fx-font-size: 14;" maxWidth="Infinity"/>
+                <TextField fx:id="postalCodeField" maxWidth="Infinity"/>
+            </VBox>
+
+            <HBox alignment="CENTER" spacing="10">
+                <Button text="Back to Main Menu" onAction="#handleBackToMainMenu" minWidth="120"/>
+                <Button text="Cancel" onAction="#handleCancel" style="-fx-background-color: red; -fx-text-fill: white;" minWidth="120"/>
+                <Button text="Continue" onAction="#handleContinue" style="-fx-background-color: #0078D7; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" minWidth="120"/>
             </HBox>
         </VBox>
     </children>

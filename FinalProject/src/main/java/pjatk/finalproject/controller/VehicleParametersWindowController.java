@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import pjatk.finalproject.model.*;
 
 import java.io.IOException;
@@ -22,8 +24,6 @@ public class VehicleParametersWindowController {
     @FXML
     private DatePicker endDatePicker;
     @FXML
-    private Label vehicleDetailsLabel;
-    @FXML
     private CheckBox rentalDoorToDoorCheckBox;
     @FXML
     private ListView<Vehicle> vehicleListView;
@@ -33,6 +33,7 @@ public class VehicleParametersWindowController {
     private Brand selectedBrand;
     private String selectedModel;
     private Vehicle selectedVehicle;
+    private Customer selectedCustomer;
     private LocalDate selectedEndDate;
 
     public void setRegionAndBranch(Region region, CompanyBranch companyBranch) {
@@ -50,6 +51,29 @@ public class VehicleParametersWindowController {
         );
 
         brandComboBox.setOnAction(event -> updateModelComboBox(availableVehicles, brandComboBox.getSelectionModel().getSelectedItem()));
+    }
+
+    public void setSelectedVehicleAndDate(Vehicle vehicle, LocalDate endDate) {
+        this.selectedVehicle = vehicle;
+        this.selectedEndDate = endDate;
+
+        // Set the end date picker value
+        endDatePicker.setValue(endDate);
+
+        // Update the brand and model combo boxes
+        selectedBrand = vehicle.getBrand();
+        selectedModel = vehicle.getModel();
+        brandComboBox.getSelectionModel().select(selectedBrand);
+        updateModelComboBox(availableVehicles, selectedBrand);
+        modelComboBox.getSelectionModel().select(selectedModel);
+
+        // Select the vehicle in the list view
+        vehicleListView.getSelectionModel().select(vehicle);
+        handleSearch();
+    }
+
+    public void setCustomer(Customer customer) {
+        this.selectedCustomer = customer;
     }
 
     private void updateModelComboBox(List<Vehicle> availableVehicles, Brand selectedBrand) {
@@ -108,7 +132,7 @@ public class VehicleParametersWindowController {
     @FXML
     private void handleDisplayVehicleDetails() {
         selectedBrand = brandComboBox.getSelectionModel().getSelectedItem();
-        selectedModel = modelComboBox.getSelectionModel().getSelectedItem().toString();
+        selectedModel = modelComboBox.getSelectionModel().getSelectedItem();
 
         if (selectedBrand == null || selectedModel == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -124,14 +148,50 @@ public class VehicleParametersWindowController {
         availableVehicles.stream()
                 .filter(vehicle -> vehicle.getBrand().equals(selectedBrand) && vehicle.getModel().equals(selectedModel))
                 .forEach(vehicle -> {
-                    details.append("Registration Number: ").append(vehicle.getVehicleRegistrationNumber());
                     if (vehicle instanceof Car) {
-                        Car car = (Car) vehicle;
-                        details.append("\nEngine Size: ").append(car.getEngineSize());
-                        details.append("\nCar Types: ").append(car.getCarTypes());
+                        Car selectedCar = (Car) vehicle;
+                        if (selectedCar.getCarTypes().contains(CarTypes.SPORT_CAR) && selectedCar.getSuspensionHeight() != null) {
+                            details.append("Car registration number: " + vehicle.getVehicleRegistrationNumber() +
+                                    "\nBrand: " + vehicle.getBrand().getName() +
+                                    "\nModel: " + vehicle.getModel() +
+                                    "\nEngine size: " + ((Car) vehicle).getEngineSize() +
+                                    "\nCar types: " + ((Car) vehicle).getCarTypes() +
+                                    "\nSuspension height: " + ((Car) vehicle).getSuspensionHeight() +
+                                    "\nCompany branch: " + vehicle.getCompanyBranch().getName() +
+                                    "\nPrice of rental per kilometer: " + vehicle.calculateRentalPricePerKilometer());
+                        } else if (selectedCar.getCarTypes().contains(CarTypes.ELECTRIC_CAR) && selectedCar.getBatteryCapacity() != null) {
+                            details.append("Car registration number: " + vehicle.getVehicleRegistrationNumber() +
+                                    "\nBrand: " + vehicle.getBrand().getName() +
+                                    "\nModel: " + vehicle.getModel() +
+                                    "\nEngine size: " + ((Car) vehicle).getEngineSize() +
+                                    "\nCar types: " + ((Car) vehicle).getCarTypes() +
+                                    "\nBattery capacity: " + ((Car) vehicle).getBatteryCapacity() +
+                                    "\nCompany branch: " + vehicle.getCompanyBranch().getName() +
+                                    "\nPrice of rental per kilometer: " + vehicle.calculateRentalPricePerKilometer());
+                        } else if (((Car) vehicle).getCarTypes().contains(CarTypes.PREMIUM_CAR) && (((Car) vehicle).getLuxuryDesignElements() != null)) {
+                            details.append("Car registration number: " + vehicle.getVehicleRegistrationNumber() +
+                                    "\nBrand: " + vehicle.getBrand().getName() +
+                                    "\nModel: " + vehicle.getModel() +
+                                    "\nEngine size: " + ((Car) vehicle).getEngineSize() +
+                                    "\nCar types: " + ((Car) vehicle).getCarTypes() +
+                                    "\nLuxury design elements: " + ((Car) vehicle).getLuxuryDesignElements() +
+                                    "\nCompany branch: " + vehicle.getCompanyBranch().getName() +
+                                    "\nPrice of rental per kilometer: " + vehicle.calculateRentalPricePerKilometer());
+                        } else {
+                            details.append("Car registration number:" + vehicle.getVehicleRegistrationNumber() +
+                                    "\nBrand: " + vehicle.getBrand().getName() +
+                                    "\nModel: " + vehicle.getModel() +
+                                    "\nEngine size: " + ((Car) vehicle).getEngineSize() +
+                                    "\nCar types: " + ((Car) vehicle).getCarTypes() +
+                                    "\nCompany branch: " + vehicle.getCompanyBranch().getName() +
+                                    "\nPrice of rental per kilometer: " + vehicle.calculateRentalPricePerKilometer());
+                        }
+
                     } else if (vehicle instanceof Truck) {
-                        Truck truck = (Truck) vehicle;
-                        details.append("\nMaximum Authorised Mass: ").append(truck.getMaximumAuthorisedMass());
+                        Truck selectedTruck = (Truck) vehicle;
+                        details.append("Truck registration number: ").append(selectedTruck.getVehicleRegistrationNumber());
+                        details.append("\nMaximum Authorised Mass: ").append(selectedTruck.getMaximumAuthorisedMass());
+                        details.append("\nPrice of rental per kilometer: ").append(selectedTruck.calculateRentalPricePerKilometer());
                     }
                     details.append("\n\n");
                 });
@@ -140,7 +200,7 @@ public class VehicleParametersWindowController {
             details.append("No vehicles found for the selected brand and model.");
         }
 
-        vehicleDetailsLabel.setText(details.toString());
+        showVehicleDetailsPopup(details.toString());
     }
 
 
@@ -175,9 +235,13 @@ public class VehicleParametersWindowController {
             List<Region> regions = ObjectPlus.getExtent(Region.class);
             MainWindowController controller = loader.getController();
             controller.setRegions(regions);
+            controller.setCustomer(selectedCustomer);
 
             Scene currentScene = brandComboBox.getScene();
-            currentScene.setRoot(root);
+            Stage stage = (Stage) currentScene.getWindow();
+            stage.setTitle("Create A New Rental");
+            stage.setScene(new Scene(root, 800, 800));
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -223,6 +287,11 @@ public class VehicleParametersWindowController {
             return false;
         }
 
+        if (endDatePicker.getValue().isBefore(LocalDate.now())) {
+            showAlert("Error", "Invalid End Date", "The end date cannot be in the past.");
+            return false;
+        }
+
         return true;
     }
 
@@ -241,12 +310,18 @@ public class VehicleParametersWindowController {
 
             AddressWindowController controller = loader.getController();
             controller.setRegion(region);
+            controller.setCustomer(selectedCustomer);
             controller.setCompanyBranch(companyBranch);
             controller.setVehicle(vehicle);
             controller.setEndDate(endDate);
 
             Scene currentScene = brandComboBox.getScene();
-            currentScene.setRoot(root);
+            Stage stage = (Stage) currentScene.getWindow();
+            stage.setMinHeight(800);
+            stage.setMinWidth(800);
+            stage.setTitle("Delivery Address Details");
+            stage.setScene(new Scene(root, 800, 1000));
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -259,12 +334,36 @@ public class VehicleParametersWindowController {
 
             SummaryWindowController controller = loader.getController();
             controller.setRegion(region);
+            controller.setCustomer(selectedCustomer);
             controller.setCompanyBranch(companyBranch);
             controller.setVehicle(vehicle);
             controller.setEndDate(endDate);
 
             Scene currentScene = brandComboBox.getScene();
-            currentScene.setRoot(root);
+            Stage stage = (Stage) currentScene.getWindow();
+            stage.setMinHeight(800);
+            stage.setMinWidth(800);
+            stage.setTitle("New Rental Summary");
+            stage.setScene(new Scene(root, 800, 800));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showVehicleDetailsPopup(String details) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("VehicleDetailsPopup.fxml"));
+            Parent root = loader.load();
+
+            VehicleDetailsPopupController controller = loader.getController();
+            controller.setVehicleDetails(details);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Vehicle Details");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }

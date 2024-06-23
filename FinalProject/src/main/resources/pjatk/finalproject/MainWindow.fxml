@@ -7,6 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
 <VBox xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="pjatk.finalproject.controller.MainWindowController"
@@ -19,6 +20,9 @@
         <ComboBox fx:id="regionComboBox" styleClass="combo-box"/>
         <Label fx:id="branchLabel" text="Select Company Branch:" styleClass="label-title" visible="false"/>
         <ListView fx:id="companyBranchListView" styleClass="list-view" visible="false"/>
-        <Button text="Continue" onAction="#handleContinue" styleClass="button-continue"/>
+        <HBox alignment="CENTER" spacing="10">
+            <Button text="View Previous Rentals" onAction="#handleViewPreviousRentals" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            <Button text="Continue" onAction="#handleContinue" style="-fx-background-color: #0078D7; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+        </HBox>
     </children>
 </VBox>

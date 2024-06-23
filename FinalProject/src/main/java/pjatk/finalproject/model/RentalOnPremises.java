@@ -6,7 +6,7 @@ public class RentalOnPremises extends Rental {
 
     boolean freeCancellation;
 
-    public RentalOnPremises(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, boolean freeCancellation) {
+    public RentalOnPremises(LocalDate startDate, LocalDate endDate, Double distance, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, boolean freeCancellation) {
         super(startDate, endDate, distance, vehicle, customer, rentalLengthType);
         try {
             setFreeCancellation(freeCancellation);
@@ -16,18 +16,8 @@ public class RentalOnPremises extends Rental {
         }
     }
 
-    public RentalOnPremises(LocalDate startDate, LocalDate endDate, double distance, String unit, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, boolean freeCancellation) {
+    public RentalOnPremises(LocalDate startDate, LocalDate endDate, Double distance, String unit, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, boolean freeCancellation) {
         super(startDate, endDate, distance, unit, vehicle, customer, rentalLengthType);
-        try {
-            setFreeCancellation(freeCancellation);
-        } catch (Exception e) {
-            e.printStackTrace();
-            removeFromExtent();
-        }
-    }
-
-    public RentalOnPremises(LocalDate startDate, LocalDate endDate, double distance, Vehicle vehicle, Customer customer, Enum<RentalLengthTypes> rentalLengthType, Double additionalDiscount, boolean freeCancellation) {
-        super(startDate, endDate, distance, vehicle, customer, rentalLengthType, additionalDiscount);
         try {
             setFreeCancellation(freeCancellation);
         } catch (Exception e) {

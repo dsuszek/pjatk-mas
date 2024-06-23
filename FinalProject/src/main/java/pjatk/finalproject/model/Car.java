@@ -10,6 +10,7 @@ public class Car extends Vehicle {
     private Double suspensionHeight; // w milimetrach, tylko dla samochodów typu SPORT_CAR
     private Set<String> luxuryDesignElements; // tylko dla samochodów typu PREMIUM_CAR
     private Double batteryCapacity; // w kWh, tylko dla samochodów typu ELECTRIC_CAR
+
     public Car(Brand brand, String model, String vehicleRegistrationNumber, CompanyBranch companyBranch, double engineSize) {
         super(brand, model, vehicleRegistrationNumber, companyBranch);
         try {
@@ -53,7 +54,7 @@ public class Car extends Vehicle {
         if (carTypes.contains(CarTypes.ELECTRIC_CAR)) {
             return 1.0d;
         } else {
-            return Math.round(0.75 * engineSize * 100.0)/100.0;
+            return Math.round(0.75 * engineSize * 100.0) / 100.0;
         }
     }
 
@@ -74,7 +75,7 @@ public class Car extends Vehicle {
     }
 
     public Set<String> getLuxuryDesignElements() {
-        if(!carTypes.contains(CarTypes.PREMIUM_CAR)) {
+        if (!carTypes.contains(CarTypes.PREMIUM_CAR)) {
             throw new RuntimeException("Luxury elements are not available for this type of car.");
         }
 
@@ -98,7 +99,7 @@ public class Car extends Vehicle {
     }
 
     public Double getBatteryCapacity() {
-        if(!carTypes.contains(CarTypes.ELECTRIC_CAR)) {
+        if (!carTypes.contains(CarTypes.ELECTRIC_CAR)) {
             throw new RuntimeException("Information about battery capacity is not available for this type of car.");
         }
 
@@ -116,42 +117,8 @@ public class Car extends Vehicle {
 
     @Override // Przesłonięcie metody.
     public String toString() {
-
-        if (carTypes.contains(CarTypes.SPORT_CAR) && suspensionHeight != null) {
-            return "Car registration number: " + vehicleRegistrationNumber +
-                    "\nBrand: " + brand.getName() +
-                    "\nModel: " + model +
-                    "\nEngine size: " + engineSize +
-                    "\nCar types: " + carTypes +
-                    "\nSuspension height: " + suspensionHeight +
-                    "\nCompany branch: " + companyBranch.getName() +
-                    "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
-        } else if (carTypes.contains(CarTypes.ELECTRIC_CAR) && batteryCapacity != null) {
-            return "Car registration number: " + vehicleRegistrationNumber +
-                    "\nBrand: " + brand.getName() +
-                    "\nModel: " + model +
-                    "\nEngine size: " + engineSize +
-                    "\nCar types: " + carTypes +
-                    "\nBattery capacity: " + batteryCapacity +
-                    "\nCompany branch: " + companyBranch.getName() +
-                    "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
-        } else if (carTypes.contains(CarTypes.PREMIUM_CAR) && (luxuryDesignElements != null)) {
-            return "Car registration number: " + vehicleRegistrationNumber +
-                    "\nBrand: " + brand.getName() +
-                    "\nModel: " + model +
-                    "\nEngine size: " + engineSize +
-                    "\nCar types: " + carTypes +
-                    "\nLuxury design elements: " + luxuryDesignElements +
-                    "\nCompany branch: " + companyBranch.getName() +
-                    "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
-        } else {
-            return "Car registration number: " + vehicleRegistrationNumber +
-                    "\nBrand: " + brand.getName() +
-                    "\nModel: " + model +
-                    "\nEngine size: " + engineSize +
-                    "\nCar types: " + carTypes +
-                    "\nCompany branch: " + companyBranch.getName() +
-                    "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
-        }
+        return "Car registration number: " + vehicleRegistrationNumber +
+                "\nBrand: " + brand.getName() +
+                "\nModel: " + model;
     }
 }

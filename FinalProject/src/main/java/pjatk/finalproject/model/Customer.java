@@ -98,8 +98,7 @@ public class Customer extends Person {
 
     @Override // Przesłonięcie metody.
     public String toString() {
-        return "Customer ID: " + id +
-                "\nFirst name: " + firstName +
+        return "First name: " + firstName +
                 "\nLast name: " + lastName;
     }
 }

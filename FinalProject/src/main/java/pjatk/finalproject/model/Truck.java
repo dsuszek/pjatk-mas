@@ -33,8 +33,6 @@ public class Truck extends Vehicle {
     public String toString() {
         return "Truck registration number: " + vehicleRegistrationNumber +
                 "\nBrand: " + brand +
-                "\nModel: " + model +
-                "\nMaximum authorised mass: " + maximumAuthorisedMass +
-                "\nPrice of rental per kilometer: " + calculateRentalPricePerKilometer();
+                "\nModel: " + model;
     }
 }

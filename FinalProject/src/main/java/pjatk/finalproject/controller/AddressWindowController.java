@@ -13,6 +13,7 @@ import pjatk.finalproject.model.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class AddressWindowController {
 
@@ -34,52 +35,68 @@ public class AddressWindowController {
     private TextField cityField;
     @FXML
     private TextField postalCodeField;
-
-    private Address address;
-    private Stage dialogStage;
-    private boolean submitClicked = false;
-
+    private Region selectedRegion;
+    private CompanyBranch selectedCompanyBranch;
+    private Vehicle selectedVehicle;
+    private Customer selectedCustomer;
+    private LocalDate selectedEndDate;
     public void setRegion(Region region) {
+        this.selectedRegion = region;
         regionLabel.setText(region.getName());
     }
 
     public void setCompanyBranch(CompanyBranch companyBranch) {
+        this.selectedCompanyBranch = companyBranch;
         companyBranchLabel.setText(companyBranch.getName());
     }
 
     public void setVehicle(Vehicle vehicle) {
+        this.selectedVehicle = vehicle;
         vehicleLabel.setText(vehicle.getBrand().getName() + " " + vehicle.getModel());
     }
 
     public void setEndDate(LocalDate endDate) {
+        this.selectedEndDate = endDate;
         endDateLabel.setText(endDate.toString());
     }
 
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
+    public void setCustomer(Customer customer) {
+        this.selectedCustomer = customer;
     }
 
-    public boolean isSubmitClicked() {
-        return submitClicked;
-    }
+    private boolean isAddressInputValid() {
+        String streetName = streetNameField.getText();
+        String streetNumber = streetNumberField.getText();
+        String apartmentNumber = apartmentNumberField.getText();
+        String cityName = cityField.getText();
+        String postalCode = postalCodeField.getText();
 
-    public Address getAddress() {
-        return address;
-    }
-
-    @FXML
-    private void handleSubmit() {
-        if (isInputValid()) {
-            address = new Address(
-                    streetNameField.getText(),
-                    Short.parseShort(streetNumberField.getText()),
-                    Short.parseShort(apartmentNumberField.getText()),
-                    cityField.getText(),
-                    postalCodeField.getText()
-            );
-            submitClicked = true;
-            dialogStage.close();
+        if (!Pattern.matches("[a-zA-Z .']{2,}", streetName)) {
+            showAlert("Error", "Invalid Street Name", "Street name should only consist of letters with a minimum of 2 letters.");
+            return false;
         }
+
+        if (!Pattern.matches("\\d+", streetNumber)) {
+            showAlert("Error", "Invalid Street Number", "Street number should only consist of digits.");
+            return false;
+        }
+
+        if (!Pattern.matches("\\d*", apartmentNumber)) {
+            showAlert("Error", "Invalid Apartment Number", "Apartment number should only consist of digits.");
+            return false;
+        }
+
+        if (!Pattern.matches("[a-zA-Z]{2,}", cityName)) {
+            showAlert("Error", "Invalid City Name", "City name should only consist of letters.");
+            return false;
+        }
+
+        if (!Pattern.matches("\\d{2}-\\d{3}", postalCode)) {
+            showAlert("Error", "Invalid Postal Code", "Postal code should only consist of digits and be in the format XX-XXX.");
+            return false;
+        }
+
+        return true;
     }
 
     @FXML
@@ -93,7 +110,10 @@ public class AddressWindowController {
             controller.setRegions(regions);
 
             Scene currentScene = streetNameField.getScene();
-            currentScene.setRoot(root);
+            Stage stage = (Stage) currentScene.getWindow();
+            stage.setTitle("Create A New Rental");
+            stage.setScene(new Scene(root));
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -107,11 +127,21 @@ public class AddressWindowController {
             return;
         }
 
+        if (!isAddressInputValid()) {
+            return;
+        }
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("SummaryWithAddressWindow.fxml"));
             Parent root = loader.load();
 
             SummaryWithAddressWindowController controller = loader.getController();
+            controller.setRegion(selectedRegion);
+            controller.setCompanyBranch(selectedCompanyBranch);
+            controller.setVehicle(selectedVehicle);
+            controller.setCustomer(selectedCustomer);
+            controller.setEndDate(selectedEndDate);
+
             controller.setStreetName(streetNameField.getText());
             controller.setStreetNumber(streetNumberField.getText());
             controller.setApartmentNumber(apartmentNumberField.getText());
@@ -119,7 +149,12 @@ public class AddressWindowController {
             controller.setPostalCode(postalCodeField.getText());
 
             Scene currentScene = streetNameField.getScene();
-            currentScene.setRoot(root);
+            Stage currentStage = (Stage) currentScene.getWindow();
+            currentStage.setMinHeight(800);
+            currentStage.setMinWidth(800);
+            currentStage.setTitle("New Rental Summary");
+            currentStage.setScene(new Scene(root, 800, 1000));
+            currentStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -146,4 +181,25 @@ public class AddressWindowController {
         alert.showAndWait();
     }
 
+    @FXML
+    private void handleCancel() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("VehiclesParametersWindow.fxml"));
+            Parent root = loader.load();
+
+            VehicleParametersWindowController controller = loader.getController();
+            controller.setRegionAndBranch(selectedRegion, selectedCompanyBranch);
+            controller.setSelectedVehicleAndDate(selectedVehicle, selectedEndDate);
+
+            Scene currentScene = regionLabel.getScene();
+            Stage stage = (Stage) currentScene.getWindow();
+            stage.setMinHeight(800);
+            stage.setMinWidth(800);
+            stage.setTitle("Rental Parameters");
+            stage.setScene(new Scene(root, 800, 800));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
