@@ -188,6 +188,7 @@ public class AddressWindowController {
             Parent root = loader.load();
 
             VehicleParametersWindowController controller = loader.getController();
+            controller.setCustomer(selectedCustomer);
             controller.setRegionAndBranch(selectedRegion, selectedCompanyBranch);
             controller.setSelectedVehicleAndDate(selectedVehicle, selectedEndDate);
 
