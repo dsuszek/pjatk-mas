@@ -13,8 +13,8 @@ public class Brand implements Serializable {
 
     private UUID id;
     private String name;
-    private String originCountry; // atrybut opcjonalny
-    private Integer foundationYear; // atrybut opcjonalny
+    private String originCountry;
+    private Integer foundationYear;
     private List<Vehicle> vehicles = new ArrayList<>();
 
     public Brand(String name) {

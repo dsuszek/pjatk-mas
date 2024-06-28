@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
@@ -29,11 +30,23 @@
                 </HBox>
             </VBox>
         </HBox>
+
+        <HBox spacing="10" alignment="CENTER">
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="Price per km min:"/>
+                <TextField fx:id="minPriceTextField"/>
+            </VBox>
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="Price per km max:"/>
+                <TextField fx:id="maxPriceTextField"/>
+            </VBox>
+            <Button text="Filter" onAction="#handleFilter" style="-fx-background-color: orange; -fx-text-fill: white;"/>
+        </HBox>
+
         <Label text="All available vehicles:"/>
         <ListView fx:id="vehicleListView" prefHeight="200"/>
         <HBox spacing="10" alignment="CENTER">
             <Button text="Display vehicle details" onAction="#handleDisplayVehicleDetails"/>
-            <Button text="Add filters"/>
         </HBox>
         <HBox spacing="10" alignment="CENTER">
             <VBox alignment="CENTER" spacing="5">

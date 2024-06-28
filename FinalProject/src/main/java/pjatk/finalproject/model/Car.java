@@ -7,9 +7,9 @@ import static pjatk.finalproject.model.Utils.*;
 public class Car extends Vehicle {
     private double engineSize;
     private EnumSet<CarTypes> carTypes = EnumSet.of(CarTypes.CAR);
-    private Double suspensionHeight; // w milimetrach, tylko dla samochodów typu SPORT_CAR
-    private Set<String> luxuryDesignElements; // tylko dla samochodów typu PREMIUM_CAR
-    private Double batteryCapacity; // w kWh, tylko dla samochodów typu ELECTRIC_CAR
+    private Double suspensionHeight; // in mm, only for cars of type SPORT_CAR
+    private Set<String> luxuryDesignElements; // only for cars of type PREMIUM_CAR
+    private Double batteryCapacity; // in kWh, only for cars of type ELECTRIC_CAR
 
     public Car(Brand brand, String model, String vehicleRegistrationNumber, CompanyBranch companyBranch, double engineSize) {
         super(brand, model, vehicleRegistrationNumber, companyBranch);
@@ -115,7 +115,7 @@ public class Car extends Vehicle {
         this.batteryCapacity = batteryCapacity;
     }
 
-    @Override // Przesłonięcie metody.
+    @Override
     public String toString() {
         return "Car registration number: " + vehicleRegistrationNumber +
                 "\nBrand: " + brand.getName() +

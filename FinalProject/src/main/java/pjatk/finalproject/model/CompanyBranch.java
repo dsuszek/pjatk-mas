@@ -28,10 +28,10 @@ public class CompanyBranch extends ObjectPlus {
             throw new Exception("Region does not exist.");
         }
 
-        // Tworzenie nowego oddziału firmy
+        // Creating new company branch
         CompanyBranch companyBranch = new CompanyBranch(name, address, region);
 
-        // Dodawanie oddziału firmy do regionu
+        // Adding new company branch to the region
         region.addCompanyBranch(companyBranch);
 
         return companyBranch;

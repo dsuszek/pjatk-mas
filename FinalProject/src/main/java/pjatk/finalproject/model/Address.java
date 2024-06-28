@@ -75,7 +75,7 @@ public class Address implements Serializable {
         this.postalCode = postalCode;
     }
 
-    @Override // Przesłonięcie metody.
+    @Override
     public String toString() {
         return "\n\tStreet name: " + streetName +
                 "\n\tStreet number: " + streetNumber +

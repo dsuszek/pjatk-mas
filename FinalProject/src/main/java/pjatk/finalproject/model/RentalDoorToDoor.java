@@ -70,7 +70,7 @@ public class RentalDoorToDoor extends Rental {
     }
 
     @Override
-    public Double getCost() { // atrybut pochodny - zależy od wartości pozostałych
+    public Double getCost() {
 
         if (this.getDistance() == null) {
             return 0.0;
@@ -83,7 +83,7 @@ public class RentalDoorToDoor extends Rental {
         return (this.getDistance() * getKmPrice()) - getAdditionalDiscount() + getExtraFee();
     }
 
-    @Override // Przesłonięcie metody.
+    @Override
     public String toString() {
         return "Rental door to door ID: " + getId() +
                 "\nTotal cost: " + getCost() +
@@ -92,6 +92,7 @@ public class RentalDoorToDoor extends Rental {
                 "\nEnd date: " + getEndDate() +
                 "\nRental length type: " + getRentalLengthType() +
                 "\nCustomer: " + getCustomer().getFirstName() + " " + getCustomer().getLastName() +
+                "\n" + getVehicle() +
                 "\nExtra fee: " + getExtraFee() +
                 "\nDelivery address: " + getDeliveryAddress();
     }

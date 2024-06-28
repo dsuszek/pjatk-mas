@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import pjatk.finalproject.controller.MainWindowController;
 import pjatk.finalproject.model.*;
@@ -34,6 +35,9 @@ public class Main extends Application {
 
             Scene scene = new Scene(root, 800, 800);
             scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
+
+            primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo_rent4u.png")));
+
             primaryStage.setScene(scene);
             primaryStage.setTitle("Create A New Rental");
             primaryStage.setMinHeight(800);

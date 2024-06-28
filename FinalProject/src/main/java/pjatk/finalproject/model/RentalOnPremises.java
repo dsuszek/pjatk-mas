@@ -42,7 +42,7 @@ public class RentalOnPremises extends Rental {
     public boolean getFreeCancellation() {
         return freeCancellation;
     }
-    @Override // Przesłonięcie metody.
+    @Override
     public String toString() {
         return "Rental on premises ID: " + getId() +
                 "\nTotal cost: " + getCost() +
@@ -51,6 +51,7 @@ public class RentalOnPremises extends Rental {
                 "\nEnd date: " + getEndDate() +
                 "\nRental length type: " + getRentalLengthType() +
                 "\nCustomer: " + getCustomer().getFirstName() + " " + getCustomer().getLastName() +
+                "\n" + getVehicle() +
                 "\nFree cancelation: " + getFreeCancellation();
     }
 }

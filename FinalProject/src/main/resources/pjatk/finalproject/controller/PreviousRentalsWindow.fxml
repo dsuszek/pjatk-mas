@@ -3,6 +3,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.Label?>
 <VBox xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="pjatk.finalproject.controller.PreviousRentalsWindowController"
@@ -10,7 +11,9 @@
       spacing="10"
       style="-fx-padding: 20;">
     <children>
+        <Label text="Rentals door to door:"/>
         <ListView fx:id="rentalDoorToDoorListView" />
+        <Label text="Rentals on premises:"/>
         <ListView fx:id="rentalOnPremisesListView" />
     </children>
 </VBox>

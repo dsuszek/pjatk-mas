@@ -107,7 +107,7 @@ public class MainWindowController {
 
             Stage stage = new Stage();
             stage.setTitle("Previous Rentals");
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 800, 1200));
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();

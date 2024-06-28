@@ -79,8 +79,8 @@ public class SummaryWindowController {
         alert.setContentText("Rental Details:\n" +
                 "Start Date: " + rental.getStartDate() + "\n" +
                 "End Date: " + rental.getEndDate() + "\n" +
-                "Vehicle: " + rental.getVehicle() + "\n" +
-                "Customer: " + rental.getCustomer() + "\n" +
+                rental.getVehicle() + "\n" +
+                "Customer: " + rental.getCustomer().getFirstName() + " " + rental.getCustomer().getLastName() + "\n" +
                 "Rental Length Type: " + rental.getRentalLengthType());
         alert.showAndWait().ifPresent(response -> {
             try {

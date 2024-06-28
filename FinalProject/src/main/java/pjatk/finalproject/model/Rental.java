@@ -241,14 +241,15 @@ public class Rental extends ObjectPlus {
         this.additionalDiscount = additionalDiscount;
     }
 
-    @Override // Przesłonięcie metody.
+    @Override
     public String toString() {
-        return "Rental ID: " + id +
+        return "Rental ID: " + getId() +
                 "\nTotal cost: " + getCost() +
-                "\nTotal distance: " + distance +
-                "\nStart date: " + startDate +
-                "\nEnd date: " + endDate +
-                "\nRental length type: " + rentalLengthType +
-                "\nCustomer: " + customer.getFirstName() + " " + customer.getLastName();
+                "\nTotal distance: " + getDistance() +
+                "\nStart date: " + getStartDate() +
+                "\nEnd date: " + getEndDate() +
+                "\nRental length type: " + getRentalLengthType() +
+                "\nCustomer: " + getCustomer().getFirstName() + " " + getCustomer().getLastName() +
+                "\nVehicle: " + getVehicle();
     }
 }

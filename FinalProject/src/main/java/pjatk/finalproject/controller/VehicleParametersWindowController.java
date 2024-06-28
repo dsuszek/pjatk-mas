@@ -1,5 +1,7 @@
 package pjatk.finalproject.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,7 +29,14 @@ public class VehicleParametersWindowController {
     private CheckBox rentalDoorToDoorCheckBox;
     @FXML
     private ListView<Vehicle> vehicleListView;
+    @FXML
+    private TextField minPriceTextField;
+
+    @FXML
+    private TextField maxPriceTextField;
+
     private List<Vehicle> availableVehicles = new ArrayList<>();
+    private List<Vehicle> filteredVehicles = new ArrayList<>();
     private Region selectedRegion;
     private CompanyBranch selectedCompanyBranch;
     private Brand selectedBrand;
@@ -42,7 +51,6 @@ public class VehicleParametersWindowController {
 
         availableVehicles = getAvailableVehicles(region, companyBranch);
 
-        // Populate brandComboBox with unique car brands from available cars
         brandComboBox.getItems().addAll(
                 availableVehicles.stream()
                         .map(Vehicle::getBrand)
@@ -57,17 +65,14 @@ public class VehicleParametersWindowController {
         this.selectedVehicle = vehicle;
         this.selectedEndDate = endDate;
 
-        // Set the end date picker value
         endDatePicker.setValue(endDate);
 
-        // Update the brand and model combo boxes
         selectedBrand = vehicle.getBrand();
         selectedModel = vehicle.getModel();
         brandComboBox.getSelectionModel().select(selectedBrand);
         updateModelComboBox(availableVehicles, selectedBrand);
         modelComboBox.getSelectionModel().select(selectedModel);
 
-        // Select the vehicle in the list view
         vehicleListView.getSelectionModel().select(vehicle);
         handleSearch();
     }
@@ -98,6 +103,9 @@ public class VehicleParametersWindowController {
 
     @FXML
     public void initialize() {
+        vehicleListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            selectedVehicle = newValue;
+        });
         brandComboBox.setCellFactory(param -> new ListCell<Brand>() {
             @Override
             protected void updateItem(Brand item, boolean empty) {
@@ -145,56 +153,52 @@ public class VehicleParametersWindowController {
 
         StringBuilder details = new StringBuilder();
 
-        availableVehicles.stream()
-                .filter(vehicle -> vehicle.getBrand().equals(selectedBrand) && vehicle.getModel().equals(selectedModel))
-                .forEach(vehicle -> {
-                    if (vehicle instanceof Car) {
-                        Car selectedCar = (Car) vehicle;
-                        if (selectedCar.getCarTypes().contains(CarTypes.SPORT_CAR) && selectedCar.getSuspensionHeight() != null) {
-                            details.append("Car registration number: " + vehicle.getVehicleRegistrationNumber() +
-                                    "\nBrand: " + vehicle.getBrand().getName() +
-                                    "\nModel: " + vehicle.getModel() +
-                                    "\nEngine size: " + ((Car) vehicle).getEngineSize() +
-                                    "\nCar types: " + ((Car) vehicle).getCarTypes() +
-                                    "\nSuspension height: " + ((Car) vehicle).getSuspensionHeight() +
-                                    "\nCompany branch: " + vehicle.getCompanyBranch().getName() +
-                                    "\nPrice of rental per kilometer: " + vehicle.calculateRentalPricePerKilometer());
-                        } else if (selectedCar.getCarTypes().contains(CarTypes.ELECTRIC_CAR) && selectedCar.getBatteryCapacity() != null) {
-                            details.append("Car registration number: " + vehicle.getVehicleRegistrationNumber() +
-                                    "\nBrand: " + vehicle.getBrand().getName() +
-                                    "\nModel: " + vehicle.getModel() +
-                                    "\nEngine size: " + ((Car) vehicle).getEngineSize() +
-                                    "\nCar types: " + ((Car) vehicle).getCarTypes() +
-                                    "\nBattery capacity: " + ((Car) vehicle).getBatteryCapacity() +
-                                    "\nCompany branch: " + vehicle.getCompanyBranch().getName() +
-                                    "\nPrice of rental per kilometer: " + vehicle.calculateRentalPricePerKilometer());
-                        } else if (((Car) vehicle).getCarTypes().contains(CarTypes.PREMIUM_CAR) && (((Car) vehicle).getLuxuryDesignElements() != null)) {
-                            details.append("Car registration number: " + vehicle.getVehicleRegistrationNumber() +
-                                    "\nBrand: " + vehicle.getBrand().getName() +
-                                    "\nModel: " + vehicle.getModel() +
-                                    "\nEngine size: " + ((Car) vehicle).getEngineSize() +
-                                    "\nCar types: " + ((Car) vehicle).getCarTypes() +
-                                    "\nLuxury design elements: " + ((Car) vehicle).getLuxuryDesignElements() +
-                                    "\nCompany branch: " + vehicle.getCompanyBranch().getName() +
-                                    "\nPrice of rental per kilometer: " + vehicle.calculateRentalPricePerKilometer());
-                        } else {
-                            details.append("Car registration number:" + vehicle.getVehicleRegistrationNumber() +
-                                    "\nBrand: " + vehicle.getBrand().getName() +
-                                    "\nModel: " + vehicle.getModel() +
-                                    "\nEngine size: " + ((Car) vehicle).getEngineSize() +
-                                    "\nCar types: " + ((Car) vehicle).getCarTypes() +
-                                    "\nCompany branch: " + vehicle.getCompanyBranch().getName() +
-                                    "\nPrice of rental per kilometer: " + vehicle.calculateRentalPricePerKilometer());
-                        }
+        if (selectedVehicle instanceof Car) {
+            Car selectedCar = (Car) selectedVehicle;
+            if (selectedCar.getCarTypes().contains(CarTypes.SPORT_CAR) && selectedCar.getSuspensionHeight() != null) {
+                details.append("Car registration number: " + selectedVehicle.getVehicleRegistrationNumber() +
+                        "\nBrand: " + selectedVehicle.getBrand().getName() +
+                        "\nModel: " + selectedVehicle.getModel() +
+                        "\nEngine size: " + ((Car) selectedVehicle).getEngineSize() +
+                        "\nCar types: " + ((Car) selectedVehicle).getCarTypes() +
+                        "\nSuspension height: " + ((Car) selectedVehicle).getSuspensionHeight() +
+                        "\nCompany branch: " + selectedVehicle.getCompanyBranch().getName() +
+                        "\nPrice of rental per kilometer: " + selectedVehicle.calculateRentalPricePerKilometer());
+            } else if (selectedCar.getCarTypes().contains(CarTypes.ELECTRIC_CAR) && selectedCar.getBatteryCapacity() != null) {
+                details.append("Car registration number: " + selectedVehicle.getVehicleRegistrationNumber() +
+                        "\nBrand: " + selectedVehicle.getBrand().getName() +
+                        "\nModel: " + selectedVehicle.getModel() +
+                        "\nEngine size: " + ((Car) selectedVehicle).getEngineSize() +
+                        "\nCar types: " + ((Car) selectedVehicle).getCarTypes() +
+                        "\nBattery capacity: " + ((Car) selectedVehicle).getBatteryCapacity() +
+                        "\nCompany branch: " + selectedVehicle.getCompanyBranch().getName() +
+                        "\nPrice of rental per kilometer: " + selectedVehicle.calculateRentalPricePerKilometer());
+            } else if (((Car) selectedVehicle).getCarTypes().contains(CarTypes.PREMIUM_CAR) && (((Car) selectedVehicle).getLuxuryDesignElements() != null)) {
+                details.append("Car registration number: " + selectedVehicle.getVehicleRegistrationNumber() +
+                        "\nBrand: " + selectedVehicle.getBrand().getName() +
+                        "\nModel: " + selectedVehicle.getModel() +
+                        "\nEngine size: " + ((Car) selectedVehicle).getEngineSize() +
+                        "\nCar types: " + ((Car) selectedVehicle).getCarTypes() +
+                        "\nLuxury design elements: " + ((Car) selectedVehicle).getLuxuryDesignElements() +
+                        "\nCompany branch: " + selectedVehicle.getCompanyBranch().getName() +
+                        "\nPrice of rental per kilometer: " + selectedVehicle.calculateRentalPricePerKilometer());
+            } else {
+                details.append("Car registration number:" + selectedVehicle.getVehicleRegistrationNumber() +
+                        "\nBrand: " + selectedVehicle.getBrand().getName() +
+                        "\nModel: " + selectedVehicle.getModel() +
+                        "\nEngine size: " + ((Car) selectedVehicle).getEngineSize() +
+                        "\nCar types: " + ((Car) selectedVehicle).getCarTypes() +
+                        "\nCompany branch: " + selectedVehicle.getCompanyBranch().getName() +
+                        "\nPrice of rental per kilometer: " + selectedVehicle.calculateRentalPricePerKilometer());
+            }
 
-                    } else if (vehicle instanceof Truck) {
-                        Truck selectedTruck = (Truck) vehicle;
-                        details.append("Truck registration number: ").append(selectedTruck.getVehicleRegistrationNumber());
-                        details.append("\nMaximum Authorised Mass: ").append(selectedTruck.getMaximumAuthorisedMass());
-                        details.append("\nPrice of rental per kilometer: ").append(selectedTruck.calculateRentalPricePerKilometer());
-                    }
-                    details.append("\n\n");
-                });
+        } else if (selectedVehicle instanceof Truck) {
+            Truck selectedTruck = (Truck) selectedVehicle;
+            details.append("Truck registration number: ").append(selectedTruck.getVehicleRegistrationNumber());
+            details.append("\nMaximum Authorised Mass: ").append(selectedTruck.getMaximumAuthorisedMass());
+            details.append("\nPrice of rental per kilometer: ").append(selectedTruck.calculateRentalPricePerKilometer());
+        }
+        details.append("\n\n");
 
         if (details.isEmpty()) {
             details.append("No vehicles found for the selected brand and model.");
@@ -218,12 +222,38 @@ public class VehicleParametersWindowController {
             return;
         }
 
-        List<Vehicle> filteredVehicles = availableVehicles.stream()
+        filteredVehicles = availableVehicles.stream()
                 .filter(vehicle -> vehicle.getBrand().equals(selectedBrand) && vehicle.getModel().equals(selectedModel))
                 .toList();
 
         vehicleListView.getItems().clear();
         vehicleListView.getItems().addAll(filteredVehicles);
+    }
+
+    @FXML
+    private void handleFilter() {
+        try {
+            double minPrice = Double.parseDouble(minPriceTextField.getText());
+            double maxPrice = Double.parseDouble(maxPriceTextField.getText());
+            filterVehiclesByPrice(minPrice, maxPrice);
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter valid numbers for both price ranges.", ButtonType.OK);
+            alert.showAndWait();
+        }
+    }
+
+    private void filterVehiclesByPrice(double minPrice, double maxPrice) {
+        ObservableList<Vehicle> allVehicles = FXCollections.observableArrayList(filteredVehicles);
+        ObservableList<Vehicle> filteredVehiclesBasedOnPrice = FXCollections.observableArrayList();
+
+        for (Vehicle vehicle : allVehicles) {
+            double pricePerKm = vehicle.calculateRentalPricePerKilometer();
+            if (pricePerKm >= minPrice && pricePerKm <= maxPrice) {
+                filteredVehiclesBasedOnPrice.add(vehicle);
+            }
+        }
+
+        vehicleListView.setItems(filteredVehiclesBasedOnPrice);
     }
 
     @FXML

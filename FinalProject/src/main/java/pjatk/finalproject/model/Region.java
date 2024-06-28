@@ -66,7 +66,7 @@ public class Region extends ObjectPlus {
     }
 
     public void removeCompanyBranch(CompanyBranch companyBranch) throws ClassNotFoundException {
-        List<Car> cars = getExtent(Car.class);
+        List<Vehicle> vehicles = getExtent(Vehicle.class);
 
         if (companyBranch == null) {
             throw new IllegalArgumentException("Company branch to be deleted cannot be null.");
@@ -76,7 +76,7 @@ public class Region extends ObjectPlus {
             return;
         }
 
-        cars.forEach(e -> e.setCompanyBranch(null));
+        vehicles.forEach(e -> e.setCompanyBranch(null));
         allCompanyBranches.remove(companyBranch);
         companyBranch.removeFromExtent();
     }
